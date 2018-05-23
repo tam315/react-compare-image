@@ -8,13 +8,23 @@ Simple React component to compare two images using slider.
 ## Features
 
 - Simple
-- Responsive
-- Handles size difference between two images. frame size determined by following two factors:
-  - width of the parent width
-  - right images aspect rasio
+- Responsive (fit to the parent width)
+- Size difference between two images handled correctly. Element size determined by following two factors:
+  - width of the parent's width
+  - right image's aspect rasio
 
 ## How to use
+```cmd
+yarn add react-compare-image
+
+// or
+
+npm install --save react-compare-image
+```
+
 ```jsx
+import ReactCompareImage from 'react-compare-image';
+
 <ReactCompareImage
   leftImage="image1.jpg"
   rightImage="image2.jpg"
