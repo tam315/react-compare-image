@@ -3,10 +3,7 @@ firebase.json
 .firebaserc
 .gitignore
 .prettierrc.yml
-LICENSE
-package.json
 public
-README.md
 src
 webpack.local.config.js
 webpack.production.config.js
