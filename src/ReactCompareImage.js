@@ -34,8 +34,8 @@ class ReactCompareImage extends React.Component {
 
     this.refs.container.addEventListener('mousedown', startSliding);
     this.refs.container.addEventListener('touchstart', startSliding);
-    window.addEventListener('mouseup', finishSliding);
-    window.addEventListener('touchend', finishSliding);
+    this.mouseupHandler = window.addEventListener('mouseup', finishSliding);
+    this.thouchendHander = window.addEventListener('touchend', finishSliding);
 
     function getAndSetImagesSize() {
       // - get image size of under(right) image using temprary DOM
@@ -106,7 +106,10 @@ class ReactCompareImage extends React.Component {
   }
 
   componentWillUnmount() {
+    window.removeEventListener('load', this.loadHandler);
     window.removeEventListener('resize', this.resizeHandler);
+    window.removeEventListener('mouseup', this.mouseupHandler);
+    window.removeEventListener('touchend', this.thouchendHander);
   }
 
   render() {
