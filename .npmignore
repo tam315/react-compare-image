@@ -1,3 +1,15 @@
+.babelrc
+.firebase.json
+.firebaserc
+.gitignore
+.prettierrc.ytl
+LICENSE
+package.json
+public
+README.md
+src
 webpack.local.config.js
 webpack.production.config.js
-.gitignore
+webpack.website.config.js
+yarn-error.log
+yarn.lock
