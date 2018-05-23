@@ -45,11 +45,11 @@ class ReactCompareImage extends React.Component {
       //     height = width * (aspect rasio of under(right) image)
       const tempUnderImage = new Image();
       tempUnderImage.onload = function() {
-        const containerWidth = that.refs.container.offsetWidth;
+        const containerWidth = that.refs.container.getBoundingClientRect().width;
         const aspectRasio = this.height / this.width;
 
         that.setState({
-          imageWidth: containerWidth - 1,
+          imageWidth: containerWidth,
           imageHeight: containerWidth * aspectRasio,
         });
       };
