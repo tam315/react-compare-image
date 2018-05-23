@@ -17,9 +17,11 @@
   "author": "Shota Tamura",
   "license": "MIT",
   "peerDependencies": {
-    "emotion": "^9.1.3",
     "react": ">=15.0.1",
     "react-dom": ">=15.0.1"
+  },
+  "dependencies": {
+    "emotion": "^9.1.3",
   },
   "devDependencies": {
     "babel-core": "^6.26.3",
