@@ -15,28 +15,28 @@ module.exports = {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
         use: {
-          loader: "babel-loader"
-        }
-      }
-    ]
+          loader: 'babel-loader',
+        },
+      },
+    ],
   },
   externals: {
     // Don't bundle external libraries
     react: {
-        commonjs: "react",
-        commonjs2: "react",
-        amd: "React",
-        root: "React"
+      commonjs: 'react',
+      commonjs2: 'react',
+      amd: 'React',
+      root: 'React',
     },
-    "react-dom": {
-        commonjs: "react-dom",
-        commonjs2: "react-dom",
-        amd: "ReactDOM",
-        root: "ReactDOM"
+    'react-dom': {
+      commonjs: 'react-dom',
+      commonjs2: 'react-dom',
+      amd: 'ReactDOM',
+      root: 'ReactDOM',
     },
     emotion: {
-      commonjs: "emotion",
-      commonjs2: "emotion",
-  }
-  }
+      commonjs: 'emotion',
+      commonjs2: 'emotion',
+    },
+  },
 };

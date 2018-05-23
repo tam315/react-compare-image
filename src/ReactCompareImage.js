@@ -6,11 +6,11 @@ const propTypes = {
   leftImage: PropTypes.string.isRequired,
   rightImage: PropTypes.string.isRequired,
   sliderWidth: PropTypes.number,
-}
+};
 
 const defaultProps = {
   sliderWidth: 4,
-}
+};
 
 class ReactCompareImage extends React.Component {
   constructor(props) {
@@ -44,13 +44,13 @@ class ReactCompareImage extends React.Component {
       const tempUnderImage = new Image();
       tempUnderImage.onload = function() {
         const containerWidth = that.refs.container.offsetWidth;
-        const aspectRasio = (this.height / this.width)
+        const aspectRasio = this.height / this.width;
 
         that.setState({
-          imageWidth: containerWidth -1,
+          imageWidth: containerWidth - 1,
           imageHeight: containerWidth * aspectRasio,
         });
-      }
+      };
       tempUnderImage.src = that.props.rightImage;
     }
 
@@ -75,8 +75,8 @@ class ReactCompareImage extends React.Component {
     function handleSliding(e) {
       let pos = getCursorPosFromImageLeft(e);
 
-      const minPos = 0 + (that.props.sliderWidth / 2);
-      const maxPos = that.state.imageWidth - (that.props.sliderWidth / 2);
+      const minPos = 0 + that.props.sliderWidth / 2;
+      const maxPos = that.state.imageWidth - that.props.sliderWidth / 2;
 
       if (pos < minPos) pos = minPos;
       if (pos > maxPos) pos = maxPos;
