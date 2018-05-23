@@ -1,8 +1,8 @@
 .babelrc
-.firebase.json
+firebase.json
 .firebaserc
 .gitignore
-.prettierrc.ytl
+.prettierrc.yml
 LICENSE
 package.json
 public
