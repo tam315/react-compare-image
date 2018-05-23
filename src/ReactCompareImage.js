@@ -27,6 +27,8 @@ class ReactCompareImage extends React.Component {
 
     getAndSetImagesSize();
 
+    // set width correctly even if scroll bar was shown after initial rendering
+    this.loadHandler = window.addEventListener('load', getAndSetImagesSize);
     // re-calculate images size whenever window resized
     this.resizeHandler = window.addEventListener('resize', getAndSetImagesSize);
 
