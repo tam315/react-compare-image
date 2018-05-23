@@ -17,34 +17,42 @@ class ReactCompareImage extends React.Component {
     super(props);
     this.state = {
       sliderPositionPercentage: 0.5, // 0 to 1
-      imageWidth: null,
-      imageHeight: null,
+      imageWidth: 0,
+      imageHeight: 0,
     };
   }
 
   componentDidMount() {
     const that = this;
 
-    // Set the image width to be the same as the container width.
-    // By default, the width of the container is 100% to fit its parent.
-    // At this point, the height of images are unknown.
-    const containerWidth = this.refs.container.offsetWidth;
-    this.setState({
-      imageWidth: containerWidth,
-    });
+    getAndSetImagesSize();
 
-    // Once images loaded, get the height of under image.
-    // The height of the two images is set equal by the aspect ratio of the under(left) image.
-    // This also applies to the height of the container.
-    window.addEventListener('load', function() {
-      const imageHeight = that.refs.underImage.offsetHeight;
-      that.setState({ imageHeight });
-    });
+    // re-calculate images size whenever window resized
+    this.resizeHandler = window.addEventListener('resize', getAndSetImagesSize);
 
     this.refs.container.addEventListener('mousedown', startSliding);
     this.refs.container.addEventListener('touchstart', startSliding);
     window.addEventListener('mouseup', finishSliding);
     window.addEventListener('touchend', finishSliding);
+
+    function getAndSetImagesSize() {
+      // - get image size of under(right) image using temprary DOM
+      // - calculate its aspect ratio
+      // - set both image size statically like so:
+      //     width  = container width
+      //     height = width * (aspect rasio of under(right) image)
+      const tempUnderImage = new Image();
+      tempUnderImage.onload = function() {
+        const containerWidth = that.refs.container.offsetWidth;
+        const aspectRasio = (this.height / this.width)
+
+        that.setState({
+          imageWidth: containerWidth -1,
+          imageHeight: containerWidth * aspectRasio,
+        });
+      }
+      tempUnderImage.src = that.props.rightImage;
+    }
 
     function startSliding(e) {
       // Prevent default behavior other than mobile scrolling
@@ -66,8 +74,12 @@ class ReactCompareImage extends React.Component {
 
     function handleSliding(e) {
       let pos = getCursorPosFromImageLeft(e);
-      if (pos < 0) pos = 0;
-      if (pos > that.state.imageWidth) pos = that.state.imageWidth;
+
+      const minPos = 0 + (that.props.sliderWidth / 2);
+      const maxPos = that.state.imageWidth - (that.props.sliderWidth / 2);
+
+      if (pos < minPos) pos = minPos;
+      if (pos > maxPos) pos = maxPos;
 
       that.setState({
         sliderPositionPercentage: pos / that.state.imageWidth,
@@ -89,6 +101,10 @@ class ReactCompareImage extends React.Component {
 
       return cursorXfromImage;
     }
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.resizeHandler);
   }
 
   render() {

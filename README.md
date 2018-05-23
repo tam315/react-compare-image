@@ -8,7 +8,7 @@ Simple React component to compare two images using slider.
 ## Features
 
 - Simple
-- Responsive (reloading required after window resize, though)
+- Responsive
 - Handles size difference between two images. frame size determined by following two factors:
   - width of the parent width
   - right images aspect rasio
