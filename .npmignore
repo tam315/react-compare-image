@@ -1,13 +1,13 @@
 .babelrc
-firebase.json
 .firebaserc
 .gitignore
 .prettierrc.yml
+firebase.json
 public
 src
+storybook-static
 webpack.local.config.js
 webpack.production.config.js
 webpack.website.config.js
 yarn-error.log
 yarn.lock
-storybook-static

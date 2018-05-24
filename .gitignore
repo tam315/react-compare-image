@@ -1,4 +1,4 @@
-node_modules
 dist
-yarn-error.log
+node_modules
 storybook-static
+yarn-error.log

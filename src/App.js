@@ -12,7 +12,11 @@ class App extends Component {
   render() {
     return (
       <div className={styles}>
-        <h1><a href="https://github.com/junkboy0315/react-compare-image">React Compare Image</a></h1>
+        <h1>
+          <a href="https://github.com/junkboy0315/react-compare-image">
+            React Compare Image
+          </a>
+        </h1>
 
         <p>200px width (cat1.jpg | cat2.jpg)</p>
         <div style={{ maxWidth: '200px' }}>
@@ -46,7 +50,6 @@ class App extends Component {
         <div style={{ maxWidth: '100%', boxSizing: 'border-box' }}>
           <ReactCompareImage leftImage="/scene2.jpg" rightImage="/scene1.jpg" />
         </div>
-
       </div>
     );
   }
