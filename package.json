@@ -5,6 +5,7 @@
   "main": "dist/bundle.js",
   "scripts": {
     "build": "del-cli dist/**/* && webpack --config ./webpack.production.config.js",
+    "build-web": "del-cli dist/**/* && cpx public/**/* dist && webpack --config ./webpack.website.config.js",
     "deploy-web": "del-cli dist/**/* && cpx public/**/* dist && webpack --config ./webpack.website.config.js && firebase deploy",
     "prepublish": "del-cli dist/**/* && npm run build",
     "serve": "webpack-serve ./webpack.local.config.js",
