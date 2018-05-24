@@ -30,3 +30,7 @@ import ReactCompareImage from 'react-compare-image';
   rightImage="image2.jpg"
 />
 ```
+
+## Dependencies
+- [css-element-queries](https://github.com/marcj/css-element-queries) to detect element resize event.
+- [emotion](https://github.com/emotion-js/emotion) to use CSS-in-JS.
