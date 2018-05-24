@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { css } from 'emotion';
+import { ResizeSensor } from 'css-element-queries';
 
 const propTypes = {
   leftImage: PropTypes.string.isRequired,
@@ -25,36 +26,38 @@ class ReactCompareImage extends React.Component {
   componentDidMount() {
     const that = this;
 
-    getAndSetImagesSize();
+    // Image size set as follows.
+    // note that 'imageHeight' state affects only over image.
+    //
+    // 1. set under image size like so:
+    //     width  = container width
+    //     height = auto
+    //
+    // 2. set over imaze size like so:
+    //     width  = container width
+    //     height = under image's height
+    //              (protrudes is hidden by css 'object-fit: hidden')
+    function setImagesSize() {
+      that.setState({
+        imageWidth: that.refs.container.getBoundingClientRect().width,
+        imageHeight: that.refs.underImage.getBoundingClientRect().height,
+      });
+    }
 
-    // set width correctly even if scroll bar was shown after initial rendering
-    this.loadHandler = window.addEventListener('load', getAndSetImagesSize);
-    // re-calculate images size whenever window resized
-    this.resizeHandler = window.addEventListener('resize', getAndSetImagesSize);
+    setImagesSize();
 
-    this.refs.container.addEventListener('mousedown', startSliding);
-    this.refs.container.addEventListener('touchstart', startSliding);
+    const containerElement = this.refs.container;
+
+    // Re-set images size when container size is changed
+    new ResizeSensor(containerElement, () => {
+      setImagesSize();
+    });
+
+    containerElement.addEventListener('mousedown', startSliding);
+    containerElement.addEventListener('touchstart', startSliding);
+
     this.mouseupHandler = window.addEventListener('mouseup', finishSliding);
     this.thouchendHander = window.addEventListener('touchend', finishSliding);
-
-    function getAndSetImagesSize() {
-      // - get image size of under(right) image using temprary DOM
-      // - calculate its aspect ratio
-      // - set both image size statically like so:
-      //     width  = container width
-      //     height = width * (aspect rasio of under(right) image)
-      const tempUnderImage = new Image();
-      tempUnderImage.onload = function() {
-        const containerWidth = that.refs.container.getBoundingClientRect().width;
-        const aspectRasio = this.height / this.width;
-
-        that.setState({
-          imageWidth: containerWidth,
-          imageHeight: containerWidth * aspectRasio,
-        });
-      };
-      tempUnderImage.src = that.props.rightImage;
-    }
 
     function startSliding(e) {
       // Prevent default behavior other than mobile scrolling
@@ -106,8 +109,6 @@ class ReactCompareImage extends React.Component {
   }
 
   componentWillUnmount() {
-    window.removeEventListener('load', this.loadHandler);
-    window.removeEventListener('resize', this.resizeHandler);
     window.removeEventListener('mouseup', this.mouseupHandler);
     window.removeEventListener('touchend', this.thouchendHander);
   }
@@ -118,19 +119,25 @@ class ReactCompareImage extends React.Component {
         boxSizing: 'border-box',
         position: 'relative',
         width: '100%',
+        ' .img-comp-under': {
+          ' img': {
+            height: 'auto', // Respect the aspect ratio
+            width: this.state.imageWidth,
+          },
+        },
         ' .img-comp-over': {
           overflow: 'hidden',
           position: 'absolute',
           top: 0,
           width:
             this.state.imageWidth * this.state.sliderPositionPercentage + 'px',
+          ' img': {
+            height: this.state.imageHeight, // fit to the height of under image
+            objectFit: 'cover', // protrudes is hidden
+            width: this.state.imageWidth,
+          },
         },
-        ' img': {
-          display: 'block',
-          height: this.state.imageHeight,
-          objectFit: 'cover',
-          width: this.state.imageWidth,
-        },
+
         ' .img-comp-slider': {
           backgroundColor: 'white',
           cursor: 'ew-resize',
@@ -149,7 +156,7 @@ class ReactCompareImage extends React.Component {
 
     return (
       <div className={styles.container} ref="container">
-        <div ref="underImage">
+        <div className="img-comp-under" ref="underImage">
           <img src={this.props.rightImage} alt="left" />
         </div>
 

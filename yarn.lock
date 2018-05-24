@@ -1832,6 +1832,10 @@ crypto-random-string@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/crypto-random-string/-/crypto-random-string-1.0.0.tgz#a230f64f568310e1498009940790ec99545bca7e"
 
+css-element-queries@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/css-element-queries/-/css-element-queries-1.0.2.tgz#a32edfee4a5023688ef4d45f402077306d51d44c"
+
 css-select@^1.1.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/css-select/-/css-select-1.2.0.tgz#2b3a110539c5355f1cd8d314623e870b121ec858"

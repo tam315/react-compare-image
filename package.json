@@ -21,6 +21,7 @@
     "react-dom": ">=15.0.1"
   },
   "dependencies": {
+    "css-element-queries": "^1.0.2",
     "emotion": "^9.1.3"
   },
   "devDependencies": {
