@@ -1,17 +1,11 @@
 import React, { Component } from 'react';
 import ReactCompareImage from './ReactCompareImage';
-import { css } from 'emotion';
-
-const styles = css({
-  ' p': {
-    marginTop: '3rem',
-  },
-});
+import './App.css';
 
 class App extends Component {
   render() {
     return (
-      <div className={styles}>
+      <div className="demo-page">
         <h1>
           <a href="https://github.com/junkboy0315/react-compare-image">
             React Compare Image

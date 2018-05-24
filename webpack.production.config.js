@@ -34,9 +34,5 @@ module.exports = {
       amd: 'ReactDOM',
       root: 'ReactDOM',
     },
-    emotion: {
-      commonjs: 'emotion',
-      commonjs2: 'emotion',
-    },
   },
 };

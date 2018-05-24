@@ -24,29 +24,30 @@
     "react-dom": ">=15.0.1"
   },
   "dependencies": {
-    "css-element-queries": "^1.0.2",
-    "emotion": "^9.1.3"
+    "css-element-queries": "^1.0.2"
   },
   "devDependencies": {
+    "@storybook/addon-actions": "^3.4.5",
+    "@storybook/addon-links": "^3.4.5",
+    "@storybook/addons": "^3.4.5",
+    "@storybook/react": "^3.4.5",
     "babel-core": "^6.26.3",
     "babel-loader": "^7.1.4",
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
+    "babel-runtime": "^6.26.0",
     "cpx": "^1.5.0",
+    "css-loader": "^0.28.11",
     "del-cli": "^1.1.0",
     "file-loader": "^1.1.11",
     "html-webpack-plugin": "^3.2.0",
     "react": "^16.3.2",
     "react-dom": "^16.3.2",
+    "style-loader": "^0.21.0",
     "url-loader": "^1.0.1",
     "webpack": "^4.8.3",
     "webpack-cli": "^2.1.3",
-    "webpack-serve": "^1.0.2",
-    "@storybook/react": "^3.4.5",
-    "@storybook/addon-actions": "^3.4.5",
-    "@storybook/addon-links": "^3.4.5",
-    "@storybook/addons": "^3.4.5",
-    "babel-runtime": "^6.26.0"
+    "webpack-serve": "^1.0.2"
   },
   "keywords": [
     "picture comparison",
