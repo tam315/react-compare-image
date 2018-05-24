@@ -9,7 +9,9 @@
     "deploy-web": "del-cli dist/**/* && cpx public/**/* dist && webpack --config ./webpack.website.config.js && firebase deploy",
     "prepublish": "del-cli dist/**/* && npm run build",
     "serve": "webpack-serve ./webpack.local.config.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "storybook": "start-storybook -p 6006 -s ./public",
+    "build-storybook": "build-storybook"
   },
   "repository": {
     "type": "git",
@@ -39,7 +41,12 @@
     "url-loader": "^1.0.1",
     "webpack": "^4.8.3",
     "webpack-cli": "^2.1.3",
-    "webpack-serve": "^1.0.2"
+    "webpack-serve": "^1.0.2",
+    "@storybook/react": "^3.4.5",
+    "@storybook/addon-actions": "^3.4.5",
+    "@storybook/addon-links": "^3.4.5",
+    "@storybook/addons": "^3.4.5",
+    "babel-runtime": "^6.26.0"
   },
   "keywords": [
     "picture comparison",

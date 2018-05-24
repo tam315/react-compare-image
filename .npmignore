@@ -10,3 +10,4 @@ webpack.production.config.js
 webpack.website.config.js
 yarn-error.log
 yarn.lock
+storybook-static
