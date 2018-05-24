@@ -121,6 +121,7 @@ class ReactCompareImage extends React.Component {
         width: '100%',
         ' .img-comp-under': {
           ' img': {
+            display: 'block',
             height: 'auto', // Respect the aspect ratio
             width: this.state.imageWidth,
           },
@@ -132,6 +133,7 @@ class ReactCompareImage extends React.Component {
           width:
             this.state.imageWidth * this.state.sliderPositionPercentage + 'px',
           ' img': {
+            display: 'block',
             height: this.state.imageHeight, // fit to the height of under image
             objectFit: 'cover', // protrudes is hidden
             width: this.state.imageWidth,
