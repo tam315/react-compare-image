@@ -31,7 +31,6 @@
     "babel-preset-react": "^6.24.1",
     "cpx": "^1.5.0",
     "del-cli": "^1.1.0",
-    "emotion": "^9.1.3",
     "file-loader": "^1.1.11",
     "html-webpack-plugin": "^3.2.0",
     "react": "^16.3.2",
