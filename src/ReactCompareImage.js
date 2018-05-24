@@ -126,7 +126,6 @@ class ReactCompareImage extends React.Component {
         display: 'block',
         height: '100%', // fit to the height of under image
         objectFit: 'cover', // protrudes is hidden
-        overflow: 'hidden',
         position: 'absolute',
         top: 0,
         width: '100%',
