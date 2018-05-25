@@ -52,8 +52,9 @@ class ReactCompareImage extends React.Component {
     containerElement.addEventListener('mousedown', startSliding);
     containerElement.addEventListener('touchstart', startSliding);
 
-    this.mouseupHandler = window.addEventListener('mouseup', finishSliding);
-    this.thouchendHander = window.addEventListener('touchend', finishSliding);
+    window.addEventListener('mouseup', finishSliding);
+    window.addEventListener('touchend', finishSliding);
+    this.finishSliding = finishSliding; // reference for clean up
 
     function startSliding(e) {
       // Prevent default behavior other than mobile scrolling
@@ -105,8 +106,8 @@ class ReactCompareImage extends React.Component {
   }
 
   componentWillUnmount() {
-    window.removeEventListener('mouseup', this.mouseupHandler);
-    window.removeEventListener('touchend', this.thouchendHander);
+    window.removeEventListener('mouseup', this.finishSliding);
+    window.removeEventListener('touchend', this.finishSliding);
   }
 
   render() {
