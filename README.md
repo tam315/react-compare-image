@@ -30,6 +30,15 @@ import ReactCompareImage from 'react-compare-image';
 <ReactCompareImage leftImage="image1.jpg" rightImage="image2.jpg" />;
 ```
 
+## Props
+
+| Prop (\* required) | type   | default | description                        |
+| ------------------ | ------ | :-----: | ---------------------------------- |
+| leftImage \*       | string |  null   | left image's url                   |
+| rightImage \*      | string |  null   | right image's url                  |
+| sliderLineWidth    | number |    2    | line width of slider by pixel      |
+| handleSize         | number |   40    | diameter of slider handle by pixel |
+
 ## Dependencies
 
 * [css-element-queries](https://github.com/marcj/css-element-queries) to detect element resize event.

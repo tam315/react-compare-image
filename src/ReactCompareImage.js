@@ -5,11 +5,13 @@ import { ResizeSensor } from 'css-element-queries';
 const propTypes = {
   leftImage: PropTypes.string.isRequired,
   rightImage: PropTypes.string.isRequired,
-  sliderWidth: PropTypes.number,
+  sliderLineWidth: PropTypes.number,
+  handleSize: PropTypes.number,
 };
 
 const defaultProps = {
-  sliderWidth: 4,
+  sliderLineWidth: 2,
+  handleSize: 40,
 };
 
 class ReactCompareImage extends React.Component {
@@ -91,8 +93,8 @@ class ReactCompareImage extends React.Component {
     let pos = cursorXfromWindow - imagePosition.left;
 
     // Set minimum and maximum values ​​to prevent the slider from overflowing
-    const minPos = 0 + this.props.sliderWidth / 2;
-    const maxPos = this.state.imageWidth - this.props.sliderWidth / 2;
+    const minPos = 0 + this.props.sliderLineWidth / 2;
+    const maxPos = this.state.imageWidth - this.props.sliderLineWidth / 2;
 
     if (pos < minPos) pos = minPos;
     if (pos > maxPos) pos = maxPos;
@@ -108,6 +110,7 @@ class ReactCompareImage extends React.Component {
         boxSizing: 'border-box',
         position: 'relative',
         width: '100%',
+        overflow: 'hidden',
       },
       underImage: {
         display: 'block',
@@ -125,17 +128,55 @@ class ReactCompareImage extends React.Component {
         width: '100%',
       },
       slider: {
-        backgroundColor: 'white',
+        alignItems: 'center',
         cursor: 'ew-resize',
+        display: 'flex',
+        flexDirection: 'column',
         height: '100%',
+        justifyContent: 'center',
         left:
           this.state.imageWidth * this.state.sliderPositionPercentage -
-          this.props.sliderWidth / 2 +
+          this.props.handleSize / 2 +
           'px',
         position: 'absolute',
         top: 0,
-        width: `${this.props.sliderWidth}px`,
-        zIndex: 9,
+        width: `${this.props.handleSize}px`,
+      },
+      line: {
+        background: 'white',
+        boxShadow:
+          '0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12)',
+        flex: '0 1 auto',
+        height: '100%',
+        width: `${this.props.sliderLineWidth}px`,
+      },
+      handle: {
+        alignItems: 'center',
+        border: `${this.props.sliderLineWidth}px solid white`,
+        borderRadius: '100%',
+        boxShadow:
+          '0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12)',
+        boxSizing: 'border-box',
+        display: 'flex',
+        flex: '1 0 auto',
+        height: `${this.props.handleSize}px`,
+        justifyContent: 'center',
+        width: `${this.props.handleSize}px`,
+      },
+      leftArrow: {
+        border: `inset ${this.props.handleSize * 0.15}px rgba(0,0,0,0)`,
+        borderRight: `${this.props.handleSize * 0.15}px solid white`,
+        height: '0px',
+        marginLeft: `-${this.props.handleSize * 0.25}px`, // for IE11
+        marginRight: `${this.props.handleSize * 0.25}px`,
+        width: '0px',
+      },
+      rightArrow: {
+        border: `inset ${this.props.handleSize * 0.15}px rgba(0,0,0,0)`,
+        borderLeft: `${this.props.handleSize * 0.15}px solid white`,
+        height: '0px',
+        marginRight: `-${this.props.handleSize * 0.25}px`, // for IE11
+        width: '0px',
       },
     };
 
@@ -161,7 +202,14 @@ class ReactCompareImage extends React.Component {
           src={this.props.leftImage}
           style={styles.overImage}
         />
-        <div className="img-comp-slider" style={styles.slider} />
+        <div className="img-comp-slider" style={styles.slider}>
+          <div style={styles.line} />
+          <div style={styles.handle}>
+            <div style={styles.leftArrow} />
+            <div style={styles.rightArrow} />
+          </div>
+          <div style={styles.line} />
+        </div>
       </div>
     );
   };
