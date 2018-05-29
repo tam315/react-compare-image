@@ -4,7 +4,7 @@ Simple React component to compare two images using slider.
 
 ## Demo
 
-[DEMO](https://react-compare-image.firebaseapp.com/)
+[DEMO](https://react-compare-image.yuuniworks.com/)
 
 ## Features
 

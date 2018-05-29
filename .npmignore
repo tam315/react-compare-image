@@ -1,8 +1,6 @@
 .babelrc
-.firebaserc
 .gitignore
 .prettierrc.yml
-firebase.json
 public
 src
 storybook-static
