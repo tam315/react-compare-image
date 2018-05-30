@@ -7,11 +7,13 @@ const propTypes = {
   rightImage: PropTypes.string.isRequired,
   sliderLineWidth: PropTypes.number,
   handleSize: PropTypes.number,
+  hover: PropTypes.bool,
 };
 
 const defaultProps = {
   sliderLineWidth: 2,
   handleSize: 40,
+  hover: false,
 };
 
 class ReactCompareImage extends React.Component {
@@ -33,11 +35,18 @@ class ReactCompareImage extends React.Component {
       this.setImagesSize();
     });
 
-    containerElement.addEventListener('mousedown', this.startSliding);
+    // for mobile
     containerElement.addEventListener('touchstart', this.startSliding);
-
-    window.addEventListener('mouseup', this.finishSliding);
     window.addEventListener('touchend', this.finishSliding);
+
+    // for desktop
+    if (this.props.hover) {
+      containerElement.addEventListener('mouseenter', this.startSliding);
+      containerElement.addEventListener('mouseleave', this.finishSliding);
+    } else {
+      containerElement.addEventListener('mousedown', this.startSliding);
+      window.addEventListener('mouseup', this.finishSliding);
+    }
   };
 
   componentWillUnmount = () => {
@@ -129,7 +138,7 @@ class ReactCompareImage extends React.Component {
       },
       slider: {
         alignItems: 'center',
-        cursor: 'ew-resize',
+        cursor: !this.props.hover && 'ew-resize',
         display: 'flex',
         flexDirection: 'column',
         height: '100%',

@@ -32,12 +32,13 @@ import ReactCompareImage from 'react-compare-image';
 
 ## Props
 
-| Prop (\* required) | type   | default | description                        |
-| ------------------ | ------ | :-----: | ---------------------------------- |
-| leftImage \*       | string |  null   | left image's url                   |
-| rightImage \*      | string |  null   | right image's url                  |
-| sliderLineWidth    | number |    2    | line width of slider by pixel      |
-| handleSize         | number |   40    | diameter of slider handle by pixel |
+| Prop (\* required) | type    | default | description                          |
+| ------------------ | ------- | :-----: | ------------------------------------ |
+| leftImage \*       | string  |  null   | left image's url                     |
+| rightImage \*      | string  |  null   | right image's url                    |
+| sliderLineWidth    | number  |    2    | line width of slider (by pixel)      |
+| handleSize         | number  |   40    | diameter of slider handle (by pixel) |
+| hover              | boolean |  false  | Whether to slide at hover            |
 
 ## Dependencies
 
