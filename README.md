@@ -8,11 +8,11 @@ Simple React component to compare two images using slider.
 
 ## Features
 
-* Simple
-* Responsive (fit to the parent width)
-* Size difference between two images handled correctly. Element size determined by following two factors:
-  * width of the parent's width
-  * right image's aspect rasio
+- Simple
+- Responsive (fit to the parent width)
+- Size difference between two images handled correctly. Element size determined by following two factors:
+  - width of the parent's width
+  - right image's aspect rasio
 
 ## How to use
 
@@ -32,14 +32,15 @@ import ReactCompareImage from 'react-compare-image';
 
 ## Props
 
-| Prop (\* required) | type    | default | description                          |
-| ------------------ | ------- | :-----: | ------------------------------------ |
-| leftImage \*       | string  |  null   | left image's url                     |
-| rightImage \*      | string  |  null   | right image's url                    |
-| sliderLineWidth    | number  |    2    | line width of slider (by pixel)      |
-| handleSize         | number  |   40    | diameter of slider handle (by pixel) |
-| hover              | boolean |  false  | Whether to slide at hover            |
+| Prop (\* required) | type    | default | description                              |
+| ------------------ | ------- | :-----: | ---------------------------------------- |
+| leftImage \*       | string  |  null   | left image's url                         |
+| rightImage \*      | string  |  null   | right image's url                        |
+| sliderLineWidth    | number  |    2    | line width of slider (by pixel)          |
+| handleSize         | number  |   40    | diameter of slider handle (by pixel)     |
+| hover              | boolean |  false  | Whether to slide at hover                |
+| skeleton           | element |  null   | Element displayed while image is loading |
 
 ## Dependencies
 
-* [css-element-queries](https://github.com/marcj/css-element-queries) to detect element resize event.
+- [css-element-queries](https://github.com/marcj/css-element-queries) to detect element resize event.

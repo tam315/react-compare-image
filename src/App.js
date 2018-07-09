@@ -35,38 +35,41 @@ class App extends Component {
   <ReactCompareImage
     leftImage="/forest1.jpg"
     rightImage="/forest2.jpg"
+    skeleton={<div>loading</div>}
+  />
+</div>
+          `}
+          </code>
+        </pre>
+        <div style={{ maxWidth: '300px' }}>
+          <ReactCompareImage
+            leftImage="/forest1.jpg"
+            rightImage="/forest2.jpg"
+            skeleton={<div>loading</div>}
+          />
+        </div>
+        <pre>
+          <code className="language-jsx">
+            {`
+<div style={{ maxWidth: '500px' }}>
+  <ReactCompareImage
+    leftImage="/cat1.jpg"
+    rightImage="/forest2.jpg"
     hover
   />
 </div>
           `}
           </code>
-        </pre>{' '}
-        <div style={{ maxWidth: '300px' }}>
+        </pre>
+        <div style={{ maxWidth: '500px' }}>
           <ReactCompareImage
-            leftImage="/forest1.jpg"
+            leftImage="/cat1.jpg"
             rightImage="/forest2.jpg"
             hover
           />
         </div>
         <pre>
           <code className="language-jsx">
-            {' '}
-            {`
-<div style={{ maxWidth: '500px' }}>
-  <ReactCompareImage
-    leftImage="/cat1.jpg"
-    rightImage="/forest2.jpg"
-  />
-</div>
-          `}
-          </code>
-        </pre>{' '}
-        <div style={{ maxWidth: '500px' }}>
-          <ReactCompareImage leftImage="/cat1.jpg" rightImage="/forest2.jpg" />
-        </div>
-        <pre>
-          <code className="language-jsx">
-            {' '}
             {`
 <div style={{ maxWidth: '100%', boxSizing: 'border-box' }}>
   <ReactCompareImage
@@ -78,7 +81,7 @@ class App extends Component {
 </div>
           `}
           </code>
-        </pre>{' '}
+        </pre>
         <div style={{ maxWidth: '100%', boxSizing: 'border-box' }}>
           <ReactCompareImage
             leftImage="/forest1.jpg"

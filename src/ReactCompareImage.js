@@ -8,12 +8,14 @@ const propTypes = {
   sliderLineWidth: PropTypes.number,
   handleSize: PropTypes.number,
   hover: PropTypes.bool,
+  skeleton: PropTypes.element,
 };
 
 const defaultProps = {
   sliderLineWidth: 2,
   handleSize: 40,
   hover: false,
+  skeleton: null,
 };
 
 class ReactCompareImage extends React.Component {
@@ -22,13 +24,18 @@ class ReactCompareImage extends React.Component {
     this.state = {
       sliderPositionPercentage: 0.5, // 0 to 1
       imageWidth: 0,
+      isImgFullyLoaded: false,
     };
+
+    this.containerRef = React.createRef();
+    this.underImageRef = React.createRef();
+
+    this.isLoadingRightImg = true;
+    this.isLoadingLeftImg = true;
   }
 
   componentDidMount = () => {
-    const containerElement = this.containerRef;
-
-    this.setImagesSize();
+    const containerElement = this.containerRef.current;
 
     // Re-set images size when container size is changed
     new ResizeSensor(containerElement, () => {
@@ -49,6 +56,16 @@ class ReactCompareImage extends React.Component {
     }
   };
 
+  componentDidUpdate = (prevProps, prevState) => {
+    // do initial setup if loading images and DOM constructing are fully done
+    if (
+      prevState.isImgFullyLoaded === false &&
+      this.state.isImgFullyLoaded === true
+    ) {
+      this.setImagesSize();
+    }
+  };
+
   componentWillUnmount = () => {
     window.removeEventListener('mouseup', this.finishSliding);
     window.removeEventListener('touchend', this.finishSliding);
@@ -66,7 +83,7 @@ class ReactCompareImage extends React.Component {
     //     height = under image's height
     //              (protrudes is hidden by css 'object-fit: hidden')
     this.setState({
-      imageWidth: this.underImageRef.getBoundingClientRect().width,
+      imageWidth: this.underImageRef.current.getBoundingClientRect().width,
     });
   };
 
@@ -98,7 +115,7 @@ class ReactCompareImage extends React.Component {
     const cursorXfromWindow = cursorXfromViewport - window.pageXOffset;
 
     // Calc Cursor Position from the left edge of the image
-    const imagePosition = this.underImageRef.getBoundingClientRect();
+    const imagePosition = this.underImageRef.current.getBoundingClientRect();
     let pos = cursorXfromWindow - imagePosition.left;
 
     // Set minimum and maximum values ​​to prevent the slider from overflowing
@@ -111,6 +128,21 @@ class ReactCompareImage extends React.Component {
     this.setState({
       sliderPositionPercentage: pos / this.state.imageWidth,
     });
+  };
+
+  onRightImageLoaded = () => {
+    this.isLoadingRightImg = false;
+
+    if (!this.isLoadingRightImg && !this.isLoadingLeftImg) {
+      this.setState({ isImgFullyLoaded: true });
+    }
+  };
+
+  onLeftImageLoaded = () => {
+    this.isLoadingLeftImg = false;
+    if (!this.isLoadingRightImg && !this.isLoadingLeftImg) {
+      this.setState({ isImgFullyLoaded: true });
+    }
   };
 
   render = () => {
@@ -190,36 +222,44 @@ class ReactCompareImage extends React.Component {
     };
 
     return (
-      <div
-        style={styles.container}
-        ref={ref => {
-          this.containerRef = ref;
-        }}
-      >
-        <img
-          alt="left"
-          className="img-comp-under"
-          ref={ref => {
-            this.underImageRef = ref;
+      <React.Fragment>
+        {this.props.skeleton &&
+          !this.state.isImgFullyLoaded && (
+            <div style={{ ...styles.container }}>{this.props.skeleton}</div>
+          )}
+
+        <div
+          style={{
+            ...styles.container,
+            display: this.state.isImgFullyLoaded ? 'block' : 'none',
           }}
-          src={this.props.rightImage}
-          style={styles.underImage}
-        />
-        <img
-          alt="right"
-          className="img-comp-over"
-          src={this.props.leftImage}
-          style={styles.overImage}
-        />
-        <div className="img-comp-slider" style={styles.slider}>
-          <div style={styles.line} />
-          <div style={styles.handle}>
-            <div style={styles.leftArrow} />
-            <div style={styles.rightArrow} />
+          ref={this.containerRef}
+        >
+          <img
+            onLoad={this.onLeftImageLoaded}
+            alt="left"
+            className="img-comp-under"
+            ref={this.underImageRef}
+            src={this.props.rightImage}
+            style={styles.underImage}
+          />
+          <img
+            onLoad={this.onRightImageLoaded}
+            alt="right"
+            className="img-comp-over"
+            src={this.props.leftImage}
+            style={styles.overImage}
+          />
+          <div className="img-comp-slider" style={styles.slider}>
+            <div style={styles.line} />
+            <div style={styles.handle}>
+              <div style={styles.leftArrow} />
+              <div style={styles.rightArrow} />
+            </div>
+            <div style={styles.line} />
           </div>
-          <div style={styles.line} />
         </div>
-      </div>
+      </React.Fragment>
     );
   };
 }
