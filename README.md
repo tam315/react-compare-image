@@ -2,6 +2,8 @@
 
 Simple React component to compare two images using slider.
 
+![img](https://react-compare-image.yuuniworks.com/anime.gif)
+
 ## Demo
 
 [DEMO](https://react-compare-image.yuuniworks.com/)
