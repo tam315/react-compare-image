@@ -10,6 +10,7 @@ const propTypes = {
   hover: PropTypes.bool,
   skeleton: PropTypes.element,
   autoReloadSpan: PropTypes.number,
+  autoReloadLimit: PropTypes.number,
 };
 
 const defaultProps = {
@@ -18,6 +19,7 @@ const defaultProps = {
   hover: false,
   skeleton: null,
   autoReloadSpan: null,
+  autoReloadLimit: 10,
 };
 
 class ReactCompareImage extends React.Component {
@@ -35,6 +37,8 @@ class ReactCompareImage extends React.Component {
 
     this.isLoadingRightImg = true;
     this.isLoadingLeftImg = true;
+
+    this.retryCount = 0;
   }
 
   componentDidMount = () => {
@@ -149,13 +153,17 @@ class ReactCompareImage extends React.Component {
   };
 
   onError = (ref, src) => {
-    const { autoReloadSpan } = this.props;
+    const { autoReloadSpan, autoReloadLimit } = this.props;
+
     if (!autoReloadSpan) return;
+    if (this.retryCount >= autoReloadLimit) return;
 
     setTimeout(() => {
       ref.current.src = null;
       ref.current.src = src;
     }, autoReloadSpan);
+
+    this.retryCount += 1;
   };
 
   render = () => {
