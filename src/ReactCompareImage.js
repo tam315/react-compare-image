@@ -74,6 +74,7 @@ class ReactCompareImage extends React.Component {
   };
 
   componentWillUnmount = () => {
+    this.finishSliding();
     window.removeEventListener('mouseup', this.finishSliding);
     window.removeEventListener('touchend', this.finishSliding);
   };
