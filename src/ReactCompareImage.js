@@ -9,6 +9,7 @@ const propTypes = {
   handleSize: PropTypes.number,
   hover: PropTypes.bool,
   skeleton: PropTypes.element,
+  autoReloadSpan: PropTypes.number,
 };
 
 const defaultProps = {
@@ -16,6 +17,7 @@ const defaultProps = {
   handleSize: 40,
   hover: false,
   skeleton: null,
+  autoReloadSpan: null,
 };
 
 class ReactCompareImage extends React.Component {
@@ -29,6 +31,7 @@ class ReactCompareImage extends React.Component {
 
     this.containerRef = React.createRef();
     this.underImageRef = React.createRef();
+    this.overImageRef = React.createRef();
 
     this.isLoadingRightImg = true;
     this.isLoadingLeftImg = true;
@@ -145,6 +148,16 @@ class ReactCompareImage extends React.Component {
     }
   };
 
+  onError = (ref, src) => {
+    const { autoReloadSpan } = this.props;
+    if (!autoReloadSpan) return;
+
+    setTimeout(() => {
+      ref.current.src = null;
+      ref.current.src = src;
+    }, autoReloadSpan);
+  };
+
   render = () => {
     const styles = {
       container: {
@@ -237,6 +250,9 @@ class ReactCompareImage extends React.Component {
         >
           <img
             onLoad={this.onLeftImageLoaded}
+            onError={() =>
+              this.onError(this.underImageRef, this.props.rightImage)
+            }
             alt="left"
             className="img-comp-under"
             ref={this.underImageRef}
@@ -245,8 +261,12 @@ class ReactCompareImage extends React.Component {
           />
           <img
             onLoad={this.onRightImageLoaded}
+            onError={() =>
+              this.onError(this.overImageRef, this.props.leftImage)
+            }
             alt="right"
             className="img-comp-over"
+            ref={this.overImageRef}
             src={this.props.leftImage}
             style={styles.overImage}
           />

@@ -34,14 +34,15 @@ import ReactCompareImage from 'react-compare-image';
 
 ## Props
 
-| Prop (\* required) | type    | default | description                              |
-| ------------------ | ------- | :-----: | ---------------------------------------- |
-| leftImage \*       | string  |  null   | left image's url                         |
-| rightImage \*      | string  |  null   | right image's url                        |
-| sliderLineWidth    | number  |    2    | line width of slider (by pixel)          |
-| handleSize         | number  |   40    | diameter of slider handle (by pixel)     |
-| hover              | boolean |  false  | Whether to slide at hover                |
-| skeleton           | element |  null   | Element displayed while image is loading |
+| Prop (\* required) | type        | default | description                                                                    |
+| ------------------ | ----------- | :-----: | ------------------------------------------------------------------------------ |
+| leftImage \*       | string      |  null   | left image's url                                                               |
+| rightImage \*      | string      |  null   | right image's url                                                              |
+| sliderLineWidth    | number (px) |    2    | line width of slider (by pixel)                                                |
+| handleSize         | number (px) |   40    | diameter of slider handle (by pixel)                                           |
+| hover              | boolean     |  false  | Whether to slide at hover                                                      |
+| skeleton           | element     |  null   | Element displayed while image is loading                                       |
+| autoReloadSpan     | number (ms) |  null   | The image is loaded again at the interval specified when loading images failed |
 
 ## Dependencies
 
