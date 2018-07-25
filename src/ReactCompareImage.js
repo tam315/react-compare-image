@@ -71,6 +71,24 @@ class ReactCompareImage extends React.Component {
     ) {
       this.setImagesSize();
     }
+
+    // show skeleton again if given images are changed
+    if (
+      this.props.leftImage !== prevProps.leftImage ||
+      this.props.rightImage !== prevProps.rightImage
+    ) {
+      this.underImageRef.current.src = null;
+      this.overImageRef.current.src = null;
+
+      this.isLoadingRightImg = true;
+      this.isLoadingLeftImg = true;
+      this.setState({
+        isImgFullyLoaded: false,
+      });
+
+      this.underImageRef.current.src = this.props.rightImage;
+      this.overImageRef.current.src = this.props.leftImage;
+    }
   };
 
   componentWillUnmount = () => {
