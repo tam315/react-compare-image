@@ -11,6 +11,7 @@ const propTypes = {
   skeleton: PropTypes.element,
   autoReloadSpan: PropTypes.number,
   autoReloadLimit: PropTypes.number,
+  sliderPositionPercentage: PropTypes.number,
 };
 
 const defaultProps = {
@@ -20,13 +21,14 @@ const defaultProps = {
   skeleton: null,
   autoReloadSpan: null,
   autoReloadLimit: 10,
+  sliderPositionPercentage: 0.5,
 };
 
 class ReactCompareImage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      sliderPositionPercentage: 0.5, // 0 to 1
+      sliderPositionPercentage: this.props.sliderPositionPercentage, // 0 to 1
       imageWidth: 0,
       isImgFullyLoaded: false,
     };
