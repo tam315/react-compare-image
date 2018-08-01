@@ -38,6 +38,8 @@ class ReactCompareImage extends React.Component {
     this.isLoadingRightImg = true;
     this.isLoadingLeftImg = true;
 
+    this.autoReloadTasks = [];
+
     this.retryCount = 0;
   }
 
@@ -95,6 +97,7 @@ class ReactCompareImage extends React.Component {
     this.finishSliding();
     window.removeEventListener('mouseup', this.finishSliding);
     window.removeEventListener('touchend', this.finishSliding);
+    this.autoReloadTasks.forEach(task => clearTimeout(task));
   };
 
   setImagesSize = () => {
@@ -177,10 +180,11 @@ class ReactCompareImage extends React.Component {
     if (!autoReloadSpan) return;
     if (this.retryCount >= autoReloadLimit) return;
 
-    setTimeout(() => {
+    const taskId = setTimeout(() => {
       ref.current.src = null;
       ref.current.src = src;
     }, autoReloadSpan);
+    this.autoReloadTasks.push(taskId);
 
     this.retryCount += 1;
   };
