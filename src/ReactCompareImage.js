@@ -280,6 +280,7 @@ class ReactCompareImage extends React.Component {
             display: this.state.isImgFullyLoaded ? 'block' : 'none',
           }}
           ref={this.containerRef}
+          dataenzyme="container"
         >
           <img
             onLoad={this.onLeftImageLoaded}
