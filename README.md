@@ -13,7 +13,7 @@ Simple React component to compare two images using slider.
 - Simple
 - Responsive (fit to the parent width)
 - Size difference between two images handled correctly. Element size determined by following two factors:
-  - width of the parent's width
+  - width of the parent
   - right image's aspect ratio
 
 ## How to use
