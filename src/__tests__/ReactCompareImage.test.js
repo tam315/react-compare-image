@@ -84,4 +84,20 @@ describe('ReactCompareImage', () => {
       wrapper.find({ dataenzyme: 'container' }).prop('style')['display'],
     ).toBe('block');
   });
+
+  test('onSliderPositionChange prop is called when the slider moves', () => {
+    let onSliderPositionChange = jest.fn();
+    
+    const wrapper = mount(
+      <ReactCompareImage
+        leftImage={DUMMY_LEFT_IMAGE}
+        rightImage={DUMMY_RIGHT_IMAGE}
+        onSliderPositionChange={onSliderPositionChange}
+      />,
+    );
+
+    wrapper.instance().handleSliding({ target: {} });
+    
+    expect(onSliderPositionChange).toHaveBeenCalled();
+  });
 });
