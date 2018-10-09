@@ -12,6 +12,7 @@ const propTypes = {
   autoReloadSpan: PropTypes.number,
   autoReloadLimit: PropTypes.number,
   sliderPositionPercentage: PropTypes.number,
+  onSliderPositionChange: PropTypes.func
 };
 
 const defaultProps = {
@@ -159,6 +160,10 @@ class ReactCompareImage extends React.Component {
     this.setState({
       sliderPositionPercentage: pos / this.state.imageWidth,
     });
+    // If there's a callback function, invoke it everytime the slider changes
+    if(this.props.onSliderPositionChange){
+      this.props.onSliderPositionChange(pos / this.state.imageWidth)
+    }
   };
 
   onRightImageLoaded = () => {
