@@ -5,7 +5,13 @@ import './prism/prism.css';
 import './prism/prism.js';
 
 class App extends Component {
-  render() {
+  state = {
+    position: null
+  }
+  onSliderPositionChange = (position) => {
+    this.setState({position});
+  }
+  render() {    
     return (
       <div className="demo-page">
         <h1>
@@ -89,6 +95,32 @@ class App extends Component {
             sliderLineWidth={5}
             handleSize={80}
           />
+        </div>
+        <pre>
+          <code className="language-jsx">
+            {`
+<div style={{ maxWidth: '500px', boxSizing: 'border-box' }}>
+  onSliderPositionChange = (position) => {
+    this.setState({position});
+  }
+  <ReactCompareImage
+    leftImage="/forest1.jpg"
+    rightImage="/cat2.jpg"
+    onSliderPositionChange={this.onSliderPositionChange}
+  />
+  <h5>Position: {this.state.position}</h5>
+
+</div>
+          `}
+          </code>
+        </pre>
+        <div style={{ maxWidth: '500px', boxSizing: 'border-box' }}>
+          <ReactCompareImage
+            leftImage="/forest1.jpg"
+            rightImage="/cat2.jpg"
+            onSliderPositionChange={this.onSliderPositionChange}
+          />
+          <h5>Position: {this.state.position}</h5>
         </div>
       </div>
     );
