@@ -5,6 +5,9 @@ import './prism/prism.css';
 import './prism/prism.js';
 
 class App extends Component {
+  state = {
+    position: null,
+  };
   render() {
     return (
       <div className="demo-page">
@@ -71,7 +74,7 @@ class App extends Component {
         <pre>
           <code className="language-jsx">
             {`
-<div style={{ maxWidth: '100%', boxSizing: 'border-box' }}>
+<div style={{ maxWidth: '100%' }}>
   <ReactCompareImage
     leftImage="/forest1.jpg"
     rightImage="/cat2.jpg"
@@ -82,13 +85,35 @@ class App extends Component {
           `}
           </code>
         </pre>
-        <div style={{ maxWidth: '100%', boxSizing: 'border-box' }}>
+        <div style={{ maxWidth: '100%' }}>
           <ReactCompareImage
             leftImage="/forest1.jpg"
             rightImage="/cat2.jpg"
             sliderLineWidth={5}
             handleSize={80}
           />
+        </div>
+        <pre>
+          <code className="language-jsx">
+            {`
+<div style={{ maxWidth: '500px' }}>
+  <ReactCompareImage
+    leftImage="/forest1.jpg"
+    rightImage="/cat2.jpg"
+    onSliderPositionChange={position => this.setState({ position })}
+  />
+  <h5>Position: {this.state.position}</h5>
+</div>
+          `}
+          </code>
+        </pre>
+        <div style={{ maxWidth: '500px' }}>
+          <ReactCompareImage
+            leftImage="/forest1.jpg"
+            rightImage="/cat2.jpg"
+            onSliderPositionChange={position => this.setState({ position })}
+          />
+          <h5>Position: {this.state.position}</h5>
         </div>
       </div>
     );
