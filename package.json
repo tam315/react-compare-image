@@ -7,7 +7,7 @@
     "build": "del-cli dist/**/* && webpack --config ./webpack.production.config.js",
     "build-web": "del-cli dist/**/* && cpx public/**/* dist && webpack --config ./webpack.website.config.js",
     "prepublishOnly": "npm run test && del-cli dist/**/* && npm run build",
-    "serve": "webpack-serve ./webpack.local.config.js",
+    "serve": "webpack-dev-server --config ./webpack.local.config.js",
     "test": "jest",
     "storybook": "start-storybook -p 6006 -s ./public",
     "build-storybook": "build-storybook"
@@ -52,7 +52,7 @@
     "url-loader": "^1.0.1",
     "webpack": "^4.8.3",
     "webpack-cli": "^2.1.3",
-    "webpack-serve": "^1.0.2"
+    "webpack-dev-server": "^3.1.14"
   },
   "keywords": [
     "picture comparison",

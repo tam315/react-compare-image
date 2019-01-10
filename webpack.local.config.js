@@ -22,10 +22,7 @@ module.exports = {
       },
     ],
   },
-  // settings for webpack-serve
-  serve: {
-    content: [path.join(__dirname, 'public')],
-    hot: true,
-    https: false,
+  devServer: {
+    contentBase: path.join(__dirname, 'public'),
   },
 };
