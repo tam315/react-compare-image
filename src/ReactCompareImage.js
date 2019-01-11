@@ -288,21 +288,21 @@ class ReactCompareImage extends React.Component {
           dataenzyme="container"
         >
           <img
-            onLoad={this.onLeftImageLoaded}
+            onLoad={this.onRightImageLoaded}
             onError={() =>
               this.onError(this.rightImageRef, this.props.rightImage)
             }
-            alt="left"
+            alt="right"
             ref={this.rightImageRef}
             src={this.props.rightImage}
             style={styles.rightImage}
           />
           <img
-            onLoad={this.onRightImageLoaded}
+            onLoad={this.onLeftImageLoaded}
             onError={() =>
               this.onError(this.leftImageRef, this.props.leftImage)
             }
-            alt="right"
+            alt="left"
             ref={this.leftImageRef}
             src={this.props.leftImage}
             style={styles.leftImage}
