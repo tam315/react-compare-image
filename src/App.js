@@ -7,6 +7,8 @@ import './prism/prism.js';
 class App extends Component {
   state = {
     position: null,
+    DynamicLeftImg: '/forest1.jpg',
+    DynamicRightImg: '/forest2.jpg',
   };
   render() {
     return (
@@ -46,11 +48,28 @@ class App extends Component {
         </pre>
         <div style={{ maxWidth: '300px' }}>
           <ReactCompareImage
-            leftImage="/forest1.jpg"
-            rightImage="/forest2.jpg"
+            leftImage={this.state.DynamicLeftImg}
+            rightImage={this.state.DynamicRightImg}
             skeleton={<div>loading</div>}
           />
         </div>
+        <br />
+        <button
+          onClick={() =>
+            this.setState({ DynamicLeftImg: 'https://picsum.photos/300/450' })
+          }
+        >
+          update left image
+        </button>
+        <button
+          onClick={() =>
+            this.setState({
+              DynamicRightImg: 'https://picsum.photos/600/900',
+            })
+          }
+        >
+          update right image
+        </button>
         <pre>
           <code className="language-jsx">
             {`
