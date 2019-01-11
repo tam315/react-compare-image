@@ -31,15 +31,15 @@ class ReactCompareImage extends React.Component {
     this.state = {
       sliderPositionPercentage: this.props.sliderPositionPercentage, // 0 to 1
       imageWidth: 0,
-      isImgFullyLoaded: false,
+      allImagesLoaded: false,
     };
 
     this.containerRef = React.createRef();
     this.underImageRef = React.createRef();
     this.overImageRef = React.createRef();
 
-    this.isLoadingRightImg = true;
-    this.isLoadingLeftImg = true;
+    this.rightImgLoaded = false;
+    this.leftImgLoaded = false;
 
     this.autoReloadTasks = [];
 
@@ -71,8 +71,8 @@ class ReactCompareImage extends React.Component {
   componentDidUpdate = (prevProps, prevState) => {
     // do initial setup if loading images and DOM constructing are fully done
     if (
-      prevState.isImgFullyLoaded === false &&
-      this.state.isImgFullyLoaded === true
+      prevState.allImagesLoaded === false &&
+      this.state.allImagesLoaded === true
     ) {
       this.setImagesSize();
     }
@@ -85,10 +85,10 @@ class ReactCompareImage extends React.Component {
       this.underImageRef.current.src = null;
       this.overImageRef.current.src = null;
 
-      this.isLoadingRightImg = true;
-      this.isLoadingLeftImg = true;
+      this.rightImgLoaded = false;
+      this.leftImgLoaded = false;
       this.setState({
-        isImgFullyLoaded: false,
+        allImagesLoaded: false,
       });
 
       this.underImageRef.current.src = this.props.rightImage;
@@ -167,17 +167,17 @@ class ReactCompareImage extends React.Component {
   };
 
   onRightImageLoaded = () => {
-    this.isLoadingRightImg = false;
+    this.rightImgLoaded = true;
 
-    if (!this.isLoadingRightImg && !this.isLoadingLeftImg) {
-      this.setState({ isImgFullyLoaded: true });
+    if (this.rightImgLoaded && this.leftImgLoaded) {
+      this.setState({ allImagesLoaded: true });
     }
   };
 
   onLeftImageLoaded = () => {
-    this.isLoadingLeftImg = false;
-    if (!this.isLoadingRightImg && !this.isLoadingLeftImg) {
-      this.setState({ isImgFullyLoaded: true });
+    this.leftImgLoaded = true;
+    if (this.rightImgLoaded && this.leftImgLoaded) {
+      this.setState({ allImagesLoaded: true });
     }
   };
 
@@ -275,14 +275,14 @@ class ReactCompareImage extends React.Component {
     return (
       <React.Fragment>
         {this.props.skeleton &&
-          !this.state.isImgFullyLoaded && (
+          !this.state.allImagesLoaded && (
             <div style={{ ...styles.container }}>{this.props.skeleton}</div>
           )}
 
         <div
           style={{
             ...styles.container,
-            display: this.state.isImgFullyLoaded ? 'block' : 'none',
+            display: this.state.allImagesLoaded ? 'block' : 'none',
           }}
           ref={this.containerRef}
           dataenzyme="container"
