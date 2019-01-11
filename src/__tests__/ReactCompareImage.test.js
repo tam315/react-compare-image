@@ -32,8 +32,8 @@ describe('ReactCompareImage', () => {
     );
 
     const instance = wrapper.instance();
-    expect(instance.underImageRef.current.src).toBe(DUMMY_RIGHT_IMAGE);
-    expect(instance.overImageRef.current.src).toBe(DUMMY_LEFT_IMAGE);
+    expect(instance.rightImageRef.current.src).toBe(DUMMY_RIGHT_IMAGE);
+    expect(instance.leftImageRef.current.src).toBe(DUMMY_LEFT_IMAGE);
   });
 
   test('show skeleton if it is provided as props', () => {
@@ -87,7 +87,7 @@ describe('ReactCompareImage', () => {
 
   test('onSliderPositionChange prop is called when the slider moves', () => {
     let onSliderPositionChange = jest.fn();
-    
+
     const wrapper = mount(
       <ReactCompareImage
         leftImage={DUMMY_LEFT_IMAGE}
@@ -97,7 +97,7 @@ describe('ReactCompareImage', () => {
     );
 
     wrapper.instance().handleSliding({ target: {} });
-    
+
     expect(onSliderPositionChange).toHaveBeenCalled();
   });
 });

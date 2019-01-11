@@ -35,8 +35,8 @@ class ReactCompareImage extends React.Component {
     };
 
     this.containerRef = React.createRef();
-    this.underImageRef = React.createRef();
-    this.overImageRef = React.createRef();
+    this.rightImageRef = React.createRef();
+    this.leftImageRef = React.createRef();
 
     this.rightImgLoaded = false;
     this.leftImgLoaded = false;
@@ -82,8 +82,8 @@ class ReactCompareImage extends React.Component {
       this.props.leftImage !== prevProps.leftImage ||
       this.props.rightImage !== prevProps.rightImage
     ) {
-      this.underImageRef.current.src = null;
-      this.overImageRef.current.src = null;
+      this.rightImageRef.current.src = null;
+      this.leftImageRef.current.src = null;
 
       this.rightImgLoaded = false;
       this.leftImgLoaded = false;
@@ -91,8 +91,8 @@ class ReactCompareImage extends React.Component {
         allImagesLoaded: false,
       });
 
-      this.underImageRef.current.src = this.props.rightImage;
-      this.overImageRef.current.src = this.props.leftImage;
+      this.rightImageRef.current.src = this.props.rightImage;
+      this.leftImageRef.current.src = this.props.leftImage;
     }
   };
 
@@ -106,16 +106,16 @@ class ReactCompareImage extends React.Component {
   setImagesSize = () => {
     // Image size set as follows.
     //
-    // 1. set under image size like so:
+    // 1. set right(under) image size like so:
     //     width  = 100% of container width
     //     height = auto
     //
-    // 2. set over imaze size like so:
+    // 2. set left(over) imaze size like so:
     //     width  = 100% of container width
-    //     height = under image's height
+    //     height = right image's height
     //              (protrudes is hidden by css 'object-fit: hidden')
     this.setState({
-      imageWidth: this.underImageRef.current.getBoundingClientRect().width,
+      imageWidth: this.rightImageRef.current.getBoundingClientRect().width,
     });
   };
 
@@ -147,7 +147,7 @@ class ReactCompareImage extends React.Component {
     const cursorXfromWindow = cursorXfromViewport - window.pageXOffset;
 
     // Calc Cursor Position from the left edge of the image
-    const imagePosition = this.underImageRef.current.getBoundingClientRect();
+    const imagePosition = this.rightImageRef.current.getBoundingClientRect();
     let pos = cursorXfromWindow - imagePosition.left;
 
     // Set minimum and maximum values ​​to prevent the slider from overflowing
@@ -204,16 +204,16 @@ class ReactCompareImage extends React.Component {
         width: '100%',
         overflow: 'hidden',
       },
-      underImage: {
+      rightImage: {
         display: 'block',
         height: 'auto', // Respect the aspect ratio
         width: '100%',
       },
-      overImage: {
+      leftImage: {
         clip: `rect(auto, ${this.state.imageWidth *
           this.state.sliderPositionPercentage}px, auto, auto)`,
         display: 'block',
-        height: '100%', // fit to the height of under image
+        height: '100%', // fit to the height of right(under) image
         objectFit: 'cover', // protrudes is hidden
         position: 'absolute',
         top: 0,
@@ -290,26 +290,24 @@ class ReactCompareImage extends React.Component {
           <img
             onLoad={this.onLeftImageLoaded}
             onError={() =>
-              this.onError(this.underImageRef, this.props.rightImage)
+              this.onError(this.rightImageRef, this.props.rightImage)
             }
             alt="left"
-            className="img-comp-under"
-            ref={this.underImageRef}
+            ref={this.rightImageRef}
             src={this.props.rightImage}
-            style={styles.underImage}
+            style={styles.rightImage}
           />
           <img
             onLoad={this.onRightImageLoaded}
             onError={() =>
-              this.onError(this.overImageRef, this.props.leftImage)
+              this.onError(this.leftImageRef, this.props.leftImage)
             }
             alt="right"
-            className="img-comp-over"
-            ref={this.overImageRef}
+            ref={this.leftImageRef}
             src={this.props.leftImage}
-            style={styles.overImage}
+            style={styles.leftImage}
           />
-          <div className="img-comp-slider" style={styles.slider}>
+          <div style={styles.slider}>
             <div style={styles.line} />
             <div style={styles.handle}>
               <div style={styles.leftArrow} />
