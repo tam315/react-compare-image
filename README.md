@@ -31,7 +31,10 @@ npm install --save react-compare-image
 ```jsx
 import ReactCompareImage from 'react-compare-image';
 
-<ReactCompareImage leftImage="image1.jpg" rightImage="image2.jpg" />;
+<ReactCompareImage
+  leftImage="image1.jpg"
+  rightImage="image2.jpg"
+/>;
 ```
 
 ## Props
