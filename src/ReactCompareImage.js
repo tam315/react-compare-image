@@ -13,6 +13,7 @@ const propTypes = {
   autoReloadLimit: PropTypes.number,
   sliderPositionPercentage: PropTypes.number,
   onSliderPositionChange: PropTypes.func,
+  sliderLineColor: PropTypes.string,
 };
 
 const defaultProps = {
@@ -23,6 +24,7 @@ const defaultProps = {
   autoReloadSpan: null,
   autoReloadLimit: 10,
   sliderPositionPercentage: 0.5,
+  sliderLineColor: "#ffffff"
 };
 
 class ReactCompareImage extends React.Component {
@@ -233,7 +235,7 @@ class ReactCompareImage extends React.Component {
         width: `${this.props.handleSize}px`,
       },
       line: {
-        background: 'white',
+        background: this.props.sliderLineColor,
         boxShadow:
           '0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12)',
         flex: '0 1 auto',
@@ -242,7 +244,7 @@ class ReactCompareImage extends React.Component {
       },
       handle: {
         alignItems: 'center',
-        border: `${this.props.sliderLineWidth}px solid white`,
+        border: `${this.props.sliderLineWidth}px solid ${this.props.sliderLineColor}`,
         borderRadius: '100%',
         boxShadow:
           '0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12)',

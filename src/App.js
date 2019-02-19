@@ -31,7 +31,7 @@ class App extends Component {
           </code>
         </pre>
         <div style={{ maxWidth: '200px' }}>
-          <ReactCompareImage leftImage="/cat1.jpg" rightImage="/cat2.jpg" />
+          <ReactCompareImage leftImage="/cat1.jpg" rightImage="/cat2.jpg" sliderLineColor="blue"/>
         </div>
         <pre>
           <code className="language-jsx">
