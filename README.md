@@ -43,6 +43,7 @@ import ReactCompareImage from 'react-compare-image';
 | ------------------------ | -------------- | :-----: | ----------------------------------------------------------------------------------------------------------- |
 | leftImage \*             | string         |  null   | left image's url                                                                                            |
 | rightImage \*            | string         |  null   | right image's url                                                                                           |
+| filterEffects            | array          |  undefined |  Filter effects for images                                                                               |
 | sliderPositionPercentage | number (float) |   0.5   | Default line position (from 0 to 1)                                                                         |
 | sliderLineWidth          | number (px)    |    2    | line width of slider (by pixel)                                                                             |
 | sliderLineColor          | string         |    "#ffffff"    | line color of slider                                                                                     
