@@ -14,6 +14,8 @@ const propTypes = {
   sliderPositionPercentage: PropTypes.number,
   onSliderPositionChange: PropTypes.func,
   sliderLineColor: PropTypes.string,
+  leftImageCss: PropTypes.object,
+  rightImageCss: PropTypes.object,
 };
 
 const defaultProps = {
@@ -25,6 +27,8 @@ const defaultProps = {
   autoReloadLimit: 10,
   sliderPositionPercentage: 0.5,
   sliderLineColor: '#ffffff',
+  leftImageCss: {},
+  rightImageCss: {},
 };
 
 class ReactCompareImage extends React.Component {
@@ -208,6 +212,7 @@ class ReactCompareImage extends React.Component {
         display: 'block',
         height: 'auto', // Respect the aspect ratio
         width: '100%',
+        ...this.props.rightImageCss,
       },
       leftImage: {
         clip: `rect(auto, ${this.state.imageWidth *
@@ -218,6 +223,7 @@ class ReactCompareImage extends React.Component {
         position: 'absolute',
         top: 0,
         width: '100%',
+        ...this.props.leftImageCss,
       },
       slider: {
         alignItems: 'center',
@@ -274,10 +280,9 @@ class ReactCompareImage extends React.Component {
 
     return (
       <React.Fragment>
-        {this.props.skeleton &&
-          !this.state.allImagesLoaded && (
-            <div style={{ ...styles.container }}>{this.props.skeleton}</div>
-          )}
+        {this.props.skeleton && !this.state.allImagesLoaded && (
+          <div style={{ ...styles.container }}>{this.props.skeleton}</div>
+        )}
 
         <div
           style={{
