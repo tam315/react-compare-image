@@ -14,6 +14,13 @@ const propTypes = {
   sliderPositionPercentage: PropTypes.number,
   onSliderPositionChange: PropTypes.func,
   sliderLineColor: PropTypes.string,
+  filterEffects: PropTypes.arrayOf(
+    PropTypes.shape({
+      image: PropTypes.string,
+      filter: PropTypes.string,
+      value: PropTypes.string,
+    }),
+  ),
 };
 
 const defaultProps = {
@@ -34,6 +41,8 @@ class ReactCompareImage extends React.Component {
       sliderPositionPercentage: this.props.sliderPositionPercentage, // 0 to 1
       imageWidth: 0,
       allImagesLoaded: false,
+      leftFilter: '',
+      rightFilter: '',
     };
 
     this.containerRef = React.createRef();
@@ -68,6 +77,10 @@ class ReactCompareImage extends React.Component {
       containerElement.addEventListener('mousedown', this.startSliding);
       window.addEventListener('mouseup', this.finishSliding);
     }
+
+    // Add filter effects
+    let [leftFilter, rightFilter] = this.getImageFilters();
+    this.setState({ leftFilter, rightFilter });
   };
 
   componentDidUpdate = (prevProps, prevState) => {
@@ -166,6 +179,26 @@ class ReactCompareImage extends React.Component {
     }
   };
 
+  getImageFilters = () => {
+    const { filterEffects } = this.props;
+    if (!filterEffects) {
+      return ['none', 'none'];
+    }
+
+    let leftFilter = '',
+      rightFilter = '';
+
+    filterEffects.map(({ image, filter, value }) => {
+      if (image === 'left') {
+        leftFilter = `${leftFilter} ${filter}(${value})`;
+      } else if (image === 'right') {
+        rightFilter = `${rightFilter} ${filter}(${value})`;
+      }
+    });
+
+    return [leftFilter, rightFilter];
+  };
+
   onRightImageLoaded = () => {
     this.rightImgLoaded = true;
 
@@ -208,6 +241,7 @@ class ReactCompareImage extends React.Component {
         display: 'block',
         height: 'auto', // Respect the aspect ratio
         width: '100%',
+        filter: this.state.rightFilter,
       },
       leftImage: {
         clip: `rect(auto, ${this.state.imageWidth *
@@ -218,6 +252,7 @@ class ReactCompareImage extends React.Component {
         position: 'absolute',
         top: 0,
         width: '100%',
+        filter: this.state.leftFilter,
       },
       slider: {
         alignItems: 'center',
@@ -274,10 +309,9 @@ class ReactCompareImage extends React.Component {
 
     return (
       <React.Fragment>
-        {this.props.skeleton &&
-          !this.state.allImagesLoaded && (
-            <div style={{ ...styles.container }}>{this.props.skeleton}</div>
-          )}
+        {this.props.skeleton && !this.state.allImagesLoaded && (
+          <div style={{ ...styles.container }}>{this.props.skeleton}</div>
+        )}
 
         <div
           style={{

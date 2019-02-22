@@ -134,6 +134,35 @@ class App extends Component {
           />
           <h5>Position: {this.state.position}</h5>
         </div>
+
+        <pre>
+          <code className="language-jsx">
+            {`
+<div style={{ maxWidth: '300px' }}>
+  <ReactCompareImage
+    leftImage="/forest1.jpg"
+    rightImage="/cat1.jpg"
+    filterEffects={[
+      { image: 'left', filter: 'contrast', value: '90%' },
+      { image: 'right', filter: 'blur', value: '1px' },
+      { image: 'right', filter: 'grayscale', value: '100%' },
+    ]}
+  />
+</div>
+          `}
+          </code>
+        </pre>
+        <div style={{ maxWidth: '300px' }}>
+          <ReactCompareImage
+            leftImage="/cat1.jpg"
+            rightImage="/cat1.jpg"
+            filterEffects={[
+              { image: 'left', filter: 'contrast', value: '90%' },
+              { image: 'right', filter: 'blur', value: '1px' },
+              { image: 'right', filter: 'grayscale', value: '100%' },
+            ]}
+          />
+        </div>
       </div>
     );
   }
