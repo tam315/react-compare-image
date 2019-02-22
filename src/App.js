@@ -140,10 +140,10 @@ class App extends Component {
             {`
 <div style={{ maxWidth: '300px' }}>
   <ReactCompareImage
-    leftImage="/forest1.jpg"
+    leftImage="/cat1.jpg"
     rightImage="/cat1.jpg"
     filterEffects={[
-      { image: 'left', filter: 'contrast', value: '90%' },
+      { image: 'left', filter: 'contrast', value: '80%' },
       { image: 'right', filter: 'blur', value: '1px' },
       { image: 'right', filter: 'grayscale', value: '100%' },
     ]}
@@ -157,7 +157,7 @@ class App extends Component {
             leftImage="/cat1.jpg"
             rightImage="/cat1.jpg"
             filterEffects={[
-              { image: 'left', filter: 'contrast', value: '90%' },
+              { image: 'left', filter: 'contrast', value: '80%' },
               { image: 'right', filter: 'blur', value: '1px' },
               { image: 'right', filter: 'grayscale', value: '100%' },
             ]}
