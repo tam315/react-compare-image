@@ -250,7 +250,9 @@ class ReactCompareImage extends React.Component {
       },
       handle: {
         alignItems: 'center',
-        border: `${this.props.sliderLineWidth}px solid white`,
+        border: `${this.props.sliderLineWidth}px solid ${
+          this.props.sliderLineColor
+        }`,
         borderRadius: '100%',
         boxShadow:
           '0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12)',
@@ -263,7 +265,9 @@ class ReactCompareImage extends React.Component {
       },
       leftArrow: {
         border: `inset ${this.props.handleSize * 0.15}px rgba(0,0,0,0)`,
-        borderRight: `${this.props.handleSize * 0.15}px solid white`,
+        borderRight: `${this.props.handleSize * 0.15}px solid ${
+          this.props.sliderLineColor
+        }`,
         height: '0px',
         marginLeft: `-${this.props.handleSize * 0.25}px`, // for IE11
         marginRight: `${this.props.handleSize * 0.25}px`,
@@ -271,7 +275,9 @@ class ReactCompareImage extends React.Component {
       },
       rightArrow: {
         border: `inset ${this.props.handleSize * 0.15}px rgba(0,0,0,0)`,
-        borderLeft: `${this.props.handleSize * 0.15}px solid white`,
+        borderLeft: `${this.props.handleSize * 0.15}px solid ${
+          this.props.sliderLineColor
+        }`,
         height: '0px',
         marginRight: `-${this.props.handleSize * 0.25}px`, // for IE11
         width: '0px',
@@ -280,9 +286,10 @@ class ReactCompareImage extends React.Component {
 
     return (
       <React.Fragment>
-        {this.props.skeleton && !this.state.allImagesLoaded && (
-          <div style={{ ...styles.container }}>{this.props.skeleton}</div>
-        )}
+        {this.props.skeleton &&
+          !this.state.allImagesLoaded && (
+            <div style={{ ...styles.container }}>{this.props.skeleton}</div>
+          )}
 
         <div
           style={{

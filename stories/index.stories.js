@@ -30,6 +30,25 @@ storiesOf('ReactCompareImages', module)
       <ReactCompareImage leftImage={leftImageSrc} rightImage={rightImageSrc} />
     </div>
   ))
+  .add('linecolor', () => (
+    <div style={{ maxWidth: '100%', padding: '30px 0', background: 'gray' }}>
+      <ReactCompareImage
+        leftImage={leftImageSrc}
+        rightImage={rightImageSrc}
+        sliderLineColor="rebeccapurple"
+      />
+    </div>
+  ))
+  .add('apply-css', () => (
+    <div style={{ maxWidth: '100%', padding: '30px 0', background: 'gray' }}>
+      <ReactCompareImage
+        leftImage={leftImageSrc}
+        rightImage={rightImageSrc}
+        leftImageCss={{ filter: 'brightness(50%)' }}
+        rightImageCss={{ filter: 'sepia(100%)' }}
+      />
+    </div>
+  ))
   .add('all', () => (
     <div>
       <div style={{ maxWidth: '200px', padding: '30px 0', background: 'gray' }}>

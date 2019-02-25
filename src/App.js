@@ -18,6 +18,7 @@ class App extends Component {
             React Compare Image
           </a>
         </h1>
+
         <pre>
           <code className="language-jsx">
             {`
@@ -33,6 +34,7 @@ class App extends Component {
         <div style={{ maxWidth: '200px' }}>
           <ReactCompareImage leftImage="/cat1.jpg" rightImage="/cat2.jpg" />
         </div>
+
         <pre>
           <code className="language-jsx">
             {`
@@ -70,6 +72,7 @@ class App extends Component {
         >
           update right image
         </button>
+
         <pre>
           <code className="language-jsx">
             {`
@@ -90,6 +93,7 @@ class App extends Component {
             hover
           />
         </div>
+
         <pre>
           <code className="language-jsx">
             {`
@@ -112,6 +116,30 @@ class App extends Component {
             handleSize={80}
           />
         </div>
+
+        <pre>
+          <code className="language-jsx">
+            {`
+<div style={{ maxWidth: '500px' }}>
+  <ReactCompareImage
+    leftImage="/forest1.jpg"
+    rightImage="/cat2.jpg"
+    leftImageCss={{ filter: 'brightness(50%) blur(10px)' }}
+    rightImageCss={{ filter: 'sepia(100%)' }}
+  />
+</div>
+          `}
+          </code>
+        </pre>
+        <div style={{ maxWidth: '500px' }}>
+          <ReactCompareImage
+            leftImage="/forest1.jpg"
+            rightImage="/cat2.jpg"
+            leftImageCss={{ filter: 'brightness(50%) blur(10px)' }}
+            rightImageCss={{ filter: 'sepia(100%)' }}
+          />
+        </div>
+
         <pre>
           <code className="language-jsx">
             {`

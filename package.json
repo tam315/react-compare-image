@@ -9,6 +9,7 @@
     "prepublishOnly": "npm run test && del-cli dist/**/* && npm run build",
     "serve": "webpack-dev-server --config ./webpack.local.config.js",
     "test": "jest",
+    "test:watch": "jest --watch",
     "storybook": "start-storybook -p 6006 -s ./public",
     "build-storybook": "build-storybook"
   },
