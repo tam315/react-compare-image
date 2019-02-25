@@ -52,6 +52,8 @@ import ReactCompareImage from 'react-compare-image';
 | autoReloadSpan           | number (ms)    |  null   | If specified, the image is loaded again at the interval specified when loading images failed                |
 | autoReloadLimit          | number (count) |   10    | Limitation on automatic reload retry count                                                                  |
 | onSliderPositionChange   | function       |  null   | Callback function called each time the slider changes. The position (0 to 1) of the slider is passed as arg |
+| leftImageCss             | object        |  {}  | Additional css for left image                                                                                  |
+| rightImageCss            | object        |  {}  | Additional css for right image                                                                                 |
 
 ## Dependencies
 
