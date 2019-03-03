@@ -269,12 +269,13 @@ function ReactCompareImage(props) {
           display: allImagesLoaded ? 'block' : 'none',
         }}
         ref={containerRef}
-        dataenzyme="container"
+        data-testid="container"
       >
         <img
           onLoad={() => setRightImgLoaded(true)}
           // onError={() => this.onError(rightImageRef, rightImage)}
           alt="right"
+          data-testid="right-image"
           ref={rightImageRef}
           src={rightImage}
           style={styles.rightImage}
@@ -283,6 +284,7 @@ function ReactCompareImage(props) {
           onLoad={() => setLeftImgLoaded(true)}
           // onError={() => this.onError(leftImageRef, leftImage)}
           alt="left"
+          data-testid="left-image"
           ref={leftImageRef}
           src={leftImage}
           style={styles.leftImage}
