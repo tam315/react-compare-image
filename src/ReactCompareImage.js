@@ -286,10 +286,9 @@ class ReactCompareImage extends React.Component {
 
     return (
       <React.Fragment>
-        {this.props.skeleton &&
-          !this.state.allImagesLoaded && (
-            <div style={{ ...styles.container }}>{this.props.skeleton}</div>
-          )}
+        {this.props.skeleton && !this.state.allImagesLoaded && (
+          <div style={{ ...styles.container }}>{this.props.skeleton}</div>
+        )}
 
         <div
           style={{
