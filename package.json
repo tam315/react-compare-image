@@ -27,10 +27,10 @@
     "css-element-queries": "^1.0.2"
   },
   "devDependencies": {
-    "@storybook/addon-actions": "^3.4.5",
-    "@storybook/addon-links": "^3.4.5",
-    "@storybook/addons": "^3.4.5",
-    "@storybook/react": "^3.4.5",
+    "@storybook/addon-actions": "^4.1.13",
+    "@storybook/addon-links": "^4.1.13",
+    "@storybook/addons": "^4.1.13",
+    "@storybook/react": "^4.1.13",
     "babel-core": "^6.26.3",
     "babel-jest": "^23.4.2",
     "babel-loader": "^7.1.4",
