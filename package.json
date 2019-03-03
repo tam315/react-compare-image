@@ -20,8 +20,8 @@
   "author": "Shota Tamura",
   "license": "MIT",
   "peerDependencies": {
-    "react": "^16.3",
-    "react-dom": "^16.3"
+    "react": ">16.8",
+    "react-dom": ">16.8"
   },
   "dependencies": {
     "css-element-queries": "^1.0.2"
