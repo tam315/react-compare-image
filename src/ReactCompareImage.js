@@ -1,147 +1,160 @@
-import React from 'react';
-import PropTypes from 'prop-types';
 import { ResizeSensor } from 'css-element-queries';
+import PropTypes from 'prop-types';
+import React, { useEffect, useRef, useState } from 'react';
 
 const propTypes = {
-  leftImage: PropTypes.string.isRequired,
-  rightImage: PropTypes.string.isRequired,
-  sliderLineWidth: PropTypes.number,
   handleSize: PropTypes.number,
   hover: PropTypes.bool,
-  skeleton: PropTypes.element,
-  autoReloadSpan: PropTypes.number,
-  autoReloadLimit: PropTypes.number,
-  sliderPositionPercentage: PropTypes.number,
-  onSliderPositionChange: PropTypes.func,
-  sliderLineColor: PropTypes.string,
+  leftImage: PropTypes.string.isRequired,
   leftImageCss: PropTypes.object,
+  onSliderPositionChange: PropTypes.func,
+  rightImage: PropTypes.string.isRequired,
   rightImageCss: PropTypes.object,
+  skeleton: PropTypes.element,
+  sliderLineColor: PropTypes.string,
+  sliderLineWidth: PropTypes.number,
+  sliderPositionPercentage: PropTypes.number,
 };
 
 const defaultProps = {
-  sliderLineWidth: 2,
   handleSize: 40,
   hover: false,
-  skeleton: null,
-  autoReloadSpan: null,
-  autoReloadLimit: 10,
-  sliderPositionPercentage: 0.5,
-  sliderLineColor: '#ffffff',
   leftImageCss: {},
   rightImageCss: {},
+  skeleton: null,
+  sliderLineColor: '#ffffff',
+  sliderLineWidth: 2,
+  sliderPositionPercentage: 0.5,
 };
 
-class ReactCompareImage extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      sliderPositionPercentage: this.props.sliderPositionPercentage, // 0 to 1
-      imageWidth: 0,
-      allImagesLoaded: false,
-    };
+function ReactCompareImage(props) {
+  const {
+    handleSize,
+    hover,
+    leftImage,
+    leftImageCss,
+    onSliderPositionChange,
+    rightImage,
+    rightImageCss,
+    skeleton,
+    sliderLineColor,
+    sliderLineWidth,
+    sliderPositionPercentage,
+  } = props;
 
-    this.containerRef = React.createRef();
-    this.rightImageRef = React.createRef();
-    this.leftImageRef = React.createRef();
+  // 0 to 1
+  const [sliderPosition, setSliderPosition] = useState(
+    sliderPositionPercentage,
+  );
+  const [canvasWidth, setCanvasWidth] = useState(0);
+  const [leftImgLoaded, setLeftImgLoaded] = useState(false);
+  const [rightImgLoaded, setRightImgLoaded] = useState(false);
 
-    this.rightImgLoaded = false;
-    this.leftImgLoaded = false;
+  const containerRef = useRef();
+  const rightImageRef = useRef();
+  const leftImageRef = useRef();
 
-    this.autoReloadTasks = [];
-
-    this.retryCount = 0;
-  }
-
-  componentDidMount = () => {
-    const containerElement = this.containerRef.current;
-
-    // Re-set images size when container size is changed
+  useEffect(() => {
+    // re-calculate canvas size when container element size is changed
+    const containerElement = containerRef.current;
     new ResizeSensor(containerElement, () => {
-      this.setImagesSize();
+      getCanvasWidth();
     });
+    return () => {
+      ResizeSensor.detach(containerElement);
+    };
+  }, []);
 
-    // for mobile
-    containerElement.addEventListener('touchstart', this.startSliding);
-    window.addEventListener('touchend', this.finishSliding);
+  useEffect(() => {
+    // when the left image source is changed
+    setLeftImgLoaded(false);
+    setCanvasWidth(0);
+    // consider the case where loading image is completed immediately
+    // due to the cache etc.
+    const alreadyDone = leftImageRef.current.complete;
+    alreadyDone && setLeftImgLoaded(true);
+  }, [leftImage]);
 
-    // for desktop
-    if (this.props.hover) {
-      containerElement.addEventListener('mouseenter', this.startSliding);
-      containerElement.addEventListener('mouseleave', this.finishSliding);
-    } else {
-      containerElement.addEventListener('mousedown', this.startSliding);
-      window.addEventListener('mouseup', this.finishSliding);
+  useEffect(() => {
+    // when the right image source is changed
+    setRightImgLoaded(false);
+    setCanvasWidth(0);
+    // consider the case where loading image is completed immediately
+    // due to the cache etc.
+    const alreadyDone = rightImageRef.current.complete;
+    alreadyDone && setRightImgLoaded(true);
+  }, [rightImage]);
+
+  useEffect(() => {
+    const containerElement = containerRef.current;
+
+    if (leftImgLoaded && rightImgLoaded) {
+      getCanvasWidth();
     }
-  };
 
-  componentDidUpdate = (prevProps, prevState) => {
-    // do initial setup if loading images and DOM constructing are fully done
-    if (
-      prevState.allImagesLoaded === false &&
-      this.state.allImagesLoaded === true
-    ) {
-      this.setImagesSize();
+    if (leftImgLoaded && rightImgLoaded && canvasWidth) {
+      // it's necessary to reset event handlers each time the canvasWidth changes
+
+      // for mobile
+      containerElement.addEventListener('touchstart', startSliding); // 01
+      window.addEventListener('touchend', finishSliding); // 02
+
+      // for desktop
+      if (hover) {
+        containerElement.addEventListener('mouseenter', startSliding); // 03
+        containerElement.addEventListener('mouseleave', finishSliding); // 04
+      } else {
+        containerElement.addEventListener('mousedown', startSliding); // 05
+        window.addEventListener('mouseup', finishSliding); // 06
+      }
     }
 
-    // When the left image is changed, component hides until the new image is loaded
-    if (this.props.leftImage !== prevProps.leftImage) {
-      this.leftImgLoaded = false;
-      this.setState({
-        allImagesLoaded: false,
-      });
-    }
+    return () => {
+      // cleanup all event resteners
+      containerElement.removeEventListener('touchstart', startSliding); // 01
+      window.removeEventListener('touchend', finishSliding); // 02
+      containerElement.removeEventListener('mouseenter', startSliding); // 03
+      containerElement.removeEventListener('mouseleave', finishSliding); // 04
+      containerElement.removeEventListener('mousedown', startSliding); // 05
+      window.removeEventListener('mouseup', finishSliding); // 06
+      window.removeEventListener('mousemove', handleSliding); // 07
+      window.removeEventListener('touchmove', handleSliding); // 08
+    };
+  }, [leftImgLoaded, rightImgLoaded, canvasWidth]);
 
-    // When the right image is changed, component hides until the new image is loaded
-    if (this.props.rightImage !== prevProps.rightImage) {
-      this.rightImgLoaded = false;
-      this.setState({
-        allImagesLoaded: false,
-      });
-    }
-  };
-
-  componentWillUnmount = () => {
-    this.finishSliding();
-    window.removeEventListener('mouseup', this.finishSliding);
-    window.removeEventListener('touchend', this.finishSliding);
-    this.autoReloadTasks.forEach(task => clearTimeout(task));
-  };
-
-  setImagesSize = () => {
+  function getCanvasWidth() {
     // Image size set as follows.
     //
-    // 1. set right(under) image size like so:
+    // 1. right(under) image:
     //     width  = 100% of container width
     //     height = auto
     //
-    // 2. set left(over) imaze size like so:
+    // 2. left(over) imaze:
     //     width  = 100% of container width
     //     height = right image's height
     //              (protrudes is hidden by css 'object-fit: hidden')
-    this.setState({
-      imageWidth: this.rightImageRef.current.getBoundingClientRect().width,
-    });
-  };
+    setCanvasWidth(rightImageRef.current.getBoundingClientRect().width);
+  }
 
-  startSliding = e => {
+  function startSliding(e) {
     // Prevent default behavior other than mobile scrolling
     if (!('touches' in e)) {
       e.preventDefault();
     }
 
     // Slide the image even if you just click or tap (not drag)
-    this.handleSliding(e);
+    handleSliding(e);
 
-    window.addEventListener('mousemove', this.handleSliding);
-    window.addEventListener('touchmove', this.handleSliding);
-  };
+    window.addEventListener('mousemove', handleSliding); // 07
+    window.addEventListener('touchmove', handleSliding); // 08
+  }
 
-  finishSliding = () => {
-    window.removeEventListener('mousemove', this.handleSliding);
-    window.removeEventListener('touchmove', this.handleSliding);
-  };
+  function finishSliding() {
+    window.removeEventListener('mousemove', handleSliding);
+    window.removeEventListener('touchmove', handleSliding);
+  }
 
-  handleSliding = event => {
+  function handleSliding(event) {
     const e = event || window.event;
 
     // Calc Cursor Position from the left edge of the viewport
@@ -151,185 +164,140 @@ class ReactCompareImage extends React.Component {
     const cursorXfromWindow = cursorXfromViewport - window.pageXOffset;
 
     // Calc Cursor Position from the left edge of the image
-    const imagePosition = this.rightImageRef.current.getBoundingClientRect();
+    const imagePosition = rightImageRef.current.getBoundingClientRect();
     let pos = cursorXfromWindow - imagePosition.left;
 
     // Set minimum and maximum values ​​to prevent the slider from overflowing
-    const minPos = 0 + this.props.sliderLineWidth / 2;
-    const maxPos = this.state.imageWidth - this.props.sliderLineWidth / 2;
+    const minPos = 0 + sliderLineWidth / 2;
+    const maxPos = canvasWidth - sliderLineWidth / 2;
 
     if (pos < minPos) pos = minPos;
     if (pos > maxPos) pos = maxPos;
 
-    this.setState({
-      sliderPositionPercentage: pos / this.state.imageWidth,
-    });
+    setSliderPosition(pos / canvasWidth);
+
     // If there's a callback function, invoke it everytime the slider changes
-    if (this.props.onSliderPositionChange) {
-      this.props.onSliderPositionChange(pos / this.state.imageWidth);
+    if (onSliderPositionChange) {
+      onSliderPositionChange(pos / canvasWidth);
     }
+  }
+
+  const styles = {
+    container: {
+      boxSizing: 'border-box',
+      position: 'relative',
+      width: '100%',
+      overflow: 'hidden',
+    },
+    rightImage: {
+      display: 'block',
+      height: 'auto', // Respect the aspect ratio
+      width: '100%',
+      ...rightImageCss,
+    },
+    leftImage: {
+      clip: `rect(auto, ${canvasWidth * sliderPosition}px, auto, auto)`,
+      display: 'block',
+      height: '100%', // fit to the height of right(under) image
+      objectFit: 'cover', // protrudes is hidden
+      position: 'absolute',
+      top: 0,
+      width: '100%',
+      ...leftImageCss,
+    },
+    slider: {
+      alignItems: 'center',
+      cursor: !hover && 'ew-resize',
+      display: 'flex',
+      flexDirection: 'column',
+      height: '100%',
+      justifyContent: 'center',
+      left: canvasWidth * sliderPosition - handleSize / 2 + 'px',
+      position: 'absolute',
+      top: 0,
+      width: `${handleSize}px`,
+    },
+    line: {
+      background: sliderLineColor,
+      boxShadow:
+        '0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12)',
+      flex: '0 1 auto',
+      height: '100%',
+      width: `${sliderLineWidth}px`,
+    },
+    handle: {
+      alignItems: 'center',
+      border: `${sliderLineWidth}px solid ${sliderLineColor}`,
+      borderRadius: '100%',
+      boxShadow:
+        '0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12)',
+      boxSizing: 'border-box',
+      display: 'flex',
+      flex: '1 0 auto',
+      height: `${handleSize}px`,
+      justifyContent: 'center',
+      width: `${handleSize}px`,
+    },
+    leftArrow: {
+      border: `inset ${handleSize * 0.15}px rgba(0,0,0,0)`,
+      borderRight: `${handleSize * 0.15}px solid ${sliderLineColor}`,
+      height: '0px',
+      marginLeft: `-${handleSize * 0.25}px`, // for IE11
+      marginRight: `${handleSize * 0.25}px`,
+      width: '0px',
+    },
+    rightArrow: {
+      border: `inset ${handleSize * 0.15}px rgba(0,0,0,0)`,
+      borderLeft: `${handleSize * 0.15}px solid ${sliderLineColor}`,
+      height: '0px',
+      marginRight: `-${handleSize * 0.25}px`, // for IE11
+      width: '0px',
+    },
   };
 
-  onRightImageLoaded = () => {
-    this.rightImgLoaded = true;
+  const allImagesLoaded = rightImgLoaded && leftImgLoaded;
 
-    if (this.rightImgLoaded && this.leftImgLoaded) {
-      this.setState({ allImagesLoaded: true });
-    }
-  };
+  return (
+    <React.Fragment>
+      {skeleton && !allImagesLoaded && (
+        <div style={{ ...styles.container }}>{skeleton}</div>
+      )}
 
-  onLeftImageLoaded = () => {
-    this.leftImgLoaded = true;
-    if (this.rightImgLoaded && this.leftImgLoaded) {
-      this.setState({ allImagesLoaded: true });
-    }
-  };
-
-  onError = (ref, src) => {
-    const { autoReloadSpan, autoReloadLimit } = this.props;
-
-    if (!autoReloadSpan) return;
-    if (this.retryCount >= autoReloadLimit) return;
-
-    const taskId = setTimeout(() => {
-      ref.current.src = null;
-      ref.current.src = src;
-    }, autoReloadSpan);
-    this.autoReloadTasks.push(taskId);
-
-    this.retryCount += 1;
-  };
-
-  render = () => {
-    const styles = {
-      container: {
-        boxSizing: 'border-box',
-        position: 'relative',
-        width: '100%',
-        overflow: 'hidden',
-      },
-      rightImage: {
-        display: 'block',
-        height: 'auto', // Respect the aspect ratio
-        width: '100%',
-        ...this.props.rightImageCss,
-      },
-      leftImage: {
-        clip: `rect(auto, ${this.state.imageWidth *
-          this.state.sliderPositionPercentage}px, auto, auto)`,
-        display: 'block',
-        height: '100%', // fit to the height of right(under) image
-        objectFit: 'cover', // protrudes is hidden
-        position: 'absolute',
-        top: 0,
-        width: '100%',
-        ...this.props.leftImageCss,
-      },
-      slider: {
-        alignItems: 'center',
-        cursor: !this.props.hover && 'ew-resize',
-        display: 'flex',
-        flexDirection: 'column',
-        height: '100%',
-        justifyContent: 'center',
-        left:
-          this.state.imageWidth * this.state.sliderPositionPercentage -
-          this.props.handleSize / 2 +
-          'px',
-        position: 'absolute',
-        top: 0,
-        width: `${this.props.handleSize}px`,
-      },
-      line: {
-        background: this.props.sliderLineColor,
-        boxShadow:
-          '0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12)',
-        flex: '0 1 auto',
-        height: '100%',
-        width: `${this.props.sliderLineWidth}px`,
-      },
-      handle: {
-        alignItems: 'center',
-        border: `${this.props.sliderLineWidth}px solid ${
-          this.props.sliderLineColor
-        }`,
-        borderRadius: '100%',
-        boxShadow:
-          '0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12)',
-        boxSizing: 'border-box',
-        display: 'flex',
-        flex: '1 0 auto',
-        height: `${this.props.handleSize}px`,
-        justifyContent: 'center',
-        width: `${this.props.handleSize}px`,
-      },
-      leftArrow: {
-        border: `inset ${this.props.handleSize * 0.15}px rgba(0,0,0,0)`,
-        borderRight: `${this.props.handleSize * 0.15}px solid ${
-          this.props.sliderLineColor
-        }`,
-        height: '0px',
-        marginLeft: `-${this.props.handleSize * 0.25}px`, // for IE11
-        marginRight: `${this.props.handleSize * 0.25}px`,
-        width: '0px',
-      },
-      rightArrow: {
-        border: `inset ${this.props.handleSize * 0.15}px rgba(0,0,0,0)`,
-        borderLeft: `${this.props.handleSize * 0.15}px solid ${
-          this.props.sliderLineColor
-        }`,
-        height: '0px',
-        marginRight: `-${this.props.handleSize * 0.25}px`, // for IE11
-        width: '0px',
-      },
-    };
-
-    return (
-      <React.Fragment>
-        {this.props.skeleton && !this.state.allImagesLoaded && (
-          <div style={{ ...styles.container }}>{this.props.skeleton}</div>
-        )}
-
-        <div
-          style={{
-            ...styles.container,
-            display: this.state.allImagesLoaded ? 'block' : 'none',
-          }}
-          ref={this.containerRef}
-          dataenzyme="container"
-        >
-          <img
-            onLoad={this.onRightImageLoaded}
-            onError={() =>
-              this.onError(this.rightImageRef, this.props.rightImage)
-            }
-            alt="right"
-            ref={this.rightImageRef}
-            src={this.props.rightImage}
-            style={styles.rightImage}
-          />
-          <img
-            onLoad={this.onLeftImageLoaded}
-            onError={() =>
-              this.onError(this.leftImageRef, this.props.leftImage)
-            }
-            alt="left"
-            ref={this.leftImageRef}
-            src={this.props.leftImage}
-            style={styles.leftImage}
-          />
-          <div style={styles.slider}>
-            <div style={styles.line} />
-            <div style={styles.handle}>
-              <div style={styles.leftArrow} />
-              <div style={styles.rightArrow} />
-            </div>
-            <div style={styles.line} />
+      <div
+        style={{
+          ...styles.container,
+          display: allImagesLoaded ? 'block' : 'none',
+        }}
+        ref={containerRef}
+        dataenzyme="container"
+      >
+        <img
+          onLoad={() => setRightImgLoaded(true)}
+          // onError={() => this.onError(rightImageRef, rightImage)}
+          alt="right"
+          ref={rightImageRef}
+          src={rightImage}
+          style={styles.rightImage}
+        />
+        <img
+          onLoad={() => setLeftImgLoaded(true)}
+          // onError={() => this.onError(leftImageRef, leftImage)}
+          alt="left"
+          ref={leftImageRef}
+          src={leftImage}
+          style={styles.leftImage}
+        />
+        <div style={styles.slider}>
+          <div style={styles.line} />
+          <div style={styles.handle}>
+            <div style={styles.leftArrow} />
+            <div style={styles.rightArrow} />
           </div>
+          <div style={styles.line} />
         </div>
-      </React.Fragment>
-    );
-  };
+      </div>
+    </React.Fragment>
+  );
 }
 
 ReactCompareImage.propTypes = propTypes;
