@@ -103,7 +103,7 @@ function ReactCompareImage(props) {
 
       // for desktop
       if (hover) {
-        containerElement.addEventListener('mouseenter', startSliding); // 03
+        containerElement.addEventListener('mousemove', handleSliding); // 03
         containerElement.addEventListener('mouseleave', finishSliding); // 04
       } else {
         containerElement.addEventListener('mousedown', startSliding); // 05
@@ -115,7 +115,7 @@ function ReactCompareImage(props) {
       // cleanup all event resteners
       containerElement.removeEventListener('touchstart', startSliding); // 01
       window.removeEventListener('touchend', finishSliding); // 02
-      containerElement.removeEventListener('mouseenter', startSliding); // 03
+      containerElement.removeEventListener('mousemove', handleSliding); // 03
       containerElement.removeEventListener('mouseleave', finishSliding); // 04
       containerElement.removeEventListener('mousedown', startSliding); // 05
       window.removeEventListener('mouseup', finishSliding); // 06
