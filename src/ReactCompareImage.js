@@ -86,11 +86,13 @@ function ReactCompareImage(props) {
   }, [rightImage]);
 
   useEffect(() => {
-    const containerElement = containerRef.current;
-
     if (leftImgLoaded && rightImgLoaded) {
       getCanvasWidth();
     }
+  }, [leftImgLoaded, rightImgLoaded]);
+
+  useEffect(() => {
+    const containerElement = containerRef.current;
 
     if (leftImgLoaded && rightImgLoaded && canvasWidth) {
       // it's necessary to reset event handlers each time the canvasWidth changes
