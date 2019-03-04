@@ -30,26 +30,7 @@ storiesOf('ReactCompareImages', module)
       <ReactCompareImage leftImage={leftImageSrc} rightImage={rightImageSrc} />
     </div>
   ))
-  .add('linecolor', () => (
-    <div style={{ maxWidth: '100%', padding: '30px 0', background: 'gray' }}>
-      <ReactCompareImage
-        leftImage={leftImageSrc}
-        rightImage={rightImageSrc}
-        sliderLineColor="rebeccapurple"
-      />
-    </div>
-  ))
-  .add('apply-css', () => (
-    <div style={{ maxWidth: '100%', padding: '30px 0', background: 'gray' }}>
-      <ReactCompareImage
-        leftImage={leftImageSrc}
-        rightImage={rightImageSrc}
-        leftImageCss={{ filter: 'brightness(50%)' }}
-        rightImageCss={{ filter: 'sepia(100%)' }}
-      />
-    </div>
-  ))
-  .add('all', () => (
+  .add('all sizes', () => (
     <div>
       <div style={{ maxWidth: '200px', padding: '30px 0', background: 'gray' }}>
         <ReactCompareImage
@@ -78,5 +59,34 @@ storiesOf('ReactCompareImages', module)
           rightImage={rightImageSrc}
         />
       </div>
+    </div>
+  ))
+  .add('linecolor', () => (
+    <div style={{ maxWidth: '500px', padding: '30px 0', background: 'gray' }}>
+      <ReactCompareImage
+        leftImage={leftImageSrc}
+        rightImage={rightImageSrc}
+        sliderLineColor="rebeccapurple"
+      />
+    </div>
+  ))
+  .add('apply-css', () => (
+    <div style={{ maxWidth: '500px', padding: '30px 0', background: 'gray' }}>
+      <ReactCompareImage
+        leftImage={leftImageSrc}
+        rightImage={rightImageSrc}
+        leftImageCss={{ filter: 'brightness(50%)' }}
+        rightImageCss={{ filter: 'sepia(100%)' }}
+      />
+    </div>
+  ))
+  .add('labels', () => (
+    <div style={{ maxWidth: '500px', padding: '30px 0', background: 'gray' }}>
+      <ReactCompareImage
+        leftImage={leftImageSrc}
+        leftImageLabel="Before"
+        rightImage={rightImageSrc}
+        rightImageLabel="After"
+      />
     </div>
   ));

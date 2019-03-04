@@ -45,6 +45,8 @@ import ReactCompareImage from 'react-compare-image';
 | sliderLineColor          | string         | "#ffffff" | line color of slider                                                                                        |
 | leftImageCss             | object         |    {}     | Additional css for left image                                                                               |
 | rightImageCss            | object         |    {}     | Additional css for right image                                                                              |
+| leftImageLabel           | string         |   null    | Label for the image (e.g. `before`)                                                                         |
+| rightImageLabel          | string         |   null    | Label for the image (e.g. `after`)                                                                          |
 | handleSize               | number (px)    |    40     | diameter of slider handle (by pixel)                                                                        |
 | hover                    | boolean        |   false   | Whether to slide at hover                                                                                   |
 | skeleton                 | element        |   null    | Element displayed while image is loading                                                                    |

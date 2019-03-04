@@ -79,6 +79,29 @@ class App extends Component {
 <div style={{ maxWidth: '500px' }}>
   <ReactCompareImage
     leftImage="/cat1.jpg"
+    leftImageLabel="Before"
+    rightImage="/cat2.jpg"
+    rightImageLabel="After"
+  />
+</div>
+          `}
+          </code>
+        </pre>
+        <div style={{ maxWidth: '500px' }}>
+          <ReactCompareImage
+            leftImage="/cat1.jpg"
+            leftImageLabel="Before"
+            rightImage="/cat2.jpg"
+            rightImageLabel="After"
+          />
+        </div>
+
+        <pre>
+          <code className="language-jsx">
+            {`
+<div style={{ maxWidth: '500px' }}>
+  <ReactCompareImage
+    leftImage="/cat1.jpg"
     rightImage="/forest2.jpg"
     hover
   />

@@ -7,9 +7,11 @@ const propTypes = {
   hover: PropTypes.bool,
   leftImage: PropTypes.string.isRequired,
   leftImageCss: PropTypes.object,
+  leftImageLabel: PropTypes.string,
   onSliderPositionChange: PropTypes.func,
   rightImage: PropTypes.string.isRequired,
   rightImageCss: PropTypes.object,
+  rightImageLabel: PropTypes.string,
   skeleton: PropTypes.element,
   sliderLineColor: PropTypes.string,
   sliderLineWidth: PropTypes.number,
@@ -20,7 +22,9 @@ const defaultProps = {
   handleSize: 40,
   hover: false,
   leftImageCss: {},
+  leftImageLabel: null,
   rightImageCss: {},
+  rightImageLabel: null,
   skeleton: null,
   sliderLineColor: '#ffffff',
   sliderLineWidth: 2,
@@ -33,9 +37,11 @@ function ReactCompareImage(props) {
     hover,
     leftImage,
     leftImageCss,
+    leftImageLabel,
     onSliderPositionChange,
     rightImage,
     rightImageCss,
+    rightImageLabel,
     skeleton,
     sliderLineColor,
     sliderLineWidth,
@@ -49,6 +55,7 @@ function ReactCompareImage(props) {
   const [canvasWidth, setCanvasWidth] = useState(0);
   const [leftImgLoaded, setLeftImgLoaded] = useState(false);
   const [rightImgLoaded, setRightImgLoaded] = useState(false);
+  const [isSliding, setIsSliding] = useState(false);
 
   const containerRef = useRef();
   const rightImageRef = useRef();
@@ -152,11 +159,14 @@ function ReactCompareImage(props) {
   }
 
   function finishSliding() {
+    setIsSliding(false);
     window.removeEventListener('mousemove', handleSliding);
     window.removeEventListener('touchmove', handleSliding);
   }
 
   function handleSliding(event) {
+    if (!isSliding) setIsSliding(true);
+
     const e = event || window.event;
 
     // Calc Cursor Position from the left edge of the viewport
@@ -255,6 +265,28 @@ function ReactCompareImage(props) {
       marginRight: `-${handleSize * 0.25}px`, // for IE11
       width: '0px',
     },
+    leftLabel: {
+      background: 'rgba(0, 0, 0, 0.5)',
+      color: 'white',
+      left: '5%',
+      opacity: isSliding ? 0 : 1,
+      padding: '10px 20px',
+      position: 'absolute',
+      top: '50%',
+      transform: 'translate(0,-50%)',
+      transition: 'opacity 0.1s ease-out',
+    },
+    rightLabel: {
+      background: 'rgba(0, 0, 0, 0.5)',
+      color: 'white',
+      opacity: isSliding ? 0 : 1,
+      padding: '10px 20px',
+      position: 'absolute',
+      right: '5%',
+      top: '50%',
+      transform: 'translate(0,-50%)',
+      transition: 'opacity 0.1s ease-out',
+    },
   };
 
   const allImagesLoaded = rightImgLoaded && leftImgLoaded;
@@ -299,6 +331,11 @@ function ReactCompareImage(props) {
           </div>
           <div style={styles.line} />
         </div>
+        {/* labels */}
+        {leftImageLabel && <div style={styles.leftLabel}>{leftImageLabel}</div>}
+        {rightImageLabel && (
+          <div style={styles.rightLabel}>{rightImageLabel}</div>
+        )}
       </div>
     </React.Fragment>
   );
