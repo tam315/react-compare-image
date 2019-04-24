@@ -65,16 +65,24 @@ function ReactCompareImage(props) {
   const leftImageRef = useRef();
 
   useEffect(() => {
+    // re-calculate canvas size when container element size is changed
+    const containerElement = containerRef.current;
+    new ResizeSensor(containerElement, () => {
+      getCanvasWidth();
+    });
+    return () => {
+      ResizeSensor.detach(containerElement);
+    };
+  }, []);
+
+  useEffect(() => {
     // when the left image source is changed
     setLeftImgLoaded(false);
     setCanvasWidth(0);
     // consider the case where loading image is completed immediately
     // due to the cache etc.
     const alreadyDone = leftImageRef.current.complete;
-
-    if (alreadyDone) {
-      setLeftImgLoaded(true);
-    }
+    alreadyDone && setLeftImgLoaded(true);
   }, [leftImage]);
 
   useEffect(() => {
@@ -84,93 +92,14 @@ function ReactCompareImage(props) {
     // consider the case where loading image is completed immediately
     // due to the cache etc.
     const alreadyDone = rightImageRef.current.complete;
-
-    if (alreadyDone) {
-      setRightImgLoaded(true);
-    }
+    alreadyDone && setRightImgLoaded(true);
   }, [rightImage]);
-
-  function getCanvasWidth() {
-    // Image size set as follows.
-    //
-    // 1. right(under) image:
-    //     width  = 100% of container width
-    //     height = auto
-    //
-    // 2. left(over) imaze:
-    //     width  = 100% of container width
-    //     height = right image's height
-    //              (protrudes is hidden by css 'object-fit: hidden')
-    setCanvasWidth(rightImageRef.current.getBoundingClientRect().width);
-  }
-
-  useEffect(() => {
-    // re-calculate canvas size when container element size is changed
-    const containerElement = containerRef.current;
-
-    const resizeSensor = new ResizeSensor(containerElement, () => {
-      getCanvasWidth();
-    });
-
-    return () => {
-      ResizeSensor.detach(containerElement);
-    };
-  }, []);
 
   useEffect(() => {
     if (leftImgLoaded && rightImgLoaded) {
       getCanvasWidth();
     }
   }, [leftImgLoaded, rightImgLoaded]);
-
-  function handleSliding(event) {
-    if (!isSliding) setIsSliding(true);
-
-    const e = event || window.event;
-
-    // Calc Cursor Position from the left edge of the viewport
-    const cursorXfromViewport = e.touches ? e.touches[0].pageX : e.pageX;
-
-    // Calc Cursor Position from the left edge of the window (consider any page scrolling)
-    const cursorXfromWindow = cursorXfromViewport - window.pageXOffset;
-
-    // Calc Cursor Position from the left edge of the image
-    const imagePosition = rightImageRef.current.getBoundingClientRect();
-    let pos = cursorXfromWindow - imagePosition.left;
-
-    // Set minimum and maximum values to prevent the slider from overflowing
-    const minPos = sliderLineWidth / 2;
-    const maxPos = canvasWidth - (sliderLineWidth / 2);
-
-    if (pos < minPos) pos = minPos;
-    if (pos > maxPos) pos = maxPos;
-
-    setSliderPosition(pos / canvasWidth);
-
-    // If there's a callback function, invoke it everytime the slider changes
-    if (onSliderPositionChange) {
-      onSliderPositionChange(pos / canvasWidth);
-    }
-  }
-
-  function startSliding(e) {
-    // Prevent default behavior other than mobile scrolling
-    if (!('touches' in e)) {
-      e.preventDefault();
-    }
-
-    // Slide the image even if you just click or tap (not drag)
-    handleSliding(e);
-
-    window.addEventListener('mousemove', handleSliding); // 07
-    window.addEventListener('touchmove', handleSliding); // 08
-  }
-
-  function finishSliding() {
-    setIsSliding(false);
-    window.removeEventListener('mousemove', handleSliding);
-    window.removeEventListener('touchmove', handleSliding);
-  }
 
   useEffect(() => {
     const containerElement = containerRef.current;
@@ -205,6 +134,69 @@ function ReactCompareImage(props) {
     };
   }, [leftImgLoaded, rightImgLoaded, canvasWidth]);
 
+  function getCanvasWidth() {
+    // Image size set as follows.
+    //
+    // 1. right(under) image:
+    //     width  = 100% of container width
+    //     height = auto
+    //
+    // 2. left(over) imaze:
+    //     width  = 100% of container width
+    //     height = right image's height
+    //              (protrudes is hidden by css 'object-fit: hidden')
+    setCanvasWidth(rightImageRef.current.getBoundingClientRect().width);
+  }
+
+  function startSliding(e) {
+    // Prevent default behavior other than mobile scrolling
+    if (!('touches' in e)) {
+      e.preventDefault();
+    }
+
+    // Slide the image even if you just click or tap (not drag)
+    handleSliding(e);
+
+    window.addEventListener('mousemove', handleSliding); // 07
+    window.addEventListener('touchmove', handleSliding); // 08
+  }
+
+  function finishSliding() {
+    setIsSliding(false);
+    window.removeEventListener('mousemove', handleSliding);
+    window.removeEventListener('touchmove', handleSliding);
+  }
+
+  function handleSliding(event) {
+    if (!isSliding) setIsSliding(true);
+
+    const e = event || window.event;
+
+    // Calc Cursor Position from the left edge of the viewport
+    const cursorXfromViewport = e.touches ? e.touches[0].pageX : e.pageX;
+
+    // Calc Cursor Position from the left edge of the window (consider any page scrolling)
+    const cursorXfromWindow = cursorXfromViewport - window.pageXOffset;
+
+    // Calc Cursor Position from the left edge of the image
+    const imagePosition = rightImageRef.current.getBoundingClientRect();
+    let pos = cursorXfromWindow - imagePosition.left;
+
+    // Set minimum and maximum values ​​to prevent the slider from overflowing
+    const minPos = 0 + sliderLineWidth / 2;
+    const maxPos = canvasWidth - sliderLineWidth / 2;
+
+    if (pos < minPos) pos = minPos;
+    if (pos > maxPos) pos = maxPos;
+
+    setSliderPosition(pos / canvasWidth);
+
+    // If there's a callback function, invoke it everytime the slider changes
+    if (onSliderPositionChange) {
+      onSliderPositionChange(pos / canvasWidth);
+    }
+  }
+
   const styles = {
     container: {
       boxSizing: 'border-box',
@@ -235,7 +227,7 @@ function ReactCompareImage(props) {
       flexDirection: 'column',
       height: '100%',
       justifyContent: 'center',
-      left: `${(canvasWidth * sliderPosition) - (handleSize / 2)}px`,
+      left: canvasWidth * sliderPosition - handleSize / 2 + 'px',
       position: 'absolute',
       top: 0,
       width: `${handleSize}px`,
