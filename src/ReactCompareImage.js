@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from 'react';
 
 const propTypes = {
   handleSize: PropTypes.number,
+  handle: PropTypes.node,
   hover: PropTypes.bool,
   leftImage: PropTypes.string.isRequired,
   leftImageCss: PropTypes.object,
@@ -20,6 +21,7 @@ const propTypes = {
 
 const defaultProps = {
   handleSize: 40,
+  handle: undefined,
   hover: false,
   leftImageCss: {},
   leftImageLabel: null,
@@ -34,6 +36,7 @@ const defaultProps = {
 function ReactCompareImage(props) {
   const {
     handleSize,
+    handle,
     hover,
     leftImage,
     leftImageCss,
@@ -237,7 +240,16 @@ function ReactCompareImage(props) {
       height: '100%',
       width: `${sliderLineWidth}px`,
     },
-    handle: {
+    handleCustom: {
+      alignItems: 'center',
+      boxSizing: 'border-box',
+      display: 'flex',
+      flex: '1 0 auto',
+      height: 'auto',
+      justifyContent: 'center',
+      width: 'auto',
+    },
+    handleDefault: {
       alignItems: 'center',
       border: `${sliderLineWidth}px solid ${sliderLineColor}`,
       borderRadius: '100%',
@@ -325,10 +337,16 @@ function ReactCompareImage(props) {
         />
         <div style={styles.slider}>
           <div style={styles.line} />
-          <div style={styles.handle}>
-            <div style={styles.leftArrow} />
-            <div style={styles.rightArrow} />
-          </div>
+          {handle ?
+            <div style={styles.handleCustom}>
+              {handle}
+            </div>
+          :
+            <div style={styles.handleDefault}>
+              <div style={styles.leftArrow} />
+              <div style={styles.rightArrow} />
+            </div>
+          }
           <div style={styles.line} />
         </div>
         {/* labels */}
