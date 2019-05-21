@@ -89,4 +89,13 @@ storiesOf('ReactCompareImages', module)
         rightImageLabel="After"
       />
     </div>
+  ))
+  .add('handle', () => (
+    <div style={{ maxWidth: '500px', padding: '30px 0', background: 'gray' }}>
+      <ReactCompareImage
+        leftImage="/forest1.jpg"
+        rightImage="/cat2.jpg"
+        handle={<button>Custom<br/>handle</button>}
+      />
+    </div>
   ));
