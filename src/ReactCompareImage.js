@@ -21,7 +21,7 @@ const propTypes = {
 
 const defaultProps = {
   handleSize: 40,
-  handle: undefined,
+  handle: null,
   hover: false,
   leftImageCss: {},
   leftImageLabel: null,
