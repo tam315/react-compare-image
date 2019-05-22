@@ -1,9 +1,5 @@
-import React from 'react';
-
 import { storiesOf } from '@storybook/react';
-import { action } from '@storybook/addon-actions';
-import { linkTo } from '@storybook/addon-links';
-
+import React from 'react';
 import ReactCompareImage from '../src/ReactCompareImage';
 
 const leftImageSrc = '/cat1.jpg';
@@ -95,7 +91,13 @@ storiesOf('ReactCompareImages', module)
       <ReactCompareImage
         leftImage="/forest1.jpg"
         rightImage="/cat2.jpg"
-        handle={<button>Custom<br/>handle</button>}
+        handle={
+          <button>
+            Custom
+            <br />
+            handle
+          </button>
+        }
       />
     </div>
   ));

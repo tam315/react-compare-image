@@ -337,16 +337,14 @@ function ReactCompareImage(props) {
         />
         <div style={styles.slider}>
           <div style={styles.line} />
-          {handle ?
-            <div style={styles.handleCustom}>
-              {handle}
-            </div>
-          :
+          {handle ? (
+            <div style={styles.handleCustom}>{handle}</div>
+          ) : (
             <div style={styles.handleDefault}>
               <div style={styles.leftArrow} />
               <div style={styles.rightArrow} />
             </div>
-          }
+          )}
           <div style={styles.line} />
         </div>
         {/* labels */}
