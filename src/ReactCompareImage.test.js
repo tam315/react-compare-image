@@ -2,6 +2,11 @@ import React from 'react';
 import { cleanup, fireEvent, render } from 'react-testing-library';
 import ReactCompareImage from './ReactCompareImage';
 
+/**
+ * cheatsheet
+ * https://testing-library.com/docs/react-testing-library/cheatsheet
+ */
+
 describe('ReactCompareImage', () => {
   const DUMMY_LEFT_IMAGE = 'http://dummy.com/left.jpg';
   const DUMMY_LEFT_IMAGE_UPDATED = 'http://dummy.com/left_updated.jpg';
@@ -74,5 +79,31 @@ describe('ReactCompareImage', () => {
     fireEvent.load(rightImage);
 
     expect(container).toBeVisible();
+  });
+
+  test('show custom handle', () => {
+    const { getByTestId, rerender, queryByText } = render(
+      <ReactCompareImage
+        leftImage={DUMMY_LEFT_IMAGE}
+        rightImage={DUMMY_RIGHT_IMAGE}
+      />,
+    );
+
+    expect(queryByText(/some custom handle/i)).toBeFalsy();
+
+    rerender(
+      <ReactCompareImage
+        leftImage={DUMMY_LEFT_IMAGE}
+        rightImage={DUMMY_RIGHT_IMAGE}
+        handle={<div>some custom handle</div>}
+      />,
+    );
+
+    const leftImage = getByTestId('left-image');
+    const rightImage = getByTestId('right-image');
+    fireEvent.load(leftImage);
+    fireEvent.load(rightImage);
+
+    expect(queryByText(/some custom handle/i)).toBeTruthy();
   });
 });
