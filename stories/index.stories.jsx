@@ -1,4 +1,4 @@
-import { storiesOf } from '@storybook/react';
+import { storiesOf } from '@storybook/react'; // eslint-disable-line
 import React from 'react';
 import ReactCompareImage from '../src/ReactCompareImage';
 
@@ -92,7 +92,7 @@ storiesOf('ReactCompareImages', module)
         leftImage="/forest1.jpg"
         rightImage="/cat2.jpg"
         handle={
-          <button>
+          <button type="button">
             Custom
             <br />
             handle

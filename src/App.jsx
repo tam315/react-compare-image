@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import './App.css';
-import ReactCompareImage from './ReactCompareImage';
+import './prism/prism';
 import './prism/prism.css';
-import './prism/prism.js';
+import ReactCompareImage from './ReactCompareImage';
 
 class App extends Component {
   state = {
@@ -10,7 +10,10 @@ class App extends Component {
     DynamicLeftImg: '/forest1.jpg',
     DynamicRightImg: '/forest2.jpg',
   };
+
   render() {
+    const { DynamicLeftImg, DynamicRightImg, position } = this.state;
+
     return (
       <div className="demo-page">
         <h1>
@@ -50,8 +53,8 @@ class App extends Component {
         </pre>
         <div style={{ maxWidth: '300px' }}>
           <ReactCompareImage
-            leftImage={this.state.DynamicLeftImg}
-            rightImage={this.state.DynamicRightImg}
+            leftImage={DynamicLeftImg}
+            rightImage={DynamicRightImg}
             skeleton={<div>loading</div>}
           />
         </div>
@@ -60,6 +63,7 @@ class App extends Component {
           onClick={() =>
             this.setState({ DynamicLeftImg: 'https://picsum.photos/300/450' })
           }
+          type="button"
         >
           update left image
         </button>
@@ -69,6 +73,7 @@ class App extends Component {
               DynamicRightImg: 'https://picsum.photos/600/900',
             })
           }
+          type="button"
         >
           update right image
         </button>
@@ -181,11 +186,10 @@ class App extends Component {
           <ReactCompareImage
             leftImage="/forest1.jpg"
             rightImage="/cat2.jpg"
-            onSliderPositionChange={position => this.setState({ position })}
+            onSliderPositionChange={pos => this.setState({ position: pos })}
           />
-          <h5>Position: {this.state.position}</h5>
+          <h5>Position: {position}</h5>
         </div>
-
 
         <pre>
           <code className="language-jsx">
@@ -204,7 +208,7 @@ class App extends Component {
           <ReactCompareImage
             leftImage="/forest1.jpg"
             rightImage="/cat2.jpg"
-            handle={<button className="customHandle" />}
+            handle={<button className="customHandle" position type="button" />}
           />
         </div>
       </div>

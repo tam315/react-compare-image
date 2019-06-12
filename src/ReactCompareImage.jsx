@@ -7,11 +7,11 @@ const propTypes = {
   handle: PropTypes.node,
   hover: PropTypes.bool,
   leftImage: PropTypes.string.isRequired,
-  leftImageCss: PropTypes.object,
+  leftImageCss: PropTypes.object, // eslint-disable-line
   leftImageLabel: PropTypes.string,
   onSliderPositionChange: PropTypes.func,
   rightImage: PropTypes.string.isRequired,
-  rightImageCss: PropTypes.object,
+  rightImageCss: PropTypes.object, // eslint-disable-line
   rightImageLabel: PropTypes.string,
   skeleton: PropTypes.element,
   sliderLineColor: PropTypes.string,
@@ -25,6 +25,7 @@ const defaultProps = {
   hover: false,
   leftImageCss: {},
   leftImageLabel: null,
+  onSliderPositionChange: () => {},
   rightImageCss: {},
   rightImageLabel: null,
   skeleton: null,
@@ -101,11 +102,11 @@ function ReactCompareImage(props) {
   useEffect(() => {
     // re-calculate canvas size when container element size is changed
     const containerElement = containerRef.current;
-    new ResizeSensor(containerElement, () => {
+    const resizeSensor = new ResizeSensor(containerElement, () => {
       getCanvasWidth();
     });
     return () => {
-      ResizeSensor.detach(containerElement);
+      resizeSensor.detach(containerElement);
     };
   }, []);
 
@@ -130,7 +131,7 @@ function ReactCompareImage(props) {
     const imagePosition = rightImageRef.current.getBoundingClientRect();
     let pos = cursorXfromWindow - imagePosition.left;
 
-    // Set minimum and maximum values ​​to prevent the slider from overflowing
+    // Set minimum and maximum values to prevent the slider from overflowing
     const minPos = 0 + sliderLineWidth / 2;
     const maxPos = canvasWidth - sliderLineWidth / 2;
 
@@ -227,7 +228,7 @@ function ReactCompareImage(props) {
       flexDirection: 'column',
       height: '100%',
       justifyContent: 'center',
-      left: canvasWidth * sliderPosition - handleSize / 2 + 'px',
+      left: `${canvasWidth * sliderPosition - handleSize / 2}px`,
       position: 'absolute',
       top: 0,
       width: `${handleSize}px`,

@@ -2,7 +2,7 @@ const path = require('path');
 
 module.exports = {
   mode: 'development',
-  entry: './src/index.js',
+  entry: './src/index.jsx',
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js',
@@ -21,6 +21,9 @@ module.exports = {
         use: ['style-loader', 'css-loader'],
       },
     ],
+  },
+  resolve: {
+    extensions: ['.js', '.jsx'],
   },
   devServer: {
     contentBase: path.join(__dirname, 'public'),
