@@ -1,0 +1,62 @@
+{
+  "projectName": "react-compare-image",
+  "projectOwner": "junkboy0315",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": true,
+  "commitConvention": "none",
+  "contributors": [
+    {
+      "login": "junkboy0315",
+      "name": "Shota Tamura",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/10986861?v=4",
+      "profile": "https://www.yuuniworks.com/",
+      "contributions": [
+        "bug",
+        "code",
+        "doc"
+      ]
+    },
+    {
+      "login": "francismartinez",
+      "name": "Francisco Martinez",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/20175841?v=4",
+      "profile": "http://franciscomartinez.website",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "tim-field",
+      "name": "Tim Field",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/1326910?v=4",
+      "profile": "https://github.com/tim-field",
+      "contributions": [
+        "bug"
+      ]
+    },
+    {
+      "login": "OscarCR88",
+      "name": "OscarCR88",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/42785228?v=4",
+      "profile": "https://github.com/OscarCR88",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "janedotbiz",
+      "name": "Jane Meredith",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/5113432?v=4",
+      "profile": "https://github.com/janedotbiz",
+      "contributions": [
+        "code"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7
+}
