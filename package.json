@@ -24,7 +24,8 @@
     "react-dom": ">=16.8"
   },
   "dependencies": {
-    "css-element-queries": "^1.0.2"
+    "css-element-queries": "^1.0.2",
+    "prop-types": "^15.7.2"
   },
   "devDependencies": {
     "@babel/core": "^7.3.4",
