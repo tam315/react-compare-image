@@ -12,11 +12,15 @@ NOTE: [Vue.js Version](https://github.com/junkboy0315/vue-compare-image) is also
 
 [DEMO](https://react-compare-image.yuuniworks.com/)
 
-## Versions
+## Install
 
-If you use `react` and `react-dom` **v.16.8 or later**, please try the beta version! Beta version is more robust and stable thanks to `Hooks` which is the new function of react.
+`yarn add react-compare-image`
 
-`yarn add react-compare-image@beta`
+Note: If you are using React **v.16.7 or older**, please use `v0.*.*` as the `v1.*.*` uses **hooks** which only works with React v16.8 or later.
+
+Run the following command to install older version.
+
+`yarn add react-compare-image@^0.8.2`
 
 ## Features
 
