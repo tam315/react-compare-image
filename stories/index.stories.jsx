@@ -100,4 +100,14 @@ storiesOf('ReactCompareImages', module)
         }
       />
     </div>
+  ))
+  .add('alt props', () => (
+    <div style={{ maxWidth: '200px', padding: '30px 0', background: 'gray' }}>
+      <ReactCompareImage
+        leftImage={leftImageSrc}
+        leftImageAlt="the left image"
+        rightImage={rightImageSrc}
+        rightImageAlt="the right image"
+      />
+    </div>
   ));
