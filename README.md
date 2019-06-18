@@ -57,7 +57,7 @@ import ReactCompareImage from 'react-compare-image';
 | rightImageCss            | object         |    {}     | Additional css for right image                                                                              |
 | leftImageLabel           | string         |   null    | (>=v1.2.0) Label for the image (e.g. `before`)                                                              |
 | rightImageLabel          | string         |   null    | (>=v1.2.0) Label for the image (e.g. `after`)                                                               |
-| handle                   | element        |   null    | (>=v1.2.0) Custom handle element                                                                            |
+| handle                   | element        |   null    | (>=v1.2.0) Custom handle element. Just pass `<React.Fragment />` if you want to remove handle.              |
 | handleSize               | number (px)    |    40     | diameter of slider handle (by pixel)                                                                        |
 | hover                    | boolean        |   false   | Whether to slide at hover                                                                                   |
 | skeleton                 | element        |   null    | Element displayed while image is loading                                                                    |
