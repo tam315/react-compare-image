@@ -53,6 +53,8 @@ import ReactCompareImage from 'react-compare-image';
 | sliderPositionPercentage | number (float) |    0.5    | Default line position (from 0 to 1)                                                                         |
 | sliderLineWidth          | number (px)    |     2     | line width of slider (by pixel)                                                                             |
 | sliderLineColor          | string         | "#ffffff" | line color of slider                                                                                        |
+| leftImageAlt             | string         |    ''     | alt props for left image                                                                                    |
+| rightImageAlt            | string         |    ''     | alt props for right image                                                                                   |
 | leftImageCss             | object         |    {}     | Additional css for left image                                                                               |
 | rightImageCss            | object         |    {}     | Additional css for right image                                                                              |
 | leftImageLabel           | string         |   null    | (>=v1.2.0) Label for the image (e.g. `before`)                                                              |

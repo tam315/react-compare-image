@@ -106,4 +106,24 @@ describe('ReactCompareImage', () => {
 
     expect(queryByText(/some custom handle/i)).toBeTruthy();
   });
+
+  test('set alt props', () => {
+    const dummyLeftImageAlt = 'left alt';
+    const dummyRightImageAlt = 'right alt';
+
+    const { getByTestId } = render(
+      <ReactCompareImage
+        leftImage={DUMMY_LEFT_IMAGE}
+        rightImage={DUMMY_RIGHT_IMAGE}
+        leftImageAlt={dummyLeftImageAlt}
+        rightImageAlt={dummyRightImageAlt}
+      />,
+    );
+
+    expect(getByTestId('left-image')).toHaveAttribute('alt', dummyLeftImageAlt);
+    expect(getByTestId('right-image')).toHaveAttribute(
+      'alt',
+      dummyRightImageAlt,
+    );
+  });
 });
