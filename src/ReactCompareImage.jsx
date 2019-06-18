@@ -7,10 +7,12 @@ const propTypes = {
   handle: PropTypes.node,
   hover: PropTypes.bool,
   leftImage: PropTypes.string.isRequired,
+  leftImageAlt: PropTypes.string,
   leftImageCss: PropTypes.object, // eslint-disable-line
   leftImageLabel: PropTypes.string,
   onSliderPositionChange: PropTypes.func,
   rightImage: PropTypes.string.isRequired,
+  rightImageAlt: PropTypes.string,
   rightImageCss: PropTypes.object, // eslint-disable-line
   rightImageLabel: PropTypes.string,
   skeleton: PropTypes.element,
@@ -23,9 +25,11 @@ const defaultProps = {
   handleSize: 40,
   handle: null,
   hover: false,
+  leftImageAlt: '',
   leftImageCss: {},
   leftImageLabel: null,
   onSliderPositionChange: () => {},
+  rightImageAlt: '',
   rightImageCss: {},
   rightImageLabel: null,
   skeleton: null,
@@ -40,10 +44,12 @@ function ReactCompareImage(props) {
     handle,
     hover,
     leftImage,
+    leftImageAlt,
     leftImageCss,
     leftImageLabel,
     onSliderPositionChange,
     rightImage,
+    rightImageAlt,
     rightImageCss,
     rightImageLabel,
     skeleton,
@@ -321,7 +327,7 @@ function ReactCompareImage(props) {
         <img
           onLoad={() => setRightImgLoaded(true)}
           // onError={() => this.onError(rightImageRef, rightImage)}
-          alt="right"
+          alt={rightImageAlt}
           data-testid="right-image"
           ref={rightImageRef}
           src={rightImage}
@@ -330,7 +336,7 @@ function ReactCompareImage(props) {
         <img
           onLoad={() => setLeftImgLoaded(true)}
           // onError={() => this.onError(leftImageRef, leftImage)}
-          alt="left"
+          alt={leftImageAlt}
           data-testid="left-image"
           ref={leftImageRef}
           src={leftImage}
