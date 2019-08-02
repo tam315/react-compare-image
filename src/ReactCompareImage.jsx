@@ -19,6 +19,7 @@ const propTypes = {
   sliderLineColor: PropTypes.string,
   sliderLineWidth: PropTypes.number,
   sliderPositionPercentage: PropTypes.number,
+  container: PropTypes.object, // eslint-disable-line
 };
 
 const defaultProps = {
@@ -36,6 +37,7 @@ const defaultProps = {
   sliderLineColor: '#ffffff',
   sliderLineWidth: 2,
   sliderPositionPercentage: 0.5,
+  container: {},
 };
 
 function ReactCompareImage(props) {
@@ -56,6 +58,7 @@ function ReactCompareImage(props) {
     sliderLineColor,
     sliderLineWidth,
     sliderPositionPercentage,
+    container,
   } = props;
 
   // 0 to 1
@@ -210,6 +213,7 @@ function ReactCompareImage(props) {
       position: 'relative',
       width: '100%',
       overflow: 'hidden',
+      ...container,
     },
     rightImage: {
       display: 'block',
