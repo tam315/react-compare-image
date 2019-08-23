@@ -72,26 +72,32 @@ function ReactCompareImage(props) {
   const leftImageRef = useRef();
 
   useEffect(() => {
-    // when the left image source is changed
-    setLeftImgLoaded(false);
-    setCanvasWidth(0);
     // consider the case where loading image is completed immediately
     // due to the cache etc.
     const alreadyDone = leftImageRef.current.complete;
     alreadyDone && setLeftImgLoaded(true);
+
+    return () => {
+      // when the left image source is changed
+      setLeftImgLoaded(false);
+      setCanvasWidth(0);
+    };
   }, [leftImage]);
 
   useEffect(() => {
-    // when the right image source is changed
-    setRightImgLoaded(false);
-    setCanvasWidth(0);
     // consider the case where loading image is completed immediately
     // due to the cache etc.
     const alreadyDone = rightImageRef.current.complete;
     alreadyDone && setRightImgLoaded(true);
+
+    return () => {
+      // when the right image source is changed
+      setRightImgLoaded(false);
+      setCanvasWidth(0);
+    };
   }, [rightImage]);
 
-  function getCanvasWidth() {
+  function getAndSetCanvasWidth() {
     // Image size set as follows.
     //
     // 1. right(under) image:
@@ -109,18 +115,20 @@ function ReactCompareImage(props) {
     // re-calculate canvas size when container element size is changed
     const containerElement = containerRef.current;
     const resizeSensor = new ResizeSensor(containerElement, () => {
-      getCanvasWidth();
+      getAndSetCanvasWidth();
     });
     return () => {
       resizeSensor.detach(containerElement);
     };
   }, []);
 
+  const allImagesLoaded = rightImgLoaded && leftImgLoaded;
+
   useEffect(() => {
-    if (leftImgLoaded && rightImgLoaded) {
-      getCanvasWidth();
+    if (allImagesLoaded) {
+      getAndSetCanvasWidth();
     }
-  }, [leftImgLoaded, rightImgLoaded]);
+  }, [allImagesLoaded]);
 
   function handleSliding(event) {
     if (!isSliding) setIsSliding(true);
@@ -174,7 +182,7 @@ function ReactCompareImage(props) {
   useEffect(() => {
     const containerElement = containerRef.current;
 
-    if (leftImgLoaded && rightImgLoaded && canvasWidth) {
+    if (allImagesLoaded && canvasWidth) {
       // it's necessary to reset event handlers each time the canvasWidth changes
 
       // for mobile
@@ -202,7 +210,7 @@ function ReactCompareImage(props) {
       window.removeEventListener('mousemove', handleSliding); // 07
       window.removeEventListener('touchmove', handleSliding); // 08
     };
-  }, [leftImgLoaded, rightImgLoaded, canvasWidth]);
+  }, [allImagesLoaded, canvasWidth]);
 
   const styles = {
     container: {
@@ -308,10 +316,8 @@ function ReactCompareImage(props) {
     },
   };
 
-  const allImagesLoaded = rightImgLoaded && leftImgLoaded;
-
   return (
-    <React.Fragment>
+    <>
       {skeleton && !allImagesLoaded && (
         <div style={{ ...styles.container }}>{skeleton}</div>
       )}
@@ -360,7 +366,7 @@ function ReactCompareImage(props) {
           <div style={styles.rightLabel}>{rightImageLabel}</div>
         )}
       </div>
-    </React.Fragment>
+    </>
   );
 }
 
