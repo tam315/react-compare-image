@@ -62,7 +62,7 @@ function ReactCompareImage(props) {
   const [sliderPosition, setSliderPosition] = useState(
     sliderPositionPercentage,
   );
-  const [canvasWidth, setCanvasWidth] = useState(0);
+  const [containerWidth, setContainerWidth] = useState(0);
   const [leftImgLoaded, setLeftImgLoaded] = useState(false);
   const [rightImgLoaded, setRightImgLoaded] = useState(false);
   const [isSliding, setIsSliding] = useState(false);
@@ -70,6 +70,28 @@ function ReactCompareImage(props) {
   const containerRef = useRef();
   const rightImageRef = useRef();
   const leftImageRef = useRef();
+
+  // keep track container's width in local state
+  useEffect(() => {
+    const updateContainerWidth = () => {
+      const currentContainerWidth = containerRef.current.getBoundingClientRect()
+        .width;
+      setContainerWidth(currentContainerWidth);
+    };
+
+    // initial execution must be done manually
+    updateContainerWidth();
+
+    // update local state if container size is changed
+    const containerElement = containerRef.current;
+    const resizeSensor = new ResizeSensor(containerElement, () => {
+      updateContainerWidth();
+    });
+
+    return () => {
+      resizeSensor.detach(containerElement);
+    };
+  }, []);
 
   useEffect(() => {
     // consider the case where loading image is completed immediately
@@ -80,7 +102,6 @@ function ReactCompareImage(props) {
     return () => {
       // when the left image source is changed
       setLeftImgLoaded(false);
-      setCanvasWidth(0);
     };
   }, [leftImage]);
 
@@ -93,42 +114,10 @@ function ReactCompareImage(props) {
     return () => {
       // when the right image source is changed
       setRightImgLoaded(false);
-      setCanvasWidth(0);
     };
   }, [rightImage]);
 
-  function getAndSetCanvasWidth() {
-    // Image size set as follows.
-    //
-    // 1. right(under) image:
-    //     width  = 100% of container width
-    //     height = auto
-    //
-    // 2. left(over) imaze:
-    //     width  = 100% of container width
-    //     height = right image's height
-    //              (protrudes is hidden by css 'object-fit: hidden')
-    setCanvasWidth(rightImageRef.current.getBoundingClientRect().width);
-  }
-
-  useEffect(() => {
-    // re-calculate canvas size when container element size is changed
-    const containerElement = containerRef.current;
-    const resizeSensor = new ResizeSensor(containerElement, () => {
-      getAndSetCanvasWidth();
-    });
-    return () => {
-      resizeSensor.detach(containerElement);
-    };
-  }, []);
-
   const allImagesLoaded = rightImgLoaded && leftImgLoaded;
-
-  useEffect(() => {
-    if (allImagesLoaded) {
-      getAndSetCanvasWidth();
-    }
-  }, [allImagesLoaded]);
 
   useEffect(() => {
     const handleSliding = event => {
@@ -146,16 +135,16 @@ function ReactCompareImage(props) {
 
       // Set minimum and maximum values to prevent the slider from overflowing
       const minPos = 0 + sliderLineWidth / 2;
-      const maxPos = canvasWidth - sliderLineWidth / 2;
+      const maxPos = containerWidth - sliderLineWidth / 2;
 
       if (pos < minPos) pos = minPos;
       if (pos > maxPos) pos = maxPos;
 
-      setSliderPosition(pos / canvasWidth);
+      setSliderPosition(pos / containerWidth);
 
       // If there's a callback function, invoke it everytime the slider changes
       if (onSliderPositionChange) {
-        onSliderPositionChange(pos / canvasWidth);
+        onSliderPositionChange(pos / containerWidth);
       }
     };
 
@@ -182,7 +171,7 @@ function ReactCompareImage(props) {
 
     const containerElement = containerRef.current;
 
-    if (allImagesLoaded && canvasWidth) {
+    if (allImagesLoaded) {
       // it's necessary to reset event handlers each time the canvasWidth changes
 
       // for mobile
@@ -210,8 +199,18 @@ function ReactCompareImage(props) {
       window.removeEventListener('mousemove', handleSliding); // 07
       window.removeEventListener('touchmove', handleSliding); // 08
     };
-  }, [allImagesLoaded, canvasWidth, hover, sliderLineWidth]); // eslint-disable-line
+  }, [allImagesLoaded, containerWidth, hover, sliderLineWidth]); // eslint-disable-line
 
+  // Image size set as follows.
+  //
+  // 1. right(under) image:
+  //     width  = 100% of container width
+  //     height = auto
+  //
+  // 2. left(over) imaze:
+  //     width  = 100% of container width
+  //     height = right image's height
+  //              (protrudes is hidden by css 'object-fit: hidden')
   const styles = {
     container: {
       boxSizing: 'border-box',
@@ -226,7 +225,7 @@ function ReactCompareImage(props) {
       ...rightImageCss,
     },
     leftImage: {
-      clip: `rect(auto, ${canvasWidth * sliderPosition}px, auto, auto)`,
+      clip: `rect(auto, ${containerWidth * sliderPosition}px, auto, auto)`,
       display: 'block',
       height: '100%', // fit to the height of right(under) image
       objectFit: 'cover', // protrudes is hidden
@@ -242,7 +241,7 @@ function ReactCompareImage(props) {
       flexDirection: 'column',
       height: '100%',
       justifyContent: 'center',
-      left: `${canvasWidth * sliderPosition - handleSize / 2}px`,
+      left: `${containerWidth * sliderPosition - handleSize / 2}px`,
       position: 'absolute',
       top: 0,
       width: `${handleSize}px`,
@@ -332,7 +331,6 @@ function ReactCompareImage(props) {
       >
         <img
           onLoad={() => setRightImgLoaded(true)}
-          // onError={() => this.onError(rightImageRef, rightImage)}
           alt={rightImageAlt}
           data-testid="right-image"
           ref={rightImageRef}
@@ -341,7 +339,6 @@ function ReactCompareImage(props) {
         />
         <img
           onLoad={() => setLeftImgLoaded(true)}
-          // onError={() => this.onError(leftImageRef, leftImage)}
           alt={leftImageAlt}
           data-testid="left-image"
           ref={leftImageRef}

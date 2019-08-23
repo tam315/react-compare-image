@@ -5,11 +5,14 @@ import './prism/prism.css';
 import ReactCompareImage from './ReactCompareImage';
 
 class App extends Component {
-  state = {
-    position: null,
-    DynamicLeftImg: '/forest1.jpg',
-    DynamicRightImg: '/forest2.jpg',
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      position: null,
+      DynamicLeftImg: '/forest1.jpg',
+      DynamicRightImg: '/forest2.jpg',
+    };
+  }
 
   render() {
     const { DynamicLeftImg, DynamicRightImg, position } = this.state;
@@ -208,7 +211,7 @@ class App extends Component {
           <ReactCompareImage
             leftImage="/forest1.jpg"
             rightImage="/cat2.jpg"
-            handle={<button className="customHandle" position type="button" />}
+            handle={<button className="customHandle" type="button" />}
           />
         </div>
       </div>
