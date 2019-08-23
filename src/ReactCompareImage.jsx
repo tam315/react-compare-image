@@ -130,56 +130,56 @@ function ReactCompareImage(props) {
     }
   }, [allImagesLoaded]);
 
-  function handleSliding(event) {
-    if (!isSliding) setIsSliding(true);
-
-    const e = event || window.event;
-
-    // Calc Cursor Position from the left edge of the viewport
-    const cursorXfromViewport = e.touches ? e.touches[0].pageX : e.pageX;
-
-    // Calc Cursor Position from the left edge of the window (consider any page scrolling)
-    const cursorXfromWindow = cursorXfromViewport - window.pageXOffset;
-
-    // Calc Cursor Position from the left edge of the image
-    const imagePosition = rightImageRef.current.getBoundingClientRect();
-    let pos = cursorXfromWindow - imagePosition.left;
-
-    // Set minimum and maximum values to prevent the slider from overflowing
-    const minPos = 0 + sliderLineWidth / 2;
-    const maxPos = canvasWidth - sliderLineWidth / 2;
-
-    if (pos < minPos) pos = minPos;
-    if (pos > maxPos) pos = maxPos;
-
-    setSliderPosition(pos / canvasWidth);
-
-    // If there's a callback function, invoke it everytime the slider changes
-    if (onSliderPositionChange) {
-      onSliderPositionChange(pos / canvasWidth);
-    }
-  }
-
-  function startSliding(e) {
-    // Prevent default behavior other than mobile scrolling
-    if (!('touches' in e)) {
-      e.preventDefault();
-    }
-
-    // Slide the image even if you just click or tap (not drag)
-    handleSliding(e);
-
-    window.addEventListener('mousemove', handleSliding); // 07
-    window.addEventListener('touchmove', handleSliding); // 08
-  }
-
-  function finishSliding() {
-    setIsSliding(false);
-    window.removeEventListener('mousemove', handleSliding);
-    window.removeEventListener('touchmove', handleSliding);
-  }
-
   useEffect(() => {
+    const handleSliding = event => {
+      const e = event || window.event;
+
+      // Calc Cursor Position from the left edge of the viewport
+      const cursorXfromViewport = e.touches ? e.touches[0].pageX : e.pageX;
+
+      // Calc Cursor Position from the left edge of the window (consider any page scrolling)
+      const cursorXfromWindow = cursorXfromViewport - window.pageXOffset;
+
+      // Calc Cursor Position from the left edge of the image
+      const imagePosition = rightImageRef.current.getBoundingClientRect();
+      let pos = cursorXfromWindow - imagePosition.left;
+
+      // Set minimum and maximum values to prevent the slider from overflowing
+      const minPos = 0 + sliderLineWidth / 2;
+      const maxPos = canvasWidth - sliderLineWidth / 2;
+
+      if (pos < minPos) pos = minPos;
+      if (pos > maxPos) pos = maxPos;
+
+      setSliderPosition(pos / canvasWidth);
+
+      // If there's a callback function, invoke it everytime the slider changes
+      if (onSliderPositionChange) {
+        onSliderPositionChange(pos / canvasWidth);
+      }
+    };
+
+    const startSliding = e => {
+      setIsSliding(true);
+
+      // Prevent default behavior other than mobile scrolling
+      if (!('touches' in e)) {
+        e.preventDefault();
+      }
+
+      // Slide the image even if you just click or tap (not drag)
+      handleSliding(e);
+
+      window.addEventListener('mousemove', handleSliding); // 07
+      window.addEventListener('touchmove', handleSliding); // 08
+    };
+
+    const finishSliding = () => {
+      setIsSliding(false);
+      window.removeEventListener('mousemove', handleSliding);
+      window.removeEventListener('touchmove', handleSliding);
+    };
+
     const containerElement = containerRef.current;
 
     if (allImagesLoaded && canvasWidth) {
@@ -210,7 +210,7 @@ function ReactCompareImage(props) {
       window.removeEventListener('mousemove', handleSliding); // 07
       window.removeEventListener('touchmove', handleSliding); // 08
     };
-  }, [allImagesLoaded, canvasWidth]);
+  }, [allImagesLoaded, canvasWidth, hover, sliderLineWidth]); // eslint-disable-line
 
   const styles = {
     container: {
