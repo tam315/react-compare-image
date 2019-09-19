@@ -227,7 +227,7 @@ function ReactCompareImage(props) {
     leftImage: {
       clip: `rect(auto, ${containerWidth * sliderPosition}px, auto, auto)`,
       display: 'block',
-      height: '100%', // fit to the height of right(under) image
+      height: 'auto', // fit to the height of right(under) image
       objectFit: 'cover', // protrudes is hidden
       position: 'absolute',
       top: 0,
