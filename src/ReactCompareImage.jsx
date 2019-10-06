@@ -219,8 +219,12 @@ function ReactCompareImage(props) {
       overflow: 'hidden',
     },
     rightImage: {
+      clip: `rect(auto, auto, auto, ${containerWidth * sliderPosition}px)`,
       display: 'block',
       height: 'auto', // Respect the aspect ratio
+      objectFit: 'cover', // protrudes is hidden
+      position: 'absolute',
+      top: 0,
       width: '100%',
       ...rightImageCss,
     },
