@@ -63,6 +63,7 @@ function ReactCompareImage(props) {
     sliderPositionPercentage,
   );
   const [containerWidth, setContainerWidth] = useState(0);
+  const [containerHeight, setContainerHeight] = useState(0);
   const [leftImgLoaded, setLeftImgLoaded] = useState(false);
   const [rightImgLoaded, setRightImgLoaded] = useState(false);
   const [isSliding, setIsSliding] = useState(false);
@@ -186,6 +187,13 @@ function ReactCompareImage(props) {
         containerElement.addEventListener('mousedown', startSliding); // 05
         window.addEventListener('mouseup', finishSliding); // 06
       }
+
+      setContainerHeight(
+        Math.max(
+          leftImageRef.current.offsetHeight,
+          rightImageRef.current.offsetHeight,
+        ),
+      );
     }
 
     return () => {
@@ -216,6 +224,7 @@ function ReactCompareImage(props) {
       boxSizing: 'border-box',
       position: 'relative',
       width: '100%',
+      height: `${containerHeight}px`,
       overflow: 'hidden',
     },
     rightImage: {
