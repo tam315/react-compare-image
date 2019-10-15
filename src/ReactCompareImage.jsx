@@ -19,6 +19,7 @@ const propTypes = {
   sliderLineColor: PropTypes.string,
   sliderLineWidth: PropTypes.number,
   sliderPositionPercentage: PropTypes.number,
+  vertical: PropTypes.bool,
 };
 
 const defaultProps = {
@@ -36,6 +37,7 @@ const defaultProps = {
   sliderLineColor: '#ffffff',
   sliderLineWidth: 2,
   sliderPositionPercentage: 0.5,
+  vertical: false,
 };
 
 function ReactCompareImage(props) {
@@ -56,6 +58,7 @@ function ReactCompareImage(props) {
     sliderLineColor,
     sliderLineWidth,
     sliderPositionPercentage,
+    vertical,
   } = props;
 
   // 0 to 1
@@ -243,23 +246,26 @@ function ReactCompareImage(props) {
     },
     slider: {
       alignItems: 'center',
-      cursor: !hover && 'ew-resize',
+      cursor:
+        (!hover && vertical && 'ns-resize') ||
+        (!hover && !vertical && 'ew-resize'),
       display: 'flex',
-      flexDirection: 'column',
-      height: '100%',
+      flexDirection: vertical ? 'row' : 'column',
+      height: vertical ? `${handleSize}px` : '100%',
       justifyContent: 'center',
-      left: `${containerWidth * sliderPosition - handleSize / 2}px`,
+      left:
+        !vertical && `${containerWidth * sliderPosition - handleSize / 2}px`,
       position: 'absolute',
       top: 0,
-      width: `${handleSize}px`,
+      width: vertical ? '100%' : `${handleSize}px`,
     },
     line: {
       background: sliderLineColor,
       boxShadow:
         '0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12)',
       flex: '0 1 auto',
-      height: '100%',
-      width: `${sliderLineWidth}px`,
+      height: vertical ? `${sliderLineWidth}px` : '100%',
+      width: vertical ? '100%' : `${sliderLineWidth}px`,
     },
     handleCustom: {
       alignItems: 'center',
@@ -282,6 +288,7 @@ function ReactCompareImage(props) {
       height: `${handleSize}px`,
       justifyContent: 'center',
       width: `${handleSize}px`,
+      transform: vertical ? 'rotate(90deg)' : 'none',
     },
     leftArrow: {
       border: `inset ${handleSize * 0.15}px rgba(0,0,0,0)`,
