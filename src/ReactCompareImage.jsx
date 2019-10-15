@@ -66,6 +66,7 @@ function ReactCompareImage(props) {
     sliderPositionPercentage,
   );
   const [containerWidth, setContainerWidth] = useState(0);
+  const [containerHeight, setContainerHeight] = useState(0);
   const [leftImgLoaded, setLeftImgLoaded] = useState(false);
   const [rightImgLoaded, setRightImgLoaded] = useState(false);
   const [isSliding, setIsSliding] = useState(false);
@@ -74,8 +75,14 @@ function ReactCompareImage(props) {
   const rightImageRef = useRef();
   const leftImageRef = useRef();
 
-  // keep track container's width in local state
+  // keep track container's height, width in local state
   useEffect(() => {
+    const updateContainerHeight = () => {
+      const currentContainerHeight = containerRef.current.getBoundingClientRect()
+        .height;
+      setContainerHeight(currentContainerHeight);
+    };
+
     const updateContainerWidth = () => {
       const currentContainerWidth = containerRef.current.getBoundingClientRect()
         .width;
@@ -83,11 +90,12 @@ function ReactCompareImage(props) {
     };
 
     // initial execution must be done manually
-    updateContainerWidth();
+    vertical ? updateContainerHeight() : updateContainerWidth();
 
     // update local state if container size is changed
     const containerElement = containerRef.current;
     const resizeSensor = new ResizeSensor(containerElement, () => {
+      updateContainerHeight();
       updateContainerWidth();
     });
 
@@ -126,28 +134,38 @@ function ReactCompareImage(props) {
     const handleSliding = event => {
       const e = event || window.event;
 
-      // Calc Cursor Position from the left edge of the viewport
+      // Calc Cursor Position from the left and top(for vertical) edge of the viewport
       const cursorXfromViewport = e.touches ? e.touches[0].pageX : e.pageX;
+      const cursorYfromViewport = e.touches ? e.touches[0].pageX : e.pageY;
 
       // Calc Cursor Position from the left edge of the window (consider any page scrolling)
       const cursorXfromWindow = cursorXfromViewport - window.pageXOffset;
+      const cursorYfromWindow = cursorYfromViewport - window.pageYOffset;
 
-      // Calc Cursor Position from the left edge of the image
+      // Calc Cursor Position from the left or top(for vertical) edge of the image
       const imagePosition = rightImageRef.current.getBoundingClientRect();
-      let pos = cursorXfromWindow - imagePosition.left;
+      let pos = vertical
+        ? cursorYfromWindow - imagePosition.top
+        : cursorXfromWindow - imagePosition.left;
 
       // Set minimum and maximum values to prevent the slider from overflowing
       const minPos = 0 + sliderLineWidth / 2;
-      const maxPos = containerWidth - sliderLineWidth / 2;
+      const maxPos = vertical
+        ? containerHeight - sliderLineWidth / 2
+        : containerWidth - sliderLineWidth / 2;
 
       if (pos < minPos) pos = minPos;
       if (pos > maxPos) pos = maxPos;
 
-      setSliderPosition(pos / containerWidth);
+      vertical
+        ? setSliderPosition(pos / containerHeight)
+        : setSliderPosition(pos / containerWidth);
 
       // If there's a callback function, invoke it everytime the slider changes
       if (onSliderPositionChange) {
-        onSliderPositionChange(pos / containerWidth);
+        vertical
+          ? onSliderPositionChange(pos / containerHeight)
+          : onSliderPositionChange(pos / containerWidth);
       }
     };
 
@@ -202,7 +220,14 @@ function ReactCompareImage(props) {
       window.removeEventListener('mousemove', handleSliding); // 07
       window.removeEventListener('touchmove', handleSliding); // 08
     };
-  }, [allImagesLoaded, containerWidth, hover, sliderLineWidth]); // eslint-disable-line
+  }, [
+    allImagesLoaded,
+    containerHeight,
+    containerWidth,
+    hover,
+    sliderLineWidth,
+    vertical
+  ]); // eslint-disable-line
 
   // Image size set as follows.
   //
@@ -228,7 +253,9 @@ function ReactCompareImage(props) {
       ...rightImageCss,
     },
     leftImage: {
-      clip: `rect(auto, ${containerWidth * sliderPosition}px, auto, auto)`,
+      clip: vertical
+        ? `rect(${containerHeight * sliderPosition}px, auto, auto, auto)`
+        : `rect(auto, ${containerWidth * sliderPosition}px, auto, auto)`,
       display: 'block',
       height: '100%', // fit to the height of right(under) image
       objectFit: 'cover', // protrudes is hidden
@@ -249,7 +276,9 @@ function ReactCompareImage(props) {
       left:
         !vertical && `${containerWidth * sliderPosition - handleSize / 2}px`,
       position: 'absolute',
-      top: 0,
+      top: vertical
+        ? `${containerHeight * sliderPosition - handleSize / 2}px`
+        : 0,
       width: vertical ? '100%' : `${handleSize}px`,
     },
     line: {
