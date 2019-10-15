@@ -214,6 +214,27 @@ class App extends Component {
             handle={<button className="customHandle" type="button" />}
           />
         </div>
+
+        <pre>
+          <code className="language-jsx">
+            {`
+<div style={{ maxWidth: '500px' }}>
+  <ReactCompareImage
+    leftImage="/forest1.jpg"
+    rightImage="/cat2.jpg"
+    vertical
+  />
+</div>
+          `}
+          </code>
+        </pre>
+        <div style={{ maxWidth: '500px' }}>
+          <ReactCompareImage
+            leftImage="/forest1.jpg"
+            rightImage="/cat2.jpg"
+            vertical
+          />
+        </div>
       </div>
     );
   }

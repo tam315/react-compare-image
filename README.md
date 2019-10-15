@@ -62,6 +62,7 @@ import ReactCompareImage from 'react-compare-image';
 | handle                   | element        |   null    | (>=v1.2.0) Custom handle element. Just pass `<React.Fragment />` if you want to remove handle.              |
 | handleSize               | number (px)    |    40     | diameter of slider handle (by pixel)                                                                        |
 | hover                    | boolean        |   false   | Whether to slide at hover                                                                                   |
+| vertical                 | boolean        |   false   | Vertical image comparison                                                                                   |
 | skeleton                 | element        |   null    | Element displayed while image is loading                                                                    |
 | autoReloadSpan           | number (ms)    |   null    | If specified, the image is loaded again at the interval specified when loading images failed                |
 | autoReloadLimit          | number (count) |    10     | Limitation on automatic reload retry count                                                                  |
