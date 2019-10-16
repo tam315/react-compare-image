@@ -188,12 +188,18 @@ function ReactCompareImage(props) {
         window.addEventListener('mouseup', finishSliding); // 06
       }
 
-      setContainerHeight(
-        Math.max(
-          leftImageRef.current.offsetHeight,
-          rightImageRef.current.offsetHeight,
-        ),
-      );
+      // set the container's aspect rasio to fit a taller(thinner) image
+      const leftImageWidthHeightRatio =
+        leftImageRef.current.naturalHeight / leftImageRef.current.naturalWidth;
+      const rightImageWidthHeightRatio =
+        rightImageRef.current.naturalHeight /
+        rightImageRef.current.naturalWidth;
+
+      const idealContainerHeight =
+        containerWidth *
+        Math.max(leftImageWidthHeightRatio, rightImageWidthHeightRatio);
+
+      setContainerHeight(idealContainerHeight);
     }
 
     return () => {
@@ -209,16 +215,6 @@ function ReactCompareImage(props) {
     };
   }, [allImagesLoaded, containerWidth, hover, sliderLineWidth]); // eslint-disable-line
 
-  // Image size set as follows.
-  //
-  // 1. right(under) image:
-  //     width  = 100% of container width
-  //     height = auto
-  //
-  // 2. left(over) imaze:
-  //     width  = 100% of container width
-  //     height = right image's height
-  //              (protrudes is hidden by css 'object-fit: hidden')
   const styles = {
     container: {
       boxSizing: 'border-box',
@@ -230,20 +226,18 @@ function ReactCompareImage(props) {
     rightImage: {
       clip: `rect(auto, auto, auto, ${containerWidth * sliderPosition}px)`,
       display: 'block',
-      height: 'auto', // Respect the aspect ratio
-      objectFit: 'cover', // protrudes is hidden
+      height: '100%',
+      objectFit: 'cover',
       position: 'absolute',
-      top: 0,
       width: '100%',
       ...rightImageCss,
     },
     leftImage: {
       clip: `rect(auto, ${containerWidth * sliderPosition}px, auto, auto)`,
       display: 'block',
-      height: '100%', // fit to the height of right(under) image
-      objectFit: 'cover', // protrudes is hidden
+      height: '100%',
+      objectFit: 'cover',
       position: 'absolute',
-      top: 0,
       width: '100%',
       ...leftImageCss,
     },
