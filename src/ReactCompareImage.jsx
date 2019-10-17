@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import React, { useEffect, useRef, useState } from 'react';
 
 const propTypes = {
-  handleSize: PropTypes.number,
+  aspectRatio: PropTypes.oneOf(['taller', 'wider']),
   handle: PropTypes.node,
+  handleSize: PropTypes.number,
   hover: PropTypes.bool,
   leftImage: PropTypes.string.isRequired,
   leftImageAlt: PropTypes.string,
@@ -23,8 +24,9 @@ const propTypes = {
 };
 
 const defaultProps = {
-  handleSize: 40,
+  aspectRatio: 'taller',
   handle: null,
+  handleSize: 40,
   hover: false,
   leftImageAlt: '',
   leftImageCss: {},
@@ -42,8 +44,9 @@ const defaultProps = {
 
 function ReactCompareImage(props) {
   const {
-    handleSize,
+    aspectRatio,
     handle,
+    handleSize,
     hover,
     leftImage,
     leftImageAlt,
@@ -61,6 +64,8 @@ function ReactCompareImage(props) {
     vertical,
   } = props;
 
+  const horizontal = !vertical;
+
   // 0 to 1
   const [sliderPosition, setSliderPosition] = useState(
     sliderPositionPercentage,
@@ -75,14 +80,9 @@ function ReactCompareImage(props) {
   const rightImageRef = useRef();
   const leftImageRef = useRef();
 
-  // keep track container's height, width in local state
+  // keep track container's width in local state
+  // to make the component responsive.
   useEffect(() => {
-    const updateContainerHeight = () => {
-      const currentContainerHeight = containerRef.current.getBoundingClientRect()
-        .height;
-      setContainerHeight(currentContainerHeight);
-    };
-
     const updateContainerWidth = () => {
       const currentContainerWidth = containerRef.current.getBoundingClientRect()
         .width;
@@ -90,12 +90,11 @@ function ReactCompareImage(props) {
     };
 
     // initial execution must be done manually
-    vertical ? updateContainerHeight() : updateContainerWidth();
+    updateContainerWidth();
 
     // update local state if container size is changed
     const containerElement = containerRef.current;
     const resizeSensor = new ResizeSensor(containerElement, () => {
-      updateContainerHeight();
       updateContainerWidth();
     });
 
@@ -134,38 +133,45 @@ function ReactCompareImage(props) {
     const handleSliding = event => {
       const e = event || window.event;
 
-      // Calc Cursor Position from the left and top(for vertical) edge of the viewport
+      // Calc cursor position from the:
+      // - left edge of the viewport (for horizontal)
+      // - top edge of the viewport (for vertical)
       const cursorXfromViewport = e.touches ? e.touches[0].pageX : e.pageX;
       const cursorYfromViewport = e.touches ? e.touches[0].pageX : e.pageY;
 
-      // Calc Cursor Position from the left edge of the window (consider any page scrolling)
+      // Calc Cursor Position from the:
+      // - left edge of the window (for horizontal)
+      // - top edge of the window (for vertical)
+      // to consider any page scrolling
       const cursorXfromWindow = cursorXfromViewport - window.pageXOffset;
       const cursorYfromWindow = cursorYfromViewport - window.pageYOffset;
 
-      // Calc Cursor Position from the left or top(for vertical) edge of the image
+      // Calc Cursor Position from the:
+      // - left edge of the image(for horizontal)
+      // - top edge of the image(for vertical)
       const imagePosition = rightImageRef.current.getBoundingClientRect();
-      let pos = vertical
-        ? cursorYfromWindow - imagePosition.top
-        : cursorXfromWindow - imagePosition.left;
+      let pos = horizontal
+        ? cursorXfromWindow - imagePosition.left
+        : cursorYfromWindow - imagePosition.top;
 
       // Set minimum and maximum values to prevent the slider from overflowing
       const minPos = 0 + sliderLineWidth / 2;
-      const maxPos = vertical
-        ? containerHeight - sliderLineWidth / 2
-        : containerWidth - sliderLineWidth / 2;
+      const maxPos = horizontal
+        ? containerWidth - sliderLineWidth / 2
+        : containerHeight - sliderLineWidth / 2;
 
       if (pos < minPos) pos = minPos;
       if (pos > maxPos) pos = maxPos;
 
-      vertical
-        ? setSliderPosition(pos / containerHeight)
-        : setSliderPosition(pos / containerWidth);
+      horizontal
+        ? setSliderPosition(pos / containerWidth)
+        : setSliderPosition(pos / containerHeight);
 
       // If there's a callback function, invoke it everytime the slider changes
       if (onSliderPositionChange) {
-        vertical
-          ? onSliderPositionChange(pos / containerHeight)
-          : onSliderPositionChange(pos / containerWidth);
+        horizontal
+          ? onSliderPositionChange(pos / containerWidth)
+          : onSliderPositionChange(pos / containerHeight);
       }
     };
 
@@ -208,16 +214,19 @@ function ReactCompareImage(props) {
         window.addEventListener('mouseup', finishSliding); // 06
       }
 
-      // set the container's aspect rasio to fit a taller(thinner) image
+      // calc and set the container's size
       const leftImageWidthHeightRatio =
         leftImageRef.current.naturalHeight / leftImageRef.current.naturalWidth;
       const rightImageWidthHeightRatio =
         rightImageRef.current.naturalHeight /
         rightImageRef.current.naturalWidth;
 
-      const idealContainerHeight =
-        containerWidth *
-        Math.max(leftImageWidthHeightRatio, rightImageWidthHeightRatio);
+      const idealWidthHeightRatio =
+        aspectRatio === 'taller'
+          ? Math.max(leftImageWidthHeightRatio, rightImageWidthHeightRatio)
+          : Math.min(leftImageWidthHeightRatio, rightImageWidthHeightRatio);
+
+      const idealContainerHeight = containerWidth * idealWidthHeightRatio;
 
       setContainerHeight(idealContainerHeight);
     }
@@ -233,14 +242,17 @@ function ReactCompareImage(props) {
       window.removeEventListener('mousemove', handleSliding); // 07
       window.removeEventListener('touchmove', handleSliding); // 08
     };
+    // eslint-disable-next-line
   }, [
     allImagesLoaded,
+    aspectRatio,
     containerHeight,
     containerWidth,
+    horizontal,
     hover,
     sliderLineWidth,
-    vertical
-  ]); // eslint-disable-line
+    vertical,
+  ]);
 
   const styles = {
     container: {
@@ -251,7 +263,9 @@ function ReactCompareImage(props) {
       overflow: 'hidden',
     },
     rightImage: {
-      clip: `rect(auto, auto, auto, ${containerWidth * sliderPosition}px)`,
+      clip: horizontal
+        ? `rect(auto, auto, auto, ${containerWidth * sliderPosition}px)`
+        : `rect(${containerHeight * sliderPosition}px, auto, auto, auto)`,
       display: 'block',
       height: '100%',
       objectFit: 'cover',
@@ -260,9 +274,9 @@ function ReactCompareImage(props) {
       ...rightImageCss,
     },
     leftImage: {
-      clip: vertical
-        ? `rect(${containerHeight * sliderPosition}px, auto, auto, auto)`
-        : `rect(auto, ${containerWidth * sliderPosition}px, auto, auto)`,
+      clip: horizontal
+        ? `rect(auto, ${containerWidth * sliderPosition}px, auto, auto)`
+        : `rect(auto, auto, ${containerHeight * sliderPosition}px, auto)`,
       display: 'block',
       height: '100%',
       objectFit: 'cover',
@@ -273,27 +287,28 @@ function ReactCompareImage(props) {
     slider: {
       alignItems: 'center',
       cursor:
-        (!hover && vertical && 'ns-resize') ||
-        (!hover && !vertical && 'ew-resize'),
+        (!hover && horizontal && 'ew-resize') ||
+        (!hover && !horizontal && 'ns-resize'),
       display: 'flex',
-      flexDirection: vertical ? 'row' : 'column',
-      height: vertical ? `${handleSize}px` : '100%',
+      flexDirection: horizontal ? 'column' : 'row',
+      height: horizontal ? '100%' : `${handleSize}px`,
       justifyContent: 'center',
-      left:
-        !vertical && `${containerWidth * sliderPosition - handleSize / 2}px`,
-      position: 'absolute',
-      top: vertical
-        ? `${containerHeight * sliderPosition - handleSize / 2}px`
+      left: horizontal
+        ? `${containerWidth * sliderPosition - handleSize / 2}px`
         : 0,
-      width: vertical ? '100%' : `${handleSize}px`,
+      position: 'absolute',
+      top: horizontal
+        ? 0
+        : `${containerHeight * sliderPosition - handleSize / 2}px`,
+      width: horizontal ? `${handleSize}px` : '100%',
     },
     line: {
       background: sliderLineColor,
       boxShadow:
         '0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12)',
       flex: '0 1 auto',
-      height: vertical ? `${sliderLineWidth}px` : '100%',
-      width: vertical ? '100%' : `${sliderLineWidth}px`,
+      height: horizontal ? '100%' : `${sliderLineWidth}px`,
+      width: horizontal ? `${sliderLineWidth}px` : '100%',
     },
     handleCustom: {
       alignItems: 'center',
@@ -316,7 +331,7 @@ function ReactCompareImage(props) {
       height: `${handleSize}px`,
       justifyContent: 'center',
       width: `${handleSize}px`,
-      transform: vertical ? 'rotate(90deg)' : 'none',
+      transform: horizontal ? 'none' : 'rotate(90deg)',
     },
     leftArrow: {
       border: `inset ${handleSize * 0.15}px rgba(0,0,0,0)`,
@@ -336,12 +351,12 @@ function ReactCompareImage(props) {
     leftLabel: {
       background: 'rgba(0, 0, 0, 0.5)',
       color: 'white',
-      left: '5%',
+      left: horizontal ? '5%' : '50%',
       opacity: isSliding ? 0 : 1,
       padding: '10px 20px',
       position: 'absolute',
-      top: '50%',
-      transform: 'translate(0,-50%)',
+      top: horizontal ? '50%' : '3%',
+      transform: horizontal ? 'translate(0,-50%)' : 'translate(-50%, 0)',
       transition: 'opacity 0.1s ease-out',
     },
     rightLabel: {
@@ -350,9 +365,11 @@ function ReactCompareImage(props) {
       opacity: isSliding ? 0 : 1,
       padding: '10px 20px',
       position: 'absolute',
-      right: '5%',
-      top: '50%',
-      transform: 'translate(0,-50%)',
+      left: horizontal ? null : '50%',
+      right: horizontal ? '5%' : null,
+      top: horizontal ? '50%' : null,
+      bottom: horizontal ? null : '3%',
+      transform: horizontal ? 'translate(0,-50%)' : 'translate(-50%, 0)',
       transition: 'opacity 0.1s ease-out',
     },
   };
