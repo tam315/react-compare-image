@@ -48,23 +48,23 @@ import ReactCompareImage from 'react-compare-image';
 
 | Prop (\* required)       | type           |  default  | description                                                                                                 |
 | ------------------------ | -------------- | :-------: | ----------------------------------------------------------------------------------------------------------- |
-| leftImage \*             | string         |   null    | left image's url                                                                                            |
-| rightImage \*            | string         |   null    | right image's url                                                                                           |
-| sliderPositionPercentage | number (float) |    0.5    | Default line position (from 0 to 1)                                                                         |
-| sliderLineWidth          | number (px)    |     2     | line width of slider (by pixel)                                                                             |
-| sliderLineColor          | string         | "#ffffff" | line color of slider                                                                                        |
-| leftImageAlt             | string         |    ''     | alt props for left image                                                                                    |
-| rightImageAlt            | string         |    ''     | alt props for right image                                                                                   |
-| leftImageCss             | object         |    {}     | Additional css for left image                                                                               |
-| rightImageCss            | object         |    {}     | Additional css for right image                                                                              |
-| leftImageLabel           | string         |   null    | (>=v1.2.0) Label for the image (e.g. `before`)                                                              |
-| rightImageLabel          | string         |   null    | (>=v1.2.0) Label for the image (e.g. `after`)                                                               |
 | handle                   | element        |   null    | (>=v1.2.0) Custom handle element. Just pass `<React.Fragment />` if you want to remove handle.              |
 | handleSize               | number (px)    |    40     | diameter of slider handle (by pixel)                                                                        |
 | hover                    | boolean        |   false   | Whether to slide at hover                                                                                   |
-| vertical                 | boolean        |   false   | Vertical image comparison                                                                                   |
-| skeleton                 | element        |   null    | Element displayed while image is loading                                                                    |
+| leftImage \*             | string         |   null    | left image's url                                                                                            |
+| leftImageAlt             | string         |    ''     | alt props for left image                                                                                    |
+| leftImageCss             | object         |    {}     | Additional css for left image                                                                               |
+| leftImageLabel           | string         |   null    | (>=v1.2.0) Label for the image (e.g. `before`)                                                              |
 | onSliderPositionChange   | function       |   null    | Callback function called each time the slider changes. The position (0 to 1) of the slider is passed as arg |
+| rightImage \*            | string         |   null    | right image's url                                                                                           |
+| rightImageAlt            | string         |    ''     | alt props for right image                                                                                   |
+| rightImageCss            | object         |    {}     | Additional css for right image                                                                              |
+| rightImageLabel          | string         |   null    | (>=v1.2.0) Label for the image (e.g. `after`)                                                               |
+| skeleton                 | element        |   null    | Element displayed while image is loading                                                                    |
+| sliderLineColor          | string         | "#ffffff" | line color of slider                                                                                        |
+| sliderLineWidth          | number (px)    |     2     | line width of slider (by pixel)                                                                             |
+| sliderPositionPercentage | number (float) |    0.5    | Default line position (from 0 to 1)                                                                         |
+| vertical                 | boolean        |   false   | Vertical image comparison                                                                                   |
 
 ## Dependencies
 
