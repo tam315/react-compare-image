@@ -8,17 +8,9 @@ Simple React component to compare two images using slider.
 
 NOTE: [Vue.js Version](https://github.com/junkboy0315/vue-compare-image) is also available!
 
-## Demo
+## Demo & Sample codes
 
-[DEMO](https://react-compare-image.yuuniworks.com/)
-
-## Install
-
-```sh
-yarn add react-compare-image
-```
-
-Note: Version 1 or later works only with React16.8 or later. Use version 0 instead.
+[Demo & Sample codes](https://react-compare-image.yuuniworks.com/)
 
 ## Features
 
@@ -28,13 +20,13 @@ Note: Version 1 or later works only with React16.8 or later. Use version 0 inste
 
 ## How to use
 
-```cmd
+```sh
 yarn add react-compare-image
-
 // or
-
 npm install --save react-compare-image
 ```
+
+Note: Version 1 or later works only with React16.8 or later. Use version 0 instead.
 
 ```jsx
 import ReactCompareImage from 'react-compare-image';
