@@ -1,6 +1,6 @@
 # Change Log
 
-## [2.0.0] - 2019-10-10
+## [2.0.0] - 2019-10-20
 
 ### Breaking Changes
 
@@ -18,6 +18,7 @@
 ### New Features
 
 - Add vertical comparison feature. use the `'vertical'` prop.
+- Hide labels properly.
 
 ## [1.0.0] - 2019-03-03
 
