@@ -14,19 +14,17 @@ NOTE: [Vue.js Version](https://github.com/junkboy0315/vue-compare-image) is also
 
 ## Install
 
-`yarn add react-compare-image`
+```sh
+yarn add react-compare-image
+```
 
-Note: use `v0.*.*` If you are using React **v.16.7 or older**.
-
-`yarn add react-compare-image@^0.8.2`
+Note: Version 1 or later works only with React16.8 or later. Use version 0 instead.
 
 ## Features
 
 - Simple
-- Responsive (fit to the parent width)
-- Size difference between two images handled correctly. Element size determined by following two factors:
-  - width of the parent
-  - right image's aspect ratio
+- Responsive (always fit to the parent width)
+- Horizontal & Vertical comparison
 
 ## How to use
 
