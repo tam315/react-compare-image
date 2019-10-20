@@ -137,7 +137,7 @@ function ReactCompareImage(props) {
       // - left edge of the viewport (for horizontal)
       // - top edge of the viewport (for vertical)
       const cursorXfromViewport = e.touches ? e.touches[0].pageX : e.pageX;
-      const cursorYfromViewport = e.touches ? e.touches[0].pageX : e.pageY;
+      const cursorYfromViewport = e.touches ? e.touches[0].pageY : e.pageY;
 
       // Calc Cursor Position from the:
       // - left edge of the window (for horizontal)
