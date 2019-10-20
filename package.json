@@ -5,9 +5,7 @@
   "main": "dist/bundle.js",
   "scripts": {
     "build": "del-cli dist/**/* && webpack --config ./webpack.production.config.js",
-    "build-web": "del-cli dist/**/* && cpx public/**/* dist && webpack --config ./webpack.website.config.js",
     "prepublishOnly": "npm run test && del-cli dist/**/* && npm run build",
-    "serve": "webpack-dev-server --config ./webpack.local.config.js",
     "test": "jest",
     "test:watch": "jest --watch",
     "storybook": "start-storybook -p 6006 -s ./public",
@@ -33,8 +31,6 @@
     "@babel/plugin-proposal-object-rest-spread": "^7.3.4",
     "@babel/preset-env": "^7.3.4",
     "@babel/preset-react": "^7.0.0",
-    "@storybook/addon-actions": "^5.1.11",
-    "@storybook/addon-links": "^5.1.11",
     "@storybook/addon-storysource": "^5.2.4",
     "@storybook/addons": "^5.1.11",
     "@storybook/react": "^5.1.11",
@@ -45,8 +41,6 @@
     "babel-jest": "^24.1.0",
     "babel-loader": "^8.0.5",
     "babel-polyfill": "^6.26.0",
-    "cpx": "^1.5.0",
-    "css-loader": "^3.2.0",
     "del-cli": "^3.0.0",
     "eslint": "^6.5.1",
     "eslint-config-airbnb": "18.0.1",
@@ -58,7 +52,6 @@
     "eslint-plugin-react": "^7.14.3",
     "eslint-plugin-react-hooks": "^2.1.2",
     "file-loader": "^4.2.0",
-    "html-webpack-plugin": "^3.2.0",
     "jest": "^24.1.0",
     "prettier": "^1.18.2",
     "react": ">=16.8",
@@ -66,8 +59,7 @@
     "style-loader": "^1.0.0",
     "url-loader": "^2.1.0",
     "webpack": "^4.8.3",
-    "webpack-cli": "3",
-    "webpack-dev-server": "^3.1.14"
+    "webpack-cli": "3"
   },
   "keywords": [
     "picture comparison",
