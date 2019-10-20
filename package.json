@@ -1,6 +1,6 @@
 {
   "name": "react-compare-image",
-  "version": "1.4.1",
+  "version": "2.0.0",
   "description": "React component to compare two images using slider.",
   "main": "dist/bundle.js",
   "scripts": {
