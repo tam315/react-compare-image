@@ -12,7 +12,13 @@ module.exports = {
   ],
   module: {
     rules: [
-      // add your custom rules.
+      // to show `story` addon tab
+      // https://github.com/storybooks/storybook/tree/master/addons/storysource#getting-started
+      {
+        test: /\.stories\.jsx?$/,
+        loaders: [require.resolve('@storybook/addon-storysource/loader')],
+        enforce: 'pre',
+      },
     ],
   },
 };
