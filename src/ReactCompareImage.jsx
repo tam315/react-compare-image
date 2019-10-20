@@ -372,6 +372,22 @@ function ReactCompareImage(props) {
       transform: horizontal ? 'translate(0,-50%)' : 'translate(-50%, 0)',
       transition: 'opacity 0.1s ease-out',
     },
+    leftLabelContainer: {
+      clip: horizontal
+        ? `rect(auto, ${containerWidth * sliderPosition}px, auto, auto)`
+        : `rect(auto, auto, ${containerHeight * sliderPosition}px, auto)`,
+      height: '100%',
+      position: 'absolute',
+      width: '100%',
+    },
+    rightLabelContainer: {
+      clip: horizontal
+        ? `rect(auto, auto, auto, ${containerWidth * sliderPosition}px)`
+        : `rect(${containerHeight * sliderPosition}px, auto, auto, auto)`,
+      height: '100%',
+      position: 'absolute',
+      width: '100%',
+    },
   };
 
   return (
@@ -417,9 +433,15 @@ function ReactCompareImage(props) {
           <div style={styles.line} />
         </div>
         {/* labels */}
-        {leftImageLabel && <div style={styles.leftLabel}>{leftImageLabel}</div>}
+        {leftImageLabel && (
+          <div style={styles.leftLabelContainer}>
+            <div style={styles.leftLabel}>{leftImageLabel}</div>
+          </div>
+        )}
         {rightImageLabel && (
-          <div style={styles.rightLabel}>{rightImageLabel}</div>
+          <div style={styles.rightLabelContainer}>
+            <div style={styles.rightLabel}>{rightImageLabel}</div>
+          </div>
         )}
       </div>
     </>
