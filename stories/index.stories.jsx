@@ -1,11 +1,11 @@
 import { storiesOf } from '@storybook/react'; // eslint-disable-line
 import React, { useState } from 'react';
-import img1SrcTaller from '../public/image1-taller.png';
-import img1Src from '../public/image1.png';
-import img2SrcWider from '../public/image2-wider.png';
-import img2Src from '../public/image2.png';
-import imgTaller from '../public/taller-image.png';
-import imgWider from '../public/wider-image.png';
+import img1SrcTaller from '../images/image1-taller.png';
+import img1Src from '../images/image1.png';
+import img2SrcWider from '../images/image2-wider.png';
+import img2Src from '../images/image2.png';
+import imgTaller from '../images/taller-image.png';
+import imgWider from '../images/wider-image.png';
 import ReactCompareImage from '../src/ReactCompareImage';
 
 storiesOf('Basic', module)
