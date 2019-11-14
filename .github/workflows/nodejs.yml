@@ -1,0 +1,30 @@
+name: Frontend Test
+
+on: [push, pull_request]
+
+jobs:
+  yarn-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Cache node modules
+        uses: actions/cache@v1
+        with:
+          path: node_modules
+          key: ${{ runner.OS }}-build-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.OS }}-build-${{ env.cache-name }}-
+            ${{ runner.OS }}-build-
+            ${{ runner.OS }}-
+
+      - name: Use Node.js v10.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: '10.x'
+
+      - name: npm install, build, and test
+        run: |
+          yarn
+          yarn test
