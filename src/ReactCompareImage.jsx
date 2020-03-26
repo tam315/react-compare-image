@@ -11,11 +11,13 @@ const propTypes = {
   leftImageAlt: PropTypes.string,
   leftImageCss: PropTypes.object, // eslint-disable-line
   leftImageLabel: PropTypes.string,
+  leftLabelCss: PropTypes.object, // eslint-disable-line
   onSliderPositionChange: PropTypes.func,
   rightImage: PropTypes.string.isRequired,
   rightImageAlt: PropTypes.string,
   rightImageCss: PropTypes.object, // eslint-disable-line
   rightImageLabel: PropTypes.string,
+  rightLabelCss: PropTypes.object, // eslint-disable-line
   skeleton: PropTypes.element,
   sliderLineColor: PropTypes.string,
   sliderLineWidth: PropTypes.number,
@@ -31,10 +33,12 @@ const defaultProps = {
   leftImageAlt: '',
   leftImageCss: {},
   leftImageLabel: null,
+  leftLabelCss: {},
   onSliderPositionChange: () => {},
   rightImageAlt: '',
   rightImageCss: {},
   rightImageLabel: null,
+  rightLabelCss: {},
   skeleton: null,
   sliderLineColor: '#ffffff',
   sliderLineWidth: 2,
@@ -52,11 +56,13 @@ function ReactCompareImage(props) {
     leftImageAlt,
     leftImageCss,
     leftImageLabel,
+    leftLabelCss,
     onSliderPositionChange,
     rightImage,
     rightImageAlt,
     rightImageCss,
     rightImageLabel,
+    rightLabelCss,
     skeleton,
     sliderLineColor,
     sliderLineWidth,
@@ -435,12 +441,16 @@ function ReactCompareImage(props) {
         {/* labels */}
         {leftImageLabel && (
           <div style={styles.leftLabelContainer}>
-            <div style={styles.leftLabel}>{leftImageLabel}</div>
+            <div style={{ ...styles.leftLabel, ...leftLabelCss }}>
+              {leftImageLabel}
+            </div>
           </div>
         )}
         {rightImageLabel && (
           <div style={styles.rightLabelContainer}>
-            <div style={styles.rightLabel}>{rightImageLabel}</div>
+            <div style={{ ...styles.rightLabel, ...rightLabelCss }}>
+              {rightImageLabel}
+            </div>
           </div>
         )}
       </div>
