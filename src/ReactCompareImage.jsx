@@ -8,15 +8,19 @@ const propTypes = {
   handleSize: PropTypes.number,
   hover: PropTypes.bool,
   leftImage: PropTypes.string.isRequired,
+  leftImageSrcSet: PropTypes.string,
   leftImageAlt: PropTypes.string,
   leftImageCss: PropTypes.object, // eslint-disable-line
   leftImageLabel: PropTypes.string,
   onSliderPositionChange: PropTypes.func,
   rightImage: PropTypes.string.isRequired,
+  rightImageSrcSet: PropTypes.string,
   rightImageAlt: PropTypes.string,
   rightImageCss: PropTypes.object, // eslint-disable-line
   rightImageLabel: PropTypes.string,
   skeleton: PropTypes.element,
+  containerStyle: PropTypes.object,
+  containerClass: PropTypes.string,
   sliderLineColor: PropTypes.string,
   sliderLineWidth: PropTypes.number,
   sliderPositionPercentage: PropTypes.number,
@@ -28,18 +32,23 @@ const defaultProps = {
   handle: null,
   handleSize: 40,
   hover: false,
+  leftImageSrcSet: null,
   leftImageAlt: '',
   leftImageCss: {},
   leftImageLabel: null,
   onSliderPositionChange: () => {},
+  rightImageSrcSet: null,
   rightImageAlt: '',
   rightImageCss: {},
   rightImageLabel: null,
   skeleton: null,
+  containerStyle: {},
+  containerClass: '',
   sliderLineColor: '#ffffff',
   sliderLineWidth: 2,
   sliderPositionPercentage: 0.5,
   vertical: false,
+  
 };
 
 function ReactCompareImage(props) {
@@ -49,19 +58,24 @@ function ReactCompareImage(props) {
     handleSize,
     hover,
     leftImage,
+    leftImageSrcSet,
     leftImageAlt,
     leftImageCss,
     leftImageLabel,
     onSliderPositionChange,
     rightImage,
+    rightImageSrcSet,
     rightImageAlt,
     rightImageCss,
     rightImageLabel,
     skeleton,
+    containerStyle,
+    containerClass,
     sliderLineColor,
     sliderLineWidth,
     sliderPositionPercentage,
     vertical,
+
   } = props;
 
   const horizontal = !vertical;
@@ -399,9 +413,11 @@ function ReactCompareImage(props) {
       <div
         style={{
           ...styles.container,
+          ...containerStyle,
           display: allImagesLoaded ? 'block' : 'none',
         }}
         ref={containerRef}
+        className={containerClass}
         data-testid="container"
       >
         <img
@@ -410,6 +426,7 @@ function ReactCompareImage(props) {
           data-testid="right-image"
           ref={rightImageRef}
           src={rightImage}
+          srcSet={rightImageSrcSet}
           style={styles.rightImage}
         />
         <img
@@ -418,6 +435,7 @@ function ReactCompareImage(props) {
           data-testid="left-image"
           ref={leftImageRef}
           src={leftImage}
+          srcSet={leftImageSrcSet}
           style={styles.leftImage}
         />
         <div style={styles.slider}>
