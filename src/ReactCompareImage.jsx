@@ -19,7 +19,7 @@ const propTypes = {
   rightImageCss: PropTypes.object, // eslint-disable-line
   rightImageLabel: PropTypes.string,
   skeleton: PropTypes.element,
-  containerStyle: PropTypes.object,
+  containerStyle: PropTypes.object, // eslint-disable-line
   containerClass: PropTypes.string,
   sliderLineColor: PropTypes.string,
   sliderLineWidth: PropTypes.number,
@@ -48,7 +48,6 @@ const defaultProps = {
   sliderLineWidth: 2,
   sliderPositionPercentage: 0.5,
   vertical: false,
-  
 };
 
 function ReactCompareImage(props) {
@@ -75,7 +74,6 @@ function ReactCompareImage(props) {
     sliderLineWidth,
     sliderPositionPercentage,
     vertical,
-
   } = props;
 
   const horizontal = !vertical;
