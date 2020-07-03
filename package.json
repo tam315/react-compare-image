@@ -9,7 +9,10 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "storybook": "start-storybook -p 6006 -s ./public",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "loki:approve": "yarn loki approve",
+    "loki:test": "build-storybook && yarn loki --chromeDockerImage justinribeiro/chrome-headless@sha256:5bcf25fe2c20e1eaad4fdc7fa2a447cc6ef47a42ec9abd6e3d5b167d57ad4775 --chromeFlags=\"--headless --disable-gpu --hide-scrollbars --disable-web-security\" --reactUri file:./storybook-static --requireReference test",
+    "loki:update-references": "build-storybook && yarn loki --chromeDockerImage justinribeiro/chrome-headless@sha256:5bcf25fe2c20e1eaad4fdc7fa2a447cc6ef47a42ec9abd6e3d5b167d57ad4775 --chromeFlags=\"--headless --disable-gpu --hide-scrollbars --disable-web-security\" --reactUri file:./storybook-static update"
   },
   "repository": {
     "type": "git",
@@ -53,6 +56,7 @@
     "eslint-plugin-react-hooks": "^2.1.2",
     "file-loader": "^4.2.0",
     "jest": "^24.1.0",
+    "loki": "^0.23.0",
     "prettier": "^1.18.2",
     "react": ">=16.8",
     "react-dom": ">=16.8",
@@ -67,5 +71,16 @@
     "slider",
     "react",
     "twentytwenty"
-  ]
+  ],
+  "loki": {
+    "configurations": {
+      "chrome.laptop": {
+        "target": "chrome.docker",
+        "width": 1366,
+        "height": 768,
+        "deviceScaleFactor": 1,
+        "mobile": false
+      }
+    }
+  }
 }
