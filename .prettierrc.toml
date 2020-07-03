@@ -1,0 +1,5 @@
+# アロー関数の引数が1つのときはカッコを付けない
+arrowParens = "avoid"
+singleQuote = true
+tabWidth = 2
+trailingComma = "all"
