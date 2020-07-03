@@ -156,6 +156,7 @@ storiesOf('Images with different aspect ratios', module)
         aspectRatio="wider"
         rightImageCss={{ objectFit: 'contain', objectPosition: 'left' }}
         leftImageCss={{ objectFit: 'contain', objectPosition: 'left' }}
+        sliderPositionPercentage={0.95}
       />
       (Try to slide to the right edge!)
     </div>
