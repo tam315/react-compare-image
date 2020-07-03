@@ -5,7 +5,7 @@
   "main": "dist/bundle.js",
   "scripts": {
     "build": "del-cli dist/**/* && webpack --config ./webpack.production.config.js",
-    "prepublishOnly": "npm run test && del-cli dist/**/* && npm run build",
+    "prepublishOnly": "yarn test && yarn loki:test && del-cli dist/**/* && yarn build",
     "test": "jest",
     "test:watch": "jest --watch",
     "storybook": "start-storybook -p 6006 -s ./public",
