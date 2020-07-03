@@ -1,27 +1,26 @@
 import { ResizeSensor } from 'css-element-queries';
-import PropTypes from 'prop-types';
 import React, { useEffect, useRef, useState } from 'react';
 
-const propTypes = {
-  aspectRatio: PropTypes.oneOf(['taller', 'wider']),
-  handle: PropTypes.node,
-  handleSize: PropTypes.number,
-  hover: PropTypes.bool,
-  leftImage: PropTypes.string.isRequired,
-  leftImageAlt: PropTypes.string,
-  leftImageCss: PropTypes.object, // eslint-disable-line
-  leftImageLabel: PropTypes.string,
-  onSliderPositionChange: PropTypes.func,
-  rightImage: PropTypes.string.isRequired,
-  rightImageAlt: PropTypes.string,
-  rightImageCss: PropTypes.object, // eslint-disable-line
-  rightImageLabel: PropTypes.string,
-  skeleton: PropTypes.element,
-  sliderLineColor: PropTypes.string,
-  sliderLineWidth: PropTypes.number,
-  sliderPositionPercentage: PropTypes.number,
-  vertical: PropTypes.bool,
-};
+interface IProps {
+  aspectRatio?: 'taller' | 'wider';
+  handle?: React.ReactNode;
+  handleSize?: number;
+  hover?: boolean;
+  leftImage: string;
+  leftImageAlt?: string;
+  leftImageCss?: object;
+  leftImageLabel?: string;
+  onSliderPositionChange?: (position: number) => void;
+  rightImage: string;
+  rightImageAlt?: string;
+  rightImageCss?: object;
+  rightImageLabel?: string;
+  skeleton?: React.ReactNode;
+  sliderLineColor?: string;
+  sliderLineWidth?: number;
+  sliderPositionPercentage?: number;
+  vertical?: boolean;
+}
 
 const defaultProps = {
   aspectRatio: 'taller',
@@ -42,7 +41,7 @@ const defaultProps = {
   vertical: false,
 };
 
-function ReactCompareImage(props) {
+const ReactCompareImage: React.FC<IProps> = props => {
   const {
     aspectRatio,
     handle,
@@ -67,18 +66,18 @@ function ReactCompareImage(props) {
   const horizontal = !vertical;
 
   // 0 to 1
-  const [sliderPosition, setSliderPosition] = useState(
+  const [sliderPosition, setSliderPosition] = useState<number>(
     sliderPositionPercentage,
   );
-  const [containerWidth, setContainerWidth] = useState(0);
-  const [containerHeight, setContainerHeight] = useState(0);
-  const [leftImgLoaded, setLeftImgLoaded] = useState(false);
-  const [rightImgLoaded, setRightImgLoaded] = useState(false);
-  const [isSliding, setIsSliding] = useState(false);
+  const [containerWidth, setContainerWidth] = useState<number>(0);
+  const [containerHeight, setContainerHeight] = useState<number>(0);
+  const [leftImgLoaded, setLeftImgLoaded] = useState<boolean>(false);
+  const [rightImgLoaded, setRightImgLoaded] = useState<boolean>(false);
+  const [isSliding, setIsSliding] = useState<boolean>(false);
 
-  const containerRef = useRef();
-  const rightImageRef = useRef();
-  const leftImageRef = useRef();
+  const containerRef = useRef(null);
+  const rightImageRef = useRef(null);
+  const leftImageRef = useRef(null);
 
   // keep track container's width in local state
   // to make the component responsive.
@@ -254,7 +253,7 @@ function ReactCompareImage(props) {
     vertical,
   ]);
 
-  const styles = {
+  const styles: { [key: string]: React.CSSProperties } = {
     container: {
       boxSizing: 'border-box',
       position: 'relative',
@@ -446,9 +445,9 @@ function ReactCompareImage(props) {
       </div>
     </>
   );
-}
+};
 
-ReactCompareImage.propTypes = propTypes;
+// @ts-ignore
 ReactCompareImage.defaultProps = defaultProps;
 
 export default ReactCompareImage;
