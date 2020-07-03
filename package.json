@@ -3,9 +3,10 @@
   "version": "2.0.5",
   "description": "React component to compare two images using slider.",
   "main": "dist/bundle.js",
+  "types": "dist/ReactCompareImage.d.ts",
   "scripts": {
-    "build": "del-cli dist/**/* && webpack --config ./webpack.production.config.js",
-    "prepublishOnly": "yarn test && yarn loki:test && del-cli dist/**/* && yarn build",
+    "build": "del-cli dist/**/* && webpack --config ./webpack.production.config.js && yarn tsc",
+    "prepublishOnly": "yarn test && yarn loki:test && yarn build",
     "test": "jest",
     "test:watch": "jest --watch",
     "storybook": "start-storybook -p 6006 -s ./public",
@@ -61,6 +62,7 @@
     "react": ">=16.8",
     "react-dom": ">=16.8",
     "style-loader": "^1.0.0",
+    "typescript": "^3.9.6",
     "url-loader": "^4.1.0",
     "webpack": "^4.8.3",
     "webpack-cli": "3"
