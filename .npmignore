@@ -1,11 +1,27 @@
+# for n in * .[^.]**; do printf '%s\n' "$n"; done
+
+.all-contributorsrc
 .babelrc
+.DS_Store
+.eslintrc.js
+.git
+.github
 .gitignore
-.prettierrc.yml
-public
+.loki
+.npmignore
+.nvmrc
+.prettierrc.toml
+.storybook
+# dist
+images
+jest.config.js
+# LICENSE
+node_modules
+# package.json
+# README.md
 src
+stories
 storybook-static
-webpack.local.config.js
+tsconfig.json
 webpack.production.config.js
-webpack.website.config.js
-yarn-error.log
 yarn.lock
