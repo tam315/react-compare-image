@@ -59,9 +59,9 @@ import ReactCompareImage from 'react-compare-image';
 | sliderPositionPercentage | number (float)          |     0.5     | Default line position (from 0 to 1)                                                                                   |
 | vertical                 | boolean                 |    false    | Compare images vertically instead of horizontally. The left image is on the top and the right image is on the bottom. |
 
-## Dependencies
+## Supported browzer
 
-- [css-element-queries](https://github.com/marcj/css-element-queries) to detect element resize event.
+Latest modern browsers(Chrome, Safari, Firefox, Edge)
 
 ## Contributors
 

@@ -201,4 +201,19 @@ storiesOf('For Debugging', module)
         </button>
       </div>
     );
+  })
+  .add('resizing', () => {
+    return (
+      <div
+        style={{
+          background: 'lightblue',
+          height: 400,
+          overflow: 'scroll',
+          resize: 'both',
+          width: 400,
+        }}
+      >
+        <ReactCompareImage leftImage={img1Src} rightImage={img2Src} />
+      </div>
+    );
   });

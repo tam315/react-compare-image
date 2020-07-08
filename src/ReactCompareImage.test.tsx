@@ -2,6 +2,13 @@ import { cleanup, fireEvent, render } from '@testing-library/react';
 import React from 'react';
 import ReactCompareImage from './ReactCompareImage';
 
+// mock resize observer
+// @ts-ignore
+window.ResizeObserver = class MockResizeObserver {
+  observe() {}
+  disconnect() {}
+};
+
 /**
  * cheatsheet
  * https://testing-library.com/docs/react-testing-library/cheatsheet
