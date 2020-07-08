@@ -1,4 +1,3 @@
-import { ResizeSensor } from 'css-element-queries';
 import React, { useEffect, useRef, useState } from 'react';
 
 interface IProps {
@@ -79,27 +78,16 @@ const ReactCompareImage: React.FC<IProps> = props => {
   const rightImageRef = useRef(null);
   const leftImageRef = useRef(null);
 
-  // keep track container's width in local state
-  // to make the component responsive.
+  // make the component responsive
   useEffect(() => {
-    const updateContainerWidth = () => {
-      const currentContainerWidth = containerRef.current.getBoundingClientRect()
-        .width;
-      setContainerWidth(currentContainerWidth);
-    };
-
-    // initial execution must be done manually
-    updateContainerWidth();
-
-    // update local state if container size is changed
     const containerElement = containerRef.current;
-    const resizeSensor = new ResizeSensor(containerElement, () => {
-      updateContainerWidth();
+    const resizeObserver = new ResizeObserver(([entry, ..._]) => {
+      const currentContainerWidth = entry.target.getBoundingClientRect().width;
+      setContainerWidth(currentContainerWidth);
     });
+    resizeObserver.observe(containerElement);
 
-    return () => {
-      resizeSensor.detach(containerElement);
-    };
+    return () => resizeObserver.disconnect();
   }, []);
 
   useEffect(() => {
