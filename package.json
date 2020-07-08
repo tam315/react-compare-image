@@ -1,6 +1,6 @@
 {
   "name": "react-compare-image",
-  "version": "2.1.1",
+  "version": "3.0.0",
   "description": "React component to compare two images using slider.",
   "main": "dist/bundle.js",
   "types": "dist/ReactCompareImage.d.ts",
