@@ -83,7 +83,9 @@ const ReactCompareImage: React.FC<IProps> = props => {
     const containerElement = containerRef.current;
     const resizeObserver = new ResizeObserver(([entry, ..._]) => {
       const currentContainerWidth = entry.target.getBoundingClientRect().width;
-      setContainerWidth(currentContainerWidth);
+      if (currentContainerWidth !== 0) {
+        setContainerWidth(currentContainerWidth);
+      }
     });
     resizeObserver.observe(containerElement);
 
