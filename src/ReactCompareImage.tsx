@@ -9,11 +9,13 @@ interface IProps {
   leftImageAlt?: string;
   leftImageCss?: object;
   leftImageLabel?: string;
+  leftImageLabelCss?:object;
   onSliderPositionChange?: (position: number) => void;
   rightImage: string;
   rightImageAlt?: string;
   rightImageCss?: object;
   rightImageLabel?: string;
+  rightImageLabelCss?:object;
   skeleton?: React.ReactNode;
   sliderLineColor?: string;
   sliderLineWidth?: number;
@@ -29,10 +31,12 @@ const defaultProps = {
   leftImageAlt: '',
   leftImageCss: {},
   leftImageLabel: null,
+  leftImageLabelCss:{},
   onSliderPositionChange: () => {},
   rightImageAlt: '',
   rightImageCss: {},
   rightImageLabel: null,
+  rightImageLabelCss:{},
   skeleton: null,
   sliderLineColor: '#ffffff',
   sliderLineWidth: 2,
@@ -50,11 +54,13 @@ const ReactCompareImage: React.FC<IProps> = props => {
     leftImageAlt,
     leftImageCss,
     leftImageLabel,
+    leftImageLabelCss,
     onSliderPositionChange,
     rightImage,
     rightImageAlt,
     rightImageCss,
     rightImageLabel,
+    rightImageLabelCss,
     skeleton,
     sliderLineColor,
     sliderLineWidth,
@@ -345,6 +351,7 @@ const ReactCompareImage: React.FC<IProps> = props => {
       top: horizontal ? '50%' : '3%',
       transform: horizontal ? 'translate(0,-50%)' : 'translate(-50%, 0)',
       transition: 'opacity 0.1s ease-out',
+      ...leftImageLabelCss
     },
     rightLabel: {
       background: 'rgba(0, 0, 0, 0.5)',
@@ -358,6 +365,7 @@ const ReactCompareImage: React.FC<IProps> = props => {
       bottom: horizontal ? null : '3%',
       transform: horizontal ? 'translate(0,-50%)' : 'translate(-50%, 0)',
       transition: 'opacity 0.1s ease-out',
+      ...rightImageLabelCss
     },
     leftLabelContainer: {
       clip: horizontal
@@ -439,3 +447,4 @@ const ReactCompareImage: React.FC<IProps> = props => {
 ReactCompareImage.defaultProps = defaultProps;
 
 export default ReactCompareImage;
+
