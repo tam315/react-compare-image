@@ -12,10 +12,17 @@ module.exports = {
   ],
   module: {
     rules: [
+      {
+        test: /\.(jsx?|tsx?)$/,
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
+        },
+      },
       // to show `story` addon tab
       // https://github.com/storybooks/storybook/tree/master/addons/storysource#getting-started
       {
-        test: /\.stories\.jsx?$/,
+        test: /\.stories\.(jsx?|tsx?)$/,
         loaders: [require.resolve('@storybook/addon-storysource/loader')],
         enforce: 'pre',
       },
@@ -24,5 +31,8 @@ module.exports = {
         loaders: 'file-loader?name=[name].[ext]',
       },
     ],
+  },
+  resolve: {
+    extensions: ['.js', '.jsx', '.ts', '.tsx'],
   },
 };

@@ -2,6 +2,13 @@ import { cleanup, fireEvent, render } from '@testing-library/react';
 import React from 'react';
 import ReactCompareImage from './ReactCompareImage';
 
+// mock resize observer
+// @ts-ignore
+window.ResizeObserver = class MockResizeObserver {
+  observe() {}
+  disconnect() {}
+};
+
 /**
  * cheatsheet
  * https://testing-library.com/docs/react-testing-library/cheatsheet
@@ -22,15 +29,17 @@ describe('ReactCompareImage', () => {
       />,
     );
 
-    const leftImage = getByTestId('left-image');
-    const rightImage = getByTestId('right-image');
+    // @ts-ignore
+    const leftImage: HTMLImageElement = getByTestId('left-image');
+    // @ts-ignore
+    const rightImage: HTMLImageElement = getByTestId('right-image');
 
     expect(rightImage.src).toBe(DUMMY_RIGHT_IMAGE);
     expect(leftImage.src).toBe(DUMMY_LEFT_IMAGE);
   });
 
   test('show skeleton if it is provided as props', async () => {
-    const { container, getByTestId, queryByTestId, rerender } = render(
+    const { getByTestId, queryByTestId, rerender } = render(
       <ReactCompareImage
         leftImage={DUMMY_LEFT_IMAGE}
         rightImage={DUMMY_RIGHT_IMAGE}
@@ -57,7 +66,6 @@ describe('ReactCompareImage', () => {
         rightImage={DUMMY_RIGHT_IMAGE}
         skeleton={<div data-testid="skelton" />}
       />,
-      { container },
     );
     expect(queryByTestId('skelton')).toBeTruthy();
   });

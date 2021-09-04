@@ -156,6 +156,7 @@ storiesOf('Images with different aspect ratios', module)
         aspectRatio="wider"
         rightImageCss={{ objectFit: 'contain', objectPosition: 'left' }}
         leftImageCss={{ objectFit: 'contain', objectPosition: 'left' }}
+        sliderPositionPercentage={0.95}
       />
       (Try to slide to the right edge!)
     </div>
@@ -198,6 +199,21 @@ storiesOf('For Debugging', module)
         <button type="button" onClick={() => setRightImageSrc(imgWider)}>
           update right image
         </button>
+      </div>
+    );
+  })
+  .add('resizing', () => {
+    return (
+      <div
+        style={{
+          background: 'lightblue',
+          height: 400,
+          overflow: 'scroll',
+          resize: 'both',
+          width: 400,
+        }}
+      >
+        <ReactCompareImage leftImage={img1Src} rightImage={img2Src} />
       </div>
     );
   });

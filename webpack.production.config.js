@@ -2,7 +2,7 @@ const path = require('path');
 
 module.exports = {
   mode: 'production',
-  entry: './src/ReactCompareImage.jsx',
+  entry: './src/ReactCompareImage.tsx',
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js',
@@ -12,7 +12,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.(js|jsx)$/,
+        test: /\.(jsx?|tsx?)$/,
         exclude: /node_modules/,
         use: {
           loader: 'babel-loader',
@@ -34,5 +34,8 @@ module.exports = {
       amd: 'ReactDOM',
       root: 'ReactDOM',
     },
+  },
+  resolve: {
+    extensions: ['.js', '.jsx', '.ts', '.tsx'],
   },
 };

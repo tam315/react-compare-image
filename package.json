@@ -1,15 +1,19 @@
 {
   "name": "react-compare-image",
-  "version": "2.0.4",
+  "version": "3.1.0",
   "description": "React component to compare two images using slider.",
   "main": "dist/bundle.js",
+  "types": "dist/ReactCompareImage.d.ts",
   "scripts": {
-    "build": "del-cli dist/**/* && webpack --config ./webpack.production.config.js",
-    "prepublishOnly": "npm run test && del-cli dist/**/* && npm run build",
+    "build": "del-cli dist/**/* && webpack --config ./webpack.production.config.js && yarn tsc",
+    "prepublishOnly": "yarn test && yarn loki:test && yarn build",
     "test": "jest",
     "test:watch": "jest --watch",
     "storybook": "start-storybook -p 6006 -s ./public",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "loki:approve": "yarn loki approve",
+    "loki:test": "build-storybook && yarn loki --chromeDockerImage justinribeiro/chrome-headless@sha256:5bcf25fe2c20e1eaad4fdc7fa2a447cc6ef47a42ec9abd6e3d5b167d57ad4775 --chromeFlags=\"--headless --disable-gpu --hide-scrollbars --disable-web-security\" --reactUri file:./storybook-static --requireReference test",
+    "loki:update-references": "build-storybook && yarn loki --chromeDockerImage justinribeiro/chrome-headless@sha256:5bcf25fe2c20e1eaad4fdc7fa2a447cc6ef47a42ec9abd6e3d5b167d57ad4775 --chromeFlags=\"--headless --disable-gpu --hide-scrollbars --disable-web-security\" --reactUri file:./storybook-static update"
   },
   "repository": {
     "type": "git",
@@ -18,46 +22,46 @@
   "author": "Shota Tamura",
   "license": "MIT",
   "peerDependencies": {
-    "react": ">=16.8",
-    "react-dom": ">=16.8"
+    "react": "^16.8 || ^17",
+    "react-dom": "^16.8 || ^17"
   },
-  "dependencies": {
-    "css-element-queries": "^1.0.2",
-    "prop-types": "^15.7.2"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@babel/core": "^7.3.4",
     "@babel/plugin-proposal-class-properties": "^7.3.4",
     "@babel/plugin-proposal-object-rest-spread": "^7.3.4",
     "@babel/preset-env": "^7.3.4",
     "@babel/preset-react": "^7.0.0",
+    "@babel/preset-typescript": "^7.10.4",
     "@storybook/addon-storysource": "^5.2.4",
     "@storybook/addons": "^5.1.11",
     "@storybook/react": "^5.1.11",
-    "@testing-library/jest-dom": "^4.1.0",
-    "@testing-library/react": "^9.1.3",
-    "all-contributors-cli": "^6.7.0",
+    "@testing-library/jest-dom": "^5.11.0",
+    "@testing-library/react": "^10.4.3",
+    "@types/resize-observer-browser": "^0.1.3",
     "babel-eslint": "^10.0.1",
-    "babel-jest": "^24.1.0",
+    "babel-jest": "^26.1.0",
     "babel-loader": "^8.0.5",
     "babel-polyfill": "^6.26.0",
     "del-cli": "^3.0.0",
-    "eslint": "^6.5.1",
-    "eslint-config-airbnb": "18.0.1",
+    "eslint": "^7.3.1",
+    "eslint-config-airbnb": "^18.2.0",
     "eslint-config-prettier": "^6.1.0",
     "eslint-plugin-import": "^2.18.2",
-    "eslint-plugin-jest": "^22.6.4",
+    "eslint-plugin-jest": "^23.17.1",
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-prettier": "^3.1.0",
     "eslint-plugin-react": "^7.14.3",
-    "eslint-plugin-react-hooks": "^2.1.2",
-    "file-loader": "^4.2.0",
-    "jest": "^24.1.0",
-    "prettier": "^1.18.2",
-    "react": ">=16.8",
-    "react-dom": ">=16.8",
+    "eslint-plugin-react-hooks": "^4.0.5",
+    "file-loader": "^6.0.0",
+    "jest": "^26.1.0",
+    "loki": "^0.23.0",
+    "prettier": "^2.0.5",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
     "style-loader": "^1.0.0",
-    "url-loader": "^2.1.0",
+    "typescript": "^3.9.6",
+    "url-loader": "^4.1.0",
     "webpack": "^4.8.3",
     "webpack-cli": "3"
   },
@@ -67,5 +71,24 @@
     "slider",
     "react",
     "twentytwenty"
+  ],
+  "loki": {
+    "configurations": {
+      "chrome.laptop": {
+        "target": "chrome.docker",
+        "width": 1366,
+        "height": 768,
+        "deviceScaleFactor": 1,
+        "mobile": false
+      }
+    }
+  },
+  "browserslist": [
+    "last 1 Chrome versions",
+    "last 1 Safari versions",
+    "last 1 Firefox versions",
+    "last 1 Edge versions",
+    "last 1 ChromeAndroid versions",
+    "last 1 iOS versions"
   ]
 }

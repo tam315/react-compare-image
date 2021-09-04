@@ -59,32 +59,6 @@ import ReactCompareImage from 'react-compare-image';
 | sliderPositionPercentage | number (float)          |     0.5     | Default line position (from 0 to 1)                                                                                   |
 | vertical                 | boolean                 |    false    | Compare images vertically instead of horizontally. The left image is on the top and the right image is on the bottom. |
 
-## Dependencies
+## Supported browzer
 
-- [css-element-queries](https://github.com/marcj/css-element-queries) to detect element resize event.
-- [prop-types](https://www.npmjs.com/package/prop-types)
-
-## Contributors
-
-<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
-<!-- prettier-ignore-start -->
-<!-- markdownlint-disable -->
-<table>
-  <tr>
-    <td align="center"><a href="https://www.yuuniworks.com/"><img src="https://avatars0.githubusercontent.com/u/10986861?v=4" width="100px;" alt="Shota Tamura"/><br /><sub><b>Shota Tamura</b></sub></a><br /><a href="https://github.com/junkboy0315/react-compare-image/issues?q=author%3Ajunkboy0315" title="Bug reports">🐛</a> <a href="https://github.com/junkboy0315/react-compare-image/commits?author=junkboy0315" title="Code">💻</a> <a href="https://github.com/junkboy0315/react-compare-image/commits?author=junkboy0315" title="Documentation">📖</a></td>
-    <td align="center"><a href="http://franciscomartinez.website"><img src="https://avatars1.githubusercontent.com/u/20175841?v=4" width="100px;" alt="Francisco Martinez"/><br /><sub><b>Francisco Martinez</b></sub></a><br /><a href="https://github.com/junkboy0315/react-compare-image/commits?author=francismartinez" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/tim-field"><img src="https://avatars3.githubusercontent.com/u/1326910?v=4" width="100px;" alt="Tim Field"/><br /><sub><b>Tim Field</b></sub></a><br /><a href="https://github.com/junkboy0315/react-compare-image/issues?q=author%3Atim-field" title="Bug reports">🐛</a></td>
-    <td align="center"><a href="https://github.com/OscarCR88"><img src="https://avatars0.githubusercontent.com/u/42785228?v=4" width="100px;" alt="OscarCR88"/><br /><sub><b>OscarCR88</b></sub></a><br /><a href="https://github.com/junkboy0315/react-compare-image/commits?author=OscarCR88" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/tasnimAlam"><img src="https://avatars1.githubusercontent.com/u/22883823?v=4" width="100px;" alt="Md. Tasnim Alam"/><br /><sub><b>Md. Tasnim Alam</b></sub></a><br /><a href="https://github.com/junkboy0315/react-compare-image/commits?author=tasnimAlam" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/janedotbiz"><img src="https://avatars2.githubusercontent.com/u/5113432?v=4" width="100px;" alt="Jane Meredith"/><br /><sub><b>Jane Meredith</b></sub></a><br /><a href="https://github.com/junkboy0315/react-compare-image/commits?author=janedotbiz" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/teddywsi"><img src="https://avatars2.githubusercontent.com/u/49923665?v=4" width="100px;" alt="teddywsi"/><br /><sub><b>teddywsi</b></sub></a><br /><a href="https://github.com/junkboy0315/react-compare-image/commits?author=teddywsi" title="Code">💻</a></td>
-  </tr>
-  <tr>
-    <td align="center"><a href="http://www.queengoob.org"><img src="https://avatars1.githubusercontent.com/u/5179191?v=4" width="100px;" alt="Queen Vinyl Darkscratch"/><br /><sub><b>Queen Vinyl Darkscratch</b></sub></a><br /><a href="https://github.com/junkboy0315/react-compare-image/commits?author=vinyldarkscratch" title="Code">💻</a></td>
-  </tr>
-</table>
-
-<!-- markdownlint-enable -->
-<!-- prettier-ignore-end -->
-
-<!-- ALL-CONTRIBUTORS-LIST:END -->
+Latest modern browsers(Chrome, Safari, Firefox, Edge)
