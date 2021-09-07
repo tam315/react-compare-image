@@ -351,7 +351,6 @@ const ReactCompareImage: React.FC<IProps> = props => {
       top: horizontal ? '50%' : '3%',
       transform: horizontal ? 'translate(0,-50%)' : 'translate(-50%, 0)',
       transition: 'opacity 0.1s ease-out',
-      ...leftImageLabelCss
     },
     rightLabel: {
       background: 'rgba(0, 0, 0, 0.5)',
@@ -365,7 +364,6 @@ const ReactCompareImage: React.FC<IProps> = props => {
       bottom: horizontal ? null : '3%',
       transform: horizontal ? 'translate(0,-50%)' : 'translate(-50%, 0)',
       transition: 'opacity 0.1s ease-out',
-      ...rightImageLabelCss
     },
     leftLabelContainer: {
       clip: horizontal
@@ -430,12 +428,12 @@ const ReactCompareImage: React.FC<IProps> = props => {
         {/* labels */}
         {leftImageLabel && (
           <div style={styles.leftLabelContainer}>
-            <div style={styles.leftLabel}>{leftImageLabel}</div>
+             <div style={{ ...styles.leftLabel, ...leftImageLabelCss }}>{leftImageLabel}</div>
           </div>
         )}
         {rightImageLabel && (
           <div style={styles.rightLabelContainer}>
-            <div style={styles.rightLabel}>{rightImageLabel}</div>
+            <div style={{ ...styles.rightLabel, ...rightImageLabelCss }}>{rightImageLabel}</div>
           </div>
         )}
       </div>
