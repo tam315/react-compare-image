@@ -9,13 +9,13 @@ interface IProps {
   leftImageAlt?: string;
   leftImageCss?: object;
   leftImageLabel?: string | React.ReactNode;
-  leftImageLabelCss?: Record<string, any>;
+  leftImageLabelCss?: string;
   onSliderPositionChange?: (position: number) => void;
   rightImage: string;
   rightImageAlt?: string;
   rightImageCss?: object;
   rightImageLabel?: string | React.ReactNode;
-  rightImageLabelCss?: Record<string, any>;
+  rightImageLabelCss?: string;
   skeleton?: React.ReactNode;
   sliderLineColor?: string;
   sliderLineWidth?: number;
@@ -31,12 +31,12 @@ const defaultProps = {
   leftImageAlt: '',
   leftImageCss: {},
   leftImageLabel: null,
-  leftImageLabelCss: {},
+  leftImageLabelCss: '',
   onSliderPositionChange: () => {},
   rightImageAlt: '',
   rightImageCss: {},
   rightImageLabel: null,
-  rightImageLabelCss: {},
+  rightImageLabelCss: '',
   skeleton: null,
   sliderLineColor: '#ffffff',
   sliderLineWidth: 2,
@@ -435,7 +435,7 @@ const ReactCompareImage: React.FC<IProps> = props => {
         )}
         {rightImageLabel && (
           <div style={styles.rightLabelContainer}>
-            <div style={{ ...styles.rightLabel, ...rightImageLabelCss }}>
+            <div style={styles.rightLabel} className={rightImageLabelCss}>
               {rightImageLabel}
             </div>
           </div>
