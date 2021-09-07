@@ -9,13 +9,13 @@ interface IProps {
   leftImageAlt?: string;
   leftImageCss?: object;
   leftImageLabel?: string | React.ReactNode;
-  leftImageLabelCss?:object;
+  leftImageLabelCss?: string;
   onSliderPositionChange?: (position: number) => void;
   rightImage: string;
   rightImageAlt?: string;
   rightImageCss?: object;
   rightImageLabel?: string | React.ReactNode;
-  rightImageLabelCss?:object;
+  rightImageLabelCss?: string;
   skeleton?: React.ReactNode;
   sliderLineColor?: string;
   sliderLineWidth?: number;
@@ -31,12 +31,12 @@ const defaultProps = {
   leftImageAlt: '',
   leftImageCss: {},
   leftImageLabel: null,
-  leftImageLabelCss:{},
+  leftImageLabelCss: {},
   onSliderPositionChange: () => {},
   rightImageAlt: '',
   rightImageCss: {},
   rightImageLabel: null,
-  rightImageLabelCss:{},
+  rightImageLabelCss: {},
   skeleton: null,
   sliderLineColor: '#ffffff',
   sliderLineWidth: 2,
@@ -428,12 +428,16 @@ const ReactCompareImage: React.FC<IProps> = props => {
         {/* labels */}
         {leftImageLabel && (
           <div style={styles.leftLabelContainer}>
-             <div style={{ ...styles.leftLabel, ...leftImageLabelCss }}>{leftImageLabel}</div>
+            <div style={{ ...styles.leftLabel, ...leftImageLabelCss }}>
+              {leftImageLabel}
+            </div>
           </div>
         )}
         {rightImageLabel && (
           <div style={styles.rightLabelContainer}>
-            <div style={{ ...styles.rightLabel, ...rightImageLabelCss }}>{rightImageLabel}</div>
+            <div style={{ ...styles.rightLabel, ...rightImageLabelCss }}>
+              {rightImageLabel}
+            </div>
           </div>
         )}
       </div>
@@ -445,4 +449,3 @@ const ReactCompareImage: React.FC<IProps> = props => {
 ReactCompareImage.defaultProps = defaultProps;
 
 export default ReactCompareImage;
-

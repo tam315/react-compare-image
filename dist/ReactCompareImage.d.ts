@@ -8,13 +8,13 @@ interface IProps {
     leftImageAlt?: string;
     leftImageCss?: object;
     leftImageLabel?: string | React.ReactNode;
-    leftImageLabelCss?: object;
+    leftImageLabelCss?: string;
     onSliderPositionChange?: (position: number) => void;
     rightImage: string;
     rightImageAlt?: string;
     rightImageCss?: object;
     rightImageLabel?: string | React.ReactNode;
-    rightImageLabelCss?: object;
+    rightImageLabelCss?: string;
     skeleton?: React.ReactNode;
     sliderLineColor?: string;
     sliderLineWidth?: number;
