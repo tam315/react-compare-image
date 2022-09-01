@@ -22,8 +22,8 @@
   "author": "Shota Tamura",
   "license": "MIT",
   "peerDependencies": {
-    "react": "^16.8 || ^17",
-    "react-dom": "^16.8 || ^17"
+    "react": "^16.8 || ^17 || ^18",
+    "react-dom": "^16.8 || ^17 || ^18"
   },
   "dependencies": {},
   "devDependencies": {
