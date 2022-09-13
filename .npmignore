@@ -26,3 +26,4 @@ tsconfig.json
 webpack.production.config.js
 yarn.lock
 yarn-error.log
+vite.config.js
