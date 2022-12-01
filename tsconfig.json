@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+    "target": "ES2015",
+    "moduleResolution": "node",
     // allow default import
     "allowSyntheticDefaultImports": true,
     // Instruct tsc to generate type definition file

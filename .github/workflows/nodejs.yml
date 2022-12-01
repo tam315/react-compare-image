@@ -13,7 +13,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: node_modules
-          key: ${{ runner.OS }}-build-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ runner.OS }}-build-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.OS }}-build-${{ env.cache-name }}-
             ${{ runner.OS }}-build-
@@ -24,10 +24,14 @@ jobs:
         with:
           node-version: '16.x'
 
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 7
+
       - name: npm install, build, and test
         run: |
-          yarn
-          yarn test
+          pnpm install
+          pnpm test
 
   visual-regression-test:
     runs-on: ubuntu-latest
@@ -39,7 +43,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: node_modules
-          key: ${{ runner.OS }}-build-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ runner.OS }}-build-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.OS }}-build-${{ env.cache-name }}-
             ${{ runner.OS }}-build-
@@ -50,10 +54,14 @@ jobs:
         with:
           node-version: '16.x'
 
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 7
+
       - name: visual regression test
         run: |
-          yarn
-          yarn loki:test
+          pnpm install
+          pnpm loki:test
 
       - name: Save loki result if it failed
         uses: actions/upload-artifact@v3
