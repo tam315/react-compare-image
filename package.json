@@ -12,8 +12,8 @@
     "storybook": "start-storybook -p 6006 -s ./public",
     "build-storybook": "build-storybook",
     "loki:approve": "yarn loki approve",
-    "loki:test": "build-storybook && yarn loki --chromeDockerImage justinribeiro/chrome-headless@sha256:5bcf25fe2c20e1eaad4fdc7fa2a447cc6ef47a42ec9abd6e3d5b167d57ad4775 --chromeFlags=\"--headless --disable-gpu --hide-scrollbars --disable-web-security\" --reactUri file:./storybook-static --requireReference test",
-    "loki:update-references": "build-storybook && yarn loki --chromeDockerImage justinribeiro/chrome-headless@sha256:5bcf25fe2c20e1eaad4fdc7fa2a447cc6ef47a42ec9abd6e3d5b167d57ad4775 --chromeFlags=\"--headless --disable-gpu --hide-scrollbars --disable-web-security\" --reactUri file:./storybook-static update"
+    "loki:test": "build-storybook && yarn loki --chromeDockerImage yukinying/chrome-headless-browser-stable:107.0.5304.121 --chromeFlags=\"--headless --disable-gpu --hide-scrollbars --disable-web-security\" --reactUri file:./storybook-static --requireReference test",
+    "loki:update-references": "build-storybook && yarn loki --chromeDockerImage yukinying/chrome-headless-browser-stable:107.0.5304.121 --chromeFlags=\"--headless --disable-gpu --hide-scrollbars --disable-web-security\" --reactUri file:./storybook-static update"
   },
   "repository": {
     "type": "git",
