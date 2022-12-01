@@ -12,7 +12,7 @@
     "storybook": "start-storybook -p 6006 -s ./public",
     "build-storybook": "build-storybook",
     "loki:approve": "yarn loki approve",
-    "loki:test": "build-storybook && yarn loki --chromeDockerImage yukinying/chrome-headless-browser-stable:107.0.5304.121 --chromeFlags=\"--headless --disable-gpu --hide-scrollbars --disable-web-security\" --reactUri file:./storybook-static --requireReference test",
+    "loki:test": "build-storybook && yarn loki --chromeDockerImage yukinying/chrome-headless-browser-stable:107.0.5304.121 --chromeFlags=\"--headless --disable-gpu --hide-scrollbars --disable-web-security\" --reactUri file:./storybook-static --requireReference test --chromeTolerance 1",
     "loki:update-references": "build-storybook && yarn loki --chromeDockerImage yukinying/chrome-headless-browser-stable:107.0.5304.121 --chromeFlags=\"--headless --disable-gpu --hide-scrollbars --disable-web-security\" --reactUri file:./storybook-static update"
   },
   "repository": {
