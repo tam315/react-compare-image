@@ -54,3 +54,10 @@ jobs:
         run: |
           yarn
           yarn loki:test
+
+      - name: Save loki result if it failed
+        uses: actions/upload-artifact@v3
+        if: failure()
+        with:
+          name: loki-result-diff
+          path: .loki/difference/*
