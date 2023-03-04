@@ -134,4 +134,33 @@ describe('ReactCompareImage', () => {
       dummyRightImageAlt,
     );
   });
+
+  describe('loading strategy props', () => {
+    test('seting loading strategy', () => {
+      const strategy = 'eager';
+
+      const { getByTestId } = render(
+        <ReactCompareImage
+          leftImage={DUMMY_LEFT_IMAGE}
+          rightImage={DUMMY_RIGHT_IMAGE}
+          loadingStrategy={strategy}
+        />,
+      );
+
+      expect(getByTestId('left-image')).toHaveAttribute('loading', strategy);
+      expect(getByTestId('right-image')).toHaveAttribute('loading', strategy);
+    });
+
+    test('default loading strategy', () => {
+      const { getByTestId } = render(
+        <ReactCompareImage
+          leftImage={DUMMY_LEFT_IMAGE}
+          rightImage={DUMMY_RIGHT_IMAGE}
+        />,
+      );
+
+      expect(getByTestId('left-image')).toHaveAttribute('loading', 'auto');
+      expect(getByTestId('right-image')).toHaveAttribute('loading', 'auto');
+    });
+  });
 });
