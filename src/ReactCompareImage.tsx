@@ -19,6 +19,7 @@ interface IProps {
   sliderLineWidth?: number;
   sliderPositionPercentage?: number;
   vertical?: boolean;
+  loadingStrategy?: 'lazy' | 'eager' | 'auto';
 }
 
 const defaultProps = {
@@ -38,6 +39,7 @@ const defaultProps = {
   sliderLineWidth: 2,
   sliderPositionPercentage: 0.5,
   vertical: false,
+  loadingStrategy: 'auto'
 };
 
 const ReactCompareImage: React.FC<IProps> = props => {
@@ -60,6 +62,7 @@ const ReactCompareImage: React.FC<IProps> = props => {
     sliderLineWidth,
     sliderPositionPercentage,
     vertical,
+    loadingStrategy,
   } = props;
 
   const horizontal = !vertical;
@@ -393,14 +396,17 @@ const ReactCompareImage: React.FC<IProps> = props => {
       >
         <img
           onLoad={() => setRightImgLoaded(true)}
+          loading={loadingStrategy}
           alt={rightImageAlt}
           data-testid="right-image"
           ref={rightImageRef}
           src={rightImage}
+
           style={styles.rightImage}
         />
         <img
           onLoad={() => setLeftImgLoaded(true)}
+          loading={loadingStrategy}
           alt={leftImageAlt}
           data-testid="left-image"
           ref={leftImageRef}
