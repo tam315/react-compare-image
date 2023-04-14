@@ -21,45 +21,26 @@ interface IProps {
   vertical?: boolean;
 }
 
-const defaultProps = {
-  aspectRatio: 'taller',
-  handle: null,
-  handleSize: 40,
-  hover: false,
-  leftImageAlt: '',
-  leftImageCss: {},
-  leftImageLabel: null,
-  onSliderPositionChange: () => {},
-  rightImageAlt: '',
-  rightImageCss: {},
-  rightImageLabel: null,
-  skeleton: null,
-  sliderLineColor: '#ffffff',
-  sliderLineWidth: 2,
-  sliderPositionPercentage: 0.5,
-  vertical: false,
-};
-
-const ReactCompareImage: React.FC<IProps> = props => {
+const ReactCompareImage: React.FC<IProps> = (props: IProps) => {
   const {
-    aspectRatio,
-    handle,
-    handleSize,
-    hover,
+    aspectRatio = 'taller',
+    handle = null,
+    handleSize = 40,
+    hover = false,
     leftImage,
-    leftImageAlt,
-    leftImageCss,
-    leftImageLabel,
-    onSliderPositionChange,
+    leftImageAlt = '',
+    leftImageCss = {},
+    leftImageLabel = null,
+    onSliderPositionChange = () => {},
     rightImage,
-    rightImageAlt,
-    rightImageCss,
-    rightImageLabel,
-    skeleton,
-    sliderLineColor,
-    sliderLineWidth,
-    sliderPositionPercentage,
-    vertical,
+    rightImageAlt = '',
+    rightImageCss = {},
+    rightImageLabel = null,
+    skeleton = null,
+    sliderLineColor = '#ffffff',
+    sliderLineWidth = 2,
+    sliderPositionPercentage = 0.5,
+    vertical = false,
   } = props;
 
   const horizontal = !vertical;
@@ -434,8 +415,5 @@ const ReactCompareImage: React.FC<IProps> = props => {
     </>
   );
 };
-
-// @ts-ignore
-ReactCompareImage.defaultProps = defaultProps;
 
 export default ReactCompareImage;
