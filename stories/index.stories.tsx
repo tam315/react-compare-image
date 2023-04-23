@@ -52,6 +52,24 @@ storiesOf('Basic', module)
       />
     </div>
   ))
+  .add('controlled slider position', () => {
+    const [position, setPosition] = useState<number|string>(0);
+    const [value, setValue] = useState<number|string>(0);
+    return (
+      <div style={{ maxWidth: '640px' }}>
+        <div style={{display: 'flex', gridGap: '5px'}} >
+          <input value={value} placeholder="0 to 1" onChange={(e) => setValue(e.target.value)} />
+          <button onClick={() => setPosition(value || 0)}>Override</button>
+        </div>
+        <ReactCompareImage
+          leftImage={img1Src}
+          rightImage={img2Src}
+          sliderPositionPercentage={position as number || 0}
+        />
+        <div>slider position: {position}</div>
+      </div>
+    );
+  })
   .add('detect slider position change', () => {
     const [position, setPosition] = useState(null);
     return (
