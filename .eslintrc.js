@@ -6,6 +6,7 @@ module.exports = {
     'plugin:prettier/recommended',
     'prettier',
     'prettier/react',
+    'plugin:storybook/recommended',
   ],
   plugins: ['jest', 'prettier', 'react-hooks'],
   globals: {
