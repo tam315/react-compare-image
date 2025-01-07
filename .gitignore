@@ -4,3 +4,6 @@ node_modules
 storybook-static
 yarn-error.log
 firebase-debug.log
+.idea
+
+*storybook.log

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-interface IProps {
+interface ReactCompareImageProps {
   aspectRatio?: 'taller' | 'wider';
   handle?: React.ReactNode;
   handleSize?: number;
@@ -21,7 +21,7 @@ interface IProps {
   vertical?: boolean;
 }
 
-const ReactCompareImage: React.FC<IProps> = (props: IProps) => {
+const ReactCompareImage = (props: ReactCompareImageProps) => {
   const {
     aspectRatio = 'taller',
     handle = null,
