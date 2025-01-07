@@ -12,5 +12,5 @@
     "jsx": "react",
     "outDir": "dist"
   },
-  "include": ["src/ReactCompareImage.tsx"]
+  "include": ["src/ReactCompareImage.tsx","src/globals.d.ts"]
 }
