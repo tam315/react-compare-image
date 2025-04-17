@@ -1,4 +1,5 @@
 import { type RefObject, useLayoutEffect, useRef } from 'react'
+import invariant from 'tiny-invariant'
 
 type ResizeCallback = (width: number) => void
 
@@ -10,7 +11,7 @@ type ResizeCallback = (width: number) => void
  */
 export default function useContainerWidth(
   onResize: ResizeCallback,
-): RefObject<HTMLDivElement> {
+): RefObject<HTMLDivElement | null> {
   const ref = useRef<HTMLDivElement>(null)
 
   useLayoutEffect(() => {
@@ -19,8 +20,8 @@ export default function useContainerWidth(
     }
 
     const observer = new ResizeObserver((entries) => {
-      const entry = entries[0]
-      onResize(entry.contentRect.width)
+      invariant(entries[0], 'ResizeObserver should have at least one entry')
+      onResize(entries[0].contentRect.width)
     })
     observer.observe(ref.current)
     // Initial call

@@ -70,5 +70,8 @@
   ],
   "volta": {
     "node": "22.14.0"
+  },
+  "dependencies": {
+    "tiny-invariant": "^1.3.3"
   }
 }

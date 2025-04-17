@@ -6,6 +6,7 @@ import {
   useRef,
   useState,
 } from 'react'
+import invariant from 'tiny-invariant'
 
 interface ReactCompareImageProps {
   aspectRatio?: 'taller' | 'wider'
@@ -126,6 +127,7 @@ const ReactCompareImage = (props: ReactCompareImageProps) => {
         cursorXFromViewport = e.pageX
         cursorYFromViewport = e.pageY
       } else {
+        invariant(e.touches[0], 'at least one touch point is required')
         cursorXFromViewport = e.touches[0].pageX
         cursorYFromViewport = e.touches[0].pageY
       }
@@ -245,7 +247,7 @@ const ReactCompareImage = (props: ReactCompareImageProps) => {
     vertical,
   ])
 
-  const styles: { [key: string]: CSSProperties } = {
+  const styles = {
     container: {
       boxSizing: 'border-box',
       position: 'relative',
@@ -390,7 +392,7 @@ const ReactCompareImage = (props: ReactCompareImageProps) => {
       position: 'absolute',
       width: '100%',
     },
-  }
+  } as const satisfies { [key: string]: CSSProperties }
 
   return (
     <>
