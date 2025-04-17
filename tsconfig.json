@@ -4,13 +4,9 @@
     "moduleResolution": "node",
     // allow default import
     "allowSyntheticDefaultImports": true,
-    // Instruct tsc to generate type definition file
-    "declaration": true,
-    // Only the declaration file is needed
-    // because transpile is executed by babel
-    "emitDeclarationOnly": true,
+    "noEmit": true,
     "jsx": "react",
     "outDir": "dist"
   },
-  "include": ["src/ReactCompareImage.tsx","src/globals.d.ts"]
+  "include": ["src/**/*.ts", "src/**/*.tsx"],
 }

@@ -98,6 +98,10 @@ const ReactCompareImage = (props: ReactCompareImageProps) => {
   const allImagesLoaded = rightImgLoaded && leftImgLoaded;
 
   useEffect(() => {
+    if (!allImagesLoaded) {
+      return;
+    }
+
     const handleSliding = event => {
       const e = event || window.event;
 
@@ -166,38 +170,35 @@ const ReactCompareImage = (props: ReactCompareImageProps) => {
 
     const containerElement = containerRef.current;
 
-    if (allImagesLoaded) {
-      // it's necessary to reset event handlers each time the canvasWidth changes
+    // it's necessary to reset event handlers each time the canvasWidth changes
 
-      // for mobile
-      containerElement.addEventListener('touchstart', startSliding); // 01
-      window.addEventListener('touchend', finishSliding); // 02
+    // for mobile
+    containerElement.addEventListener('touchstart', startSliding); // 01
+    window.addEventListener('touchend', finishSliding); // 02
 
-      // for desktop
-      if (hover) {
-        containerElement.addEventListener('mousemove', handleSliding); // 03
-        containerElement.addEventListener('mouseleave', finishSliding); // 04
-      } else {
-        containerElement.addEventListener('mousedown', startSliding); // 05
-        window.addEventListener('mouseup', finishSliding); // 06
-      }
-
-      // calc and set the container's size
-      const leftImageWidthHeightRatio =
-        leftImageRef.current.naturalHeight / leftImageRef.current.naturalWidth;
-      const rightImageWidthHeightRatio =
-        rightImageRef.current.naturalHeight /
-        rightImageRef.current.naturalWidth;
-
-      const idealWidthHeightRatio =
-        aspectRatio === 'taller'
-          ? Math.max(leftImageWidthHeightRatio, rightImageWidthHeightRatio)
-          : Math.min(leftImageWidthHeightRatio, rightImageWidthHeightRatio);
-
-      const idealContainerHeight = containerWidth * idealWidthHeightRatio;
-
-      setContainerHeight(idealContainerHeight);
+    // for desktop
+    if (hover) {
+      containerElement.addEventListener('mousemove', handleSliding); // 03
+      containerElement.addEventListener('mouseleave', finishSliding); // 04
+    } else {
+      containerElement.addEventListener('mousedown', startSliding); // 05
+      window.addEventListener('mouseup', finishSliding); // 06
     }
+
+    // calc and set the container's size
+    const leftImageWidthHeightRatio =
+      leftImageRef.current.naturalHeight / leftImageRef.current.naturalWidth;
+    const rightImageWidthHeightRatio =
+      rightImageRef.current.naturalHeight / rightImageRef.current.naturalWidth;
+
+    const idealWidthHeightRatio =
+      aspectRatio === 'taller'
+        ? Math.max(leftImageWidthHeightRatio, rightImageWidthHeightRatio)
+        : Math.min(leftImageWidthHeightRatio, rightImageWidthHeightRatio);
+
+    const idealContainerHeight = containerWidth * idealWidthHeightRatio;
+
+    setContainerHeight(idealContainerHeight);
 
     return () => {
       // cleanup all event resteners
@@ -210,7 +211,6 @@ const ReactCompareImage = (props: ReactCompareImageProps) => {
       window.removeEventListener('mousemove', handleSliding); // 07
       window.removeEventListener('touchmove', handleSliding); // 08
     };
-    // eslint-disable-next-line
   }, [
     allImagesLoaded,
     aspectRatio,
