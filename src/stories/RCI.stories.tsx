@@ -1,20 +1,20 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import img2Src from './assets/image2.png';
-import img2WiderSrc from './assets/image2-wider.png';
-import ReactCompareImage from '../ReactCompareImage';
-import img1Src from './assets/image1.png';
-import img1TallerSrc from './assets/image1-taller.png';
-import ImgTallerSrc from './assets/taller-image.png';
-import ImgWiderSrc from './assets/wider-image.png';
-import React from 'react';
+import ReactCompareImage from '@/ReactCompareImage'
+import type { Meta, StoryObj } from '@storybook/react'
+import { Fragment } from 'react'
+import img1TallerSrc from './assets/image1-taller.png'
+import img1Src from './assets/image1.png'
+import img2WiderSrc from './assets/image2-wider.png'
+import img2Src from './assets/image2.png'
+import ImgTallerSrc from './assets/taller-image.png'
+import ImgWiderSrc from './assets/wider-image.png'
 
 const meta: Meta<typeof ReactCompareImage> = {
   title: 'ReactCompareImage/Basic',
   component: ReactCompareImage,
-};
+}
 
-export default meta;
-type Story = StoryObj<typeof meta>;
+export default meta
+type Story = StoryObj<typeof meta>
 
 // More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
 export const Basic: Story = {
@@ -22,7 +22,7 @@ export const Basic: Story = {
     leftImage: img1Src,
     rightImage: img2Src,
   },
-};
+}
 
 export const Vertical: Story = {
   args: {
@@ -30,7 +30,7 @@ export const Vertical: Story = {
     rightImage: img2Src,
     vertical: true,
   },
-};
+}
 
 export const Hover: Story = {
   args: {
@@ -38,7 +38,7 @@ export const Hover: Story = {
     rightImage: img2Src,
     hover: true,
   },
-};
+}
 
 export const LabelHorizontal: Story = {
   args: {
@@ -47,7 +47,7 @@ export const LabelHorizontal: Story = {
     leftImageLabel: 'Before',
     rightImageLabel: 'After',
   },
-};
+}
 
 export const LabelVertical: Story = {
   args: {
@@ -57,7 +57,7 @@ export const LabelVertical: Story = {
     rightImageLabel: 'After',
     vertical: true,
   },
-};
+}
 
 export const ApplyCss: Story = {
   args: {
@@ -66,7 +66,7 @@ export const ApplyCss: Story = {
     leftImageCss: { filter: 'brightness(40%)' },
     rightImageCss: { filter: 'brightness(20%)' },
   },
-};
+}
 
 export const SliderCustomization: Story = {
   args: {
@@ -76,26 +76,28 @@ export const SliderCustomization: Story = {
     sliderLineColor: 'rebeccapurple',
     handle: <button type="button">I am Custom Handle!</button>,
   },
-};
+}
 
 export const NoHandleNoSlider: Story = {
   args: {
     leftImage: img1Src,
     rightImage: img2Src,
-    handle: <React.Fragment />,
+    handle: <Fragment />,
     sliderLineWidth: 0,
   },
-};
+}
 
 export const SliderPosition: Story = {
   args: {
     leftImage: img1Src,
     rightImage: img2Src,
-    onSliderPositionChange: position => {
-      console.log('Slider position:', position);
+    onSliderPositionChange: (position: number) => {
+      // biome-ignore lint/suspicious/noConsole: <explanation>
+      // biome-ignore lint/suspicious/noConsoleLog: <explanation>
+      console.log('Slider position:', position)
     },
   },
-};
+}
 
 export const Taller: Story = {
   args: {
@@ -103,7 +105,7 @@ export const Taller: Story = {
     rightImage: ImgWiderSrc,
     aspectRatio: 'taller',
   },
-};
+}
 
 export const Wider: Story = {
   args: {
@@ -111,7 +113,7 @@ export const Wider: Story = {
     rightImage: ImgWiderSrc,
     aspectRatio: 'wider',
   },
-};
+}
 
 export const SameWidthComparison: Story = {
   args: {
@@ -121,7 +123,7 @@ export const SameWidthComparison: Story = {
     rightImageCss: { objectFit: 'contain', objectPosition: 'top' },
     leftImageCss: { objectFit: 'contain', objectPosition: 'top' },
   },
-};
+}
 
 export const SameHeightComparison: Story = {
   args: {
@@ -132,4 +134,4 @@ export const SameHeightComparison: Story = {
     leftImageCss: { objectFit: 'contain', objectPosition: 'left' },
     sliderPositionPercentage: 0.95,
   },
-};
+}

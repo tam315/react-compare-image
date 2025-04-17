@@ -5,8 +5,23 @@
     // allow default import
     "allowSyntheticDefaultImports": true,
     "noEmit": true,
-    "jsx": "react",
-    "outDir": "dist"
+    "esModuleInterop": true,
+    "jsx": "react-jsx",
+    "outDir": "dist",
+    "lib": ["dom", "es2015"],
+    "skipLibCheck":true,
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "noErrorTruncation": false, // エラーを中略しない
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx"],
+  "include": ["src/**/*.ts", "src/**/*.tsx"]
 }

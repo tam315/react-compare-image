@@ -1,26 +1,36 @@
-import React, { useEffect, useRef, useState } from 'react';
+import useContainerWidth from '@/useContainerWidth'
+import {
+  type CSSProperties,
+  type ReactNode,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react'
+import invariant from 'tiny-invariant'
 
 interface ReactCompareImageProps {
-  aspectRatio?: 'taller' | 'wider';
-  handle?: React.ReactNode;
-  handleSize?: number;
-  hover?: boolean;
-  leftImage: string;
-  leftImageAlt?: string;
-  leftImageCss?: object;
-  leftImageLabel?: string;
-  onSliderPositionChange?: (position: number) => void;
-  rightImage: string;
-  rightImageAlt?: string;
-  rightImageCss?: object;
-  rightImageLabel?: string;
-  skeleton?: React.ReactNode;
-  sliderLineColor?: string;
-  sliderLineWidth?: number;
-  sliderPositionPercentage?: number;
-  vertical?: boolean;
+  aspectRatio?: 'taller' | 'wider'
+  handle?: ReactNode
+  handleSize?: number
+  hover?: boolean
+  leftImage: string
+  leftImageAlt?: string
+  leftImageCss?: object
+  leftImageLabel?: string
+  onSliderPositionChange?: (position: number) => void
+  rightImage: string
+  rightImageAlt?: string
+  rightImageCss?: object
+  rightImageLabel?: string
+  skeleton?: ReactNode
+  sliderLineColor?: string
+  sliderLineWidth?: number
+  sliderPositionPercentage?: number
+  vertical?: boolean
 }
 
+// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
 const ReactCompareImage = (props: ReactCompareImageProps) => {
   const {
     aspectRatio = 'taller',
@@ -31,7 +41,7 @@ const ReactCompareImage = (props: ReactCompareImageProps) => {
     leftImageAlt = '',
     leftImageCss = {},
     leftImageLabel = null,
-    onSliderPositionChange = () => {},
+    onSliderPositionChange,
     rightImage,
     rightImageAlt = '',
     rightImageCss = {},
@@ -41,188 +51,194 @@ const ReactCompareImage = (props: ReactCompareImageProps) => {
     sliderLineWidth = 2,
     sliderPositionPercentage = 0.5,
     vertical = false,
-  } = props;
+  } = props
 
-  const horizontal = !vertical;
+  const horizontal = !vertical
 
   // 0 to 1
   const [sliderPosition, setSliderPosition] = useState<number>(
     sliderPositionPercentage,
-  );
-  const [containerWidth, setContainerWidth] = useState<number>(0);
-  const [containerHeight, setContainerHeight] = useState<number>(0);
-  const [leftImgLoaded, setLeftImgLoaded] = useState<boolean>(false);
-  const [rightImgLoaded, setRightImgLoaded] = useState<boolean>(false);
-  const [isSliding, setIsSliding] = useState<boolean>(false);
+  )
+  const [isSliding, setIsSliding] = useState<boolean>(false)
 
-  const containerRef = useRef(null);
-  const rightImageRef = useRef(null);
-  const leftImageRef = useRef(null);
+  // size of the parent container
+  const [containerWidth, setContainerWidth] = useState<number>(0)
+  const [containerHeight, setContainerHeight] = useState<number>(0)
 
-  // make the component responsive
+  // refs to HTML elements
+  const containerRef = useContainerWidth((width) => setContainerWidth(width))
+  const rightImageRef = useRef<HTMLImageElement>(null)
+  const leftImageRef = useRef<HTMLImageElement>(null)
+
+  // image loading flag
+  const [imagesLoaded, setImagesLoaded] = useState(false)
+  const checkImagesLoaded = useCallback(() => {
+    if (leftImageRef.current?.complete && rightImageRef.current?.complete) {
+      setImagesLoaded(true)
+    }
+  }, [])
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies:
   useEffect(() => {
-    const containerElement = containerRef.current;
-    const resizeObserver = new ResizeObserver(([entry, ..._]) => {
-      const currentContainerWidth = entry.target.getBoundingClientRect().width;
-      setContainerWidth(currentContainerWidth);
-    });
-    resizeObserver.observe(containerElement);
-
-    return () => resizeObserver.disconnect();
-  }, []);
-
-  useEffect(() => {
-    // consider the case where loading image is completed immediately
-    // due to the cache etc.
-    const alreadyDone = leftImageRef.current.complete;
-    alreadyDone && setLeftImgLoaded(true);
+    // Sometimes onLoad is not called for some reason (maybe due to cache).
+    // So check explicitly.
+    checkImagesLoaded()
 
     return () => {
-      // when the left image source is changed
-      setLeftImgLoaded(false);
-    };
-  }, [leftImage]);
+      setImagesLoaded(false)
+    }
+  }, [leftImage, rightImage])
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: `onSliderPositionChange` is a prop and may cause infinite loop
   useEffect(() => {
-    // consider the case where loading image is completed immediately
-    // due to the cache etc.
-    const alreadyDone = rightImageRef.current.complete;
-    alreadyDone && setRightImgLoaded(true);
-
-    return () => {
-      // when the right image source is changed
-      setRightImgLoaded(false);
-    };
-  }, [rightImage]);
-
-  const allImagesLoaded = rightImgLoaded && leftImgLoaded;
-
-  useEffect(() => {
-    if (!allImagesLoaded) {
-      return;
+    // do nothing if refs are not ready for some reason
+    if (
+      !(leftImageRef.current && rightImageRef.current && containerRef.current)
+    ) {
+      return
     }
 
-    const handleSliding = event => {
-      const e = event || window.event;
+    // wait for image loading
+    if (!imagesLoaded) {
+      return
+    }
+
+    // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
+    const handleSliding = (e: MouseEvent | TouchEvent) => {
+      if (!rightImageRef.current) {
+        return
+      }
 
       // Calc cursor position from the:
       // - left edge of the viewport (for horizontal)
       // - top edge of the viewport (for vertical)
-      const cursorXfromViewport = e.touches ? e.touches[0].pageX : e.pageX;
-      const cursorYfromViewport = e.touches ? e.touches[0].pageY : e.pageY;
+      let cursorXFromViewport: number
+      let cursorYFromViewport: number
+      if (e instanceof MouseEvent) {
+        cursorXFromViewport = e.pageX
+        cursorYFromViewport = e.pageY
+      } else {
+        invariant(e.touches[0], 'at least one touch point is required')
+        cursorXFromViewport = e.touches[0].pageX
+        cursorYFromViewport = e.touches[0].pageY
+      }
 
       // Calc Cursor Position from the:
       // - left edge of the window (for horizontal)
       // - top edge of the window (for vertical)
       // to consider any page scrolling
-      const cursorXfromWindow = cursorXfromViewport - window.pageXOffset;
-      const cursorYfromWindow = cursorYfromViewport - window.pageYOffset;
+      const cursorXFromWindow = cursorXFromViewport - window.pageXOffset
+      const cursorYFromWindow = cursorYFromViewport - window.pageYOffset
 
       // Calc Cursor Position from the:
       // - left edge of the image(for horizontal)
       // - top edge of the image(for vertical)
-      const imagePosition = rightImageRef.current.getBoundingClientRect();
+      const imagePosition = rightImageRef.current.getBoundingClientRect()
       let pos = horizontal
-        ? cursorXfromWindow - imagePosition.left
-        : cursorYfromWindow - imagePosition.top;
+        ? cursorXFromWindow - imagePosition.left
+        : cursorYFromWindow - imagePosition.top
 
       // Set minimum and maximum values to prevent the slider from overflowing
-      const minPos = 0 + sliderLineWidth / 2;
+      const minPos = sliderLineWidth / 2
       const maxPos = horizontal
         ? containerWidth - sliderLineWidth / 2
-        : containerHeight - sliderLineWidth / 2;
+        : containerHeight - sliderLineWidth / 2
 
-      if (pos < minPos) pos = minPos;
-      if (pos > maxPos) pos = maxPos;
+      if (pos < minPos) {
+        pos = minPos
+      }
+      if (pos > maxPos) {
+        pos = maxPos
+      }
 
       horizontal
         ? setSliderPosition(pos / containerWidth)
-        : setSliderPosition(pos / containerHeight);
+        : setSliderPosition(pos / containerHeight)
 
       // If there's a callback function, invoke it everytime the slider changes
       if (onSliderPositionChange) {
         horizontal
           ? onSliderPositionChange(pos / containerWidth)
-          : onSliderPositionChange(pos / containerHeight);
+          : onSliderPositionChange(pos / containerHeight)
       }
-    };
+    }
 
-    const startSliding = e => {
-      setIsSliding(true);
+    const startSliding = (e: MouseEvent | TouchEvent) => {
+      setIsSliding(true)
 
       // Prevent default behavior other than mobile scrolling
       if (!('touches' in e)) {
-        e.preventDefault();
+        e.preventDefault()
       }
 
       // Slide the image even if you just click or tap (not drag)
-      handleSliding(e);
+      handleSliding(e)
 
-      window.addEventListener('mousemove', handleSliding); // 07
-      window.addEventListener('touchmove', handleSliding); // 08
-    };
+      window.addEventListener('mousemove', handleSliding) // 07
+      window.addEventListener('touchmove', handleSliding) // 08
+    }
 
     const finishSliding = () => {
-      setIsSliding(false);
-      window.removeEventListener('mousemove', handleSliding);
-      window.removeEventListener('touchmove', handleSliding);
-    };
+      setIsSliding(false)
+      window.removeEventListener('mousemove', handleSliding)
+      window.removeEventListener('touchmove', handleSliding)
+    }
 
-    const containerElement = containerRef.current;
+    const containerElement = containerRef.current
 
     // it's necessary to reset event handlers each time the canvasWidth changes
 
     // for mobile
-    containerElement.addEventListener('touchstart', startSliding); // 01
-    window.addEventListener('touchend', finishSliding); // 02
+    containerElement.addEventListener('touchstart', startSliding) // 01
+    window.addEventListener('touchend', finishSliding) // 02
 
     // for desktop
     if (hover) {
-      containerElement.addEventListener('mousemove', handleSliding); // 03
-      containerElement.addEventListener('mouseleave', finishSliding); // 04
+      containerElement.addEventListener('mousemove', handleSliding) // 03
+      containerElement.addEventListener('mouseleave', finishSliding) // 04
     } else {
-      containerElement.addEventListener('mousedown', startSliding); // 05
-      window.addEventListener('mouseup', finishSliding); // 06
+      containerElement.addEventListener('mousedown', startSliding) // 05
+      window.addEventListener('mouseup', finishSliding) // 06
     }
 
     // calc and set the container's size
     const leftImageWidthHeightRatio =
-      leftImageRef.current.naturalHeight / leftImageRef.current.naturalWidth;
+      leftImageRef.current.naturalHeight / leftImageRef.current.naturalWidth
     const rightImageWidthHeightRatio =
-      rightImageRef.current.naturalHeight / rightImageRef.current.naturalWidth;
+      rightImageRef.current.naturalHeight / rightImageRef.current.naturalWidth
 
     const idealWidthHeightRatio =
       aspectRatio === 'taller'
         ? Math.max(leftImageWidthHeightRatio, rightImageWidthHeightRatio)
-        : Math.min(leftImageWidthHeightRatio, rightImageWidthHeightRatio);
+        : Math.min(leftImageWidthHeightRatio, rightImageWidthHeightRatio)
 
-    const idealContainerHeight = containerWidth * idealWidthHeightRatio;
+    const idealContainerHeight = containerWidth * idealWidthHeightRatio
 
-    setContainerHeight(idealContainerHeight);
+    setContainerHeight(idealContainerHeight)
 
     return () => {
-      // cleanup all event resteners
-      containerElement.removeEventListener('touchstart', startSliding); // 01
-      window.removeEventListener('touchend', finishSliding); // 02
-      containerElement.removeEventListener('mousemove', handleSliding); // 03
-      containerElement.removeEventListener('mouseleave', finishSliding); // 04
-      containerElement.removeEventListener('mousedown', startSliding); // 05
-      window.removeEventListener('mouseup', finishSliding); // 06
-      window.removeEventListener('mousemove', handleSliding); // 07
-      window.removeEventListener('touchmove', handleSliding); // 08
-    };
+      // cleanup all event listeners
+      containerElement.removeEventListener('touchstart', startSliding) // 01
+      window.removeEventListener('touchend', finishSliding) // 02
+      containerElement.removeEventListener('mousemove', handleSliding) // 03
+      containerElement.removeEventListener('mouseleave', finishSliding) // 04
+      containerElement.removeEventListener('mousedown', startSliding) // 05
+      window.removeEventListener('mouseup', finishSliding) // 06
+      window.removeEventListener('mousemove', handleSliding) // 07
+      window.removeEventListener('touchmove', handleSliding) // 08
+    }
   }, [
-    allImagesLoaded,
+    imagesLoaded,
     aspectRatio,
     containerHeight,
     containerWidth,
     horizontal,
     hover,
     sliderLineWidth,
-    vertical,
-  ]);
+    containerRef,
+  ])
 
-  const styles: { [key: string]: React.CSSProperties } = {
+  const styles = {
     container: {
       boxSizing: 'border-box',
       position: 'relative',
@@ -231,9 +247,9 @@ const ReactCompareImage = (props: ReactCompareImageProps) => {
       overflow: 'hidden',
     },
     rightImage: {
-      clip: horizontal
-        ? `rect(auto, auto, auto, ${containerWidth * sliderPosition}px)`
-        : `rect(${containerHeight * sliderPosition}px, auto, auto, auto)`,
+      clipPath: horizontal
+        ? `inset(0px 0px 0px ${containerWidth * sliderPosition}px)`
+        : `inset(${containerHeight * sliderPosition}px 0px 0px 0px)`,
       display: 'block',
       height: '100%',
       objectFit: 'cover',
@@ -242,9 +258,9 @@ const ReactCompareImage = (props: ReactCompareImageProps) => {
       ...rightImageCss,
     },
     leftImage: {
-      clip: horizontal
-        ? `rect(auto, ${containerWidth * sliderPosition}px, auto, auto)`
-        : `rect(auto, auto, ${containerHeight * sliderPosition}px, auto)`,
+      clipPath: horizontal
+        ? `inset(0px ${containerWidth * (1 - sliderPosition)}px 0px 0px)`
+        : `inset(0px 0px ${containerHeight * (1 - sliderPosition)}px 0px)`,
       display: 'block',
       height: '100%',
       objectFit: 'cover',
@@ -254,21 +270,26 @@ const ReactCompareImage = (props: ReactCompareImageProps) => {
     },
     slider: {
       alignItems: 'center',
-      cursor:
-        (!hover && horizontal && 'ew-resize') ||
-        (!hover && !horizontal && 'ns-resize'),
       display: 'flex',
-      flexDirection: horizontal ? 'column' : 'row',
-      height: horizontal ? '100%' : `${handleSize}px`,
       justifyContent: 'center',
-      left: horizontal
-        ? `${containerWidth * sliderPosition - handleSize / 2}px`
-        : 0,
       position: 'absolute',
-      top: horizontal
-        ? 0
-        : `${containerHeight * sliderPosition - handleSize / 2}px`,
-      width: horizontal ? `${handleSize}px` : '100%',
+      ...(horizontal
+        ? {
+            cursor: 'ew-resize',
+            flexDirection: 'column',
+            height: '100%',
+            left: `${containerWidth * sliderPosition - handleSize / 2}px`,
+            top: 0,
+            width: `${handleSize}px`,
+          }
+        : {
+            cursor: 'ns-resize',
+            flexDirection: 'row',
+            height: `${handleSize}px`,
+            left: 0,
+            top: `${containerHeight * sliderPosition - handleSize / 2}px`,
+            width: '100%',
+          }),
     },
     line: {
       background: sliderLineColor,
@@ -333,47 +354,53 @@ const ReactCompareImage = (props: ReactCompareImageProps) => {
       opacity: isSliding ? 0 : 1,
       padding: '10px 20px',
       position: 'absolute',
-      left: horizontal ? null : '50%',
-      right: horizontal ? '5%' : null,
-      top: horizontal ? '50%' : null,
-      bottom: horizontal ? null : '3%',
-      transform: horizontal ? 'translate(0,-50%)' : 'translate(-50%, 0)',
+      ...(horizontal
+        ? {
+            right: '5%',
+            top: '50%',
+            transform: 'translate(0,-50%)',
+          }
+        : {
+            left: '50%',
+            bottom: '3%',
+            transform: 'translate(-50%, 0)',
+          }),
       transition: 'opacity 0.1s ease-out',
     },
     leftLabelContainer: {
-      clip: horizontal
-        ? `rect(auto, ${containerWidth * sliderPosition}px, auto, auto)`
-        : `rect(auto, auto, ${containerHeight * sliderPosition}px, auto)`,
+      clipPath: horizontal
+        ? `inset(0px ${containerWidth * (1 - sliderPosition)}px 0px 0px)`
+        : `inset(0px 0px ${containerHeight * (1 - sliderPosition)}px 0px)`,
       height: '100%',
       position: 'absolute',
       width: '100%',
     },
     rightLabelContainer: {
-      clip: horizontal
-        ? `rect(auto, auto, auto, ${containerWidth * sliderPosition}px)`
-        : `rect(${containerHeight * sliderPosition}px, auto, auto, auto)`,
+      clipPath: horizontal
+        ? `inset(0px 0px 0px ${containerWidth * sliderPosition}px)`
+        : `inset(${containerHeight * sliderPosition}px 0px 0px 0px)`,
       height: '100%',
       position: 'absolute',
       width: '100%',
     },
-  };
+  } as const satisfies { [key: string]: CSSProperties }
 
   return (
     <>
-      {skeleton && !allImagesLoaded && (
+      {skeleton && !imagesLoaded && (
         <div style={{ ...styles.container }}>{skeleton}</div>
       )}
 
       <div
         style={{
           ...styles.container,
-          display: allImagesLoaded ? 'block' : 'none',
+          display: imagesLoaded ? 'block' : 'none',
         }}
         ref={containerRef}
         data-testid="container"
       >
         <img
-          onLoad={() => setRightImgLoaded(true)}
+          onLoad={() => checkImagesLoaded()}
           alt={rightImageAlt}
           data-testid="right-image"
           ref={rightImageRef}
@@ -381,7 +408,7 @@ const ReactCompareImage = (props: ReactCompareImageProps) => {
           style={styles.rightImage}
         />
         <img
-          onLoad={() => setLeftImgLoaded(true)}
+          onLoad={() => checkImagesLoaded()}
           alt={leftImageAlt}
           data-testid="left-image"
           ref={leftImageRef}
@@ -413,7 +440,7 @@ const ReactCompareImage = (props: ReactCompareImageProps) => {
         )}
       </div>
     </>
-  );
-};
+  )
+}
 
-export default ReactCompareImage;
+export default ReactCompareImage
