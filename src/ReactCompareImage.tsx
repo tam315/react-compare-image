@@ -2,6 +2,7 @@ import useContainerWidth from '@/useContainerWidth'
 import {
   type CSSProperties,
   type ReactNode,
+  useCallback,
   useEffect,
   useRef,
   useState,
@@ -69,42 +70,24 @@ const ReactCompareImage = (props: ReactCompareImageProps) => {
   const rightImageRef = useRef<HTMLImageElement>(null)
   const leftImageRef = useRef<HTMLImageElement>(null)
 
-  // image loading flags
-  const [leftImgLoaded, setLeftImgLoaded] = useState<boolean>(false)
-  const [rightImgLoaded, setRightImgLoaded] = useState<boolean>(false)
-  const allImagesLoaded = rightImgLoaded && leftImgLoaded
-
-  // biome-ignore lint/correctness/useExhaustiveDependencies: We need calculation when the image is changed
-  useEffect(() => {
-    if (!leftImageRef.current) {
-      return
+  // image loading flag
+  const [imagesLoaded, setImagesLoaded] = useState(false)
+  const checkImagesLoaded = useCallback(() => {
+    if (leftImageRef.current?.complete && rightImageRef.current?.complete) {
+      setImagesLoaded(true)
     }
-    // consider the case where loading image is completed immediately
-    // due to the cache etc.
-    const alreadyDone = leftImageRef.current.complete
-    alreadyDone && setLeftImgLoaded(true)
+  }, [])
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies:
+  useEffect(() => {
+    // Sometimes onLoad is not called for some reason (maybe due to cache).
+    // So check explicitly.
+    checkImagesLoaded()
 
     return () => {
-      // when the left image source is changed
-      setLeftImgLoaded(false)
+      setImagesLoaded(false)
     }
-  }, [leftImage])
-
-  // biome-ignore lint/correctness/useExhaustiveDependencies: We need calculation when the image is changed
-  useEffect(() => {
-    if (!rightImageRef.current) {
-      return
-    }
-    // consider the case where loading image is completed immediately
-    // due to the cache etc.
-    const alreadyDone = rightImageRef.current.complete
-    alreadyDone && setRightImgLoaded(true)
-
-    return () => {
-      // when the right image source is changed
-      setRightImgLoaded(false)
-    }
-  }, [rightImage])
+  }, [leftImage, rightImage])
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: `onSliderPositionChange` is a prop and may cause infinite loop
   useEffect(() => {
@@ -116,7 +99,7 @@ const ReactCompareImage = (props: ReactCompareImageProps) => {
     }
 
     // wait for image loading
-    if (!allImagesLoaded) {
+    if (!imagesLoaded) {
       return
     }
 
@@ -245,7 +228,7 @@ const ReactCompareImage = (props: ReactCompareImageProps) => {
       window.removeEventListener('touchmove', handleSliding) // 08
     }
   }, [
-    allImagesLoaded,
+    imagesLoaded,
     aspectRatio,
     containerHeight,
     containerWidth,
@@ -404,20 +387,20 @@ const ReactCompareImage = (props: ReactCompareImageProps) => {
 
   return (
     <>
-      {skeleton && !allImagesLoaded && (
+      {skeleton && !imagesLoaded && (
         <div style={{ ...styles.container }}>{skeleton}</div>
       )}
 
       <div
         style={{
           ...styles.container,
-          display: allImagesLoaded ? 'block' : 'none',
+          display: imagesLoaded ? 'block' : 'none',
         }}
         ref={containerRef}
         data-testid="container"
       >
         <img
-          onLoad={() => setRightImgLoaded(true)}
+          onLoad={() => checkImagesLoaded()}
           alt={rightImageAlt}
           data-testid="right-image"
           ref={rightImageRef}
@@ -425,7 +408,7 @@ const ReactCompareImage = (props: ReactCompareImageProps) => {
           style={styles.rightImage}
         />
         <img
-          onLoad={() => setLeftImgLoaded(true)}
+          onLoad={() => checkImagesLoaded()}
           alt={leftImageAlt}
           data-testid="left-image"
           ref={leftImageRef}
