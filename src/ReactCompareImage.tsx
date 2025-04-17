@@ -272,22 +272,26 @@ const ReactCompareImage = (props: ReactCompareImageProps) => {
     },
     slider: {
       alignItems: 'center',
-      cursor:
-        (!hover && horizontal && 'ew-resize') ||
-        (!(hover || horizontal) && 'ns-resize') ||
-        undefined,
       display: 'flex',
-      flexDirection: horizontal ? 'column' : 'row',
-      height: horizontal ? '100%' : `${handleSize}px`,
       justifyContent: 'center',
-      left: horizontal
-        ? `${containerWidth * sliderPosition - handleSize / 2}px`
-        : 0,
       position: 'absolute',
-      top: horizontal
-        ? 0
-        : `${containerHeight * sliderPosition - handleSize / 2}px`,
-      width: horizontal ? `${handleSize}px` : '100%',
+      ...(horizontal
+        ? {
+            cursor: 'ew-resize',
+            flexDirection: 'column',
+            height: '100%',
+            left: `${containerWidth * sliderPosition - handleSize / 2}px`,
+            top: 0,
+            width: `${handleSize}px`,
+          }
+        : {
+            cursor: 'ns-resize',
+            flexDirection: 'row',
+            height: `${handleSize}px`,
+            left: 0,
+            top: `${containerHeight * sliderPosition - handleSize / 2}px`,
+            width: '100%',
+          }),
     },
     line: {
       background: sliderLineColor,
