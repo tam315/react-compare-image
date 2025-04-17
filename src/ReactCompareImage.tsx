@@ -1,10 +1,15 @@
 import useContainerWidth from '@/useContainerWidth'
-import { useEffect, useRef, useState } from 'react'
-import type React from 'react'
+import {
+  type CSSProperties,
+  type ReactNode,
+  useEffect,
+  useRef,
+  useState,
+} from 'react'
 
 interface ReactCompareImageProps {
   aspectRatio?: 'taller' | 'wider'
-  handle?: React.ReactNode
+  handle?: ReactNode
   handleSize?: number
   hover?: boolean
   leftImage: string
@@ -16,7 +21,7 @@ interface ReactCompareImageProps {
   rightImageAlt?: string
   rightImageCss?: object
   rightImageLabel?: string
-  skeleton?: React.ReactNode
+  skeleton?: ReactNode
   sliderLineColor?: string
   sliderLineWidth?: number
   sliderPositionPercentage?: number
@@ -240,7 +245,7 @@ const ReactCompareImage = (props: ReactCompareImageProps) => {
     vertical,
   ])
 
-  const styles: { [key: string]: React.CSSProperties } = {
+  const styles: { [key: string]: CSSProperties } = {
     container: {
       boxSizing: 'border-box',
       position: 'relative',
