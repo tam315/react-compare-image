@@ -7,9 +7,9 @@
   "types": "./dist/ReactCompareImage.d.ts",
   "exports": {
     ".": {
+      "types": "./dist/ReactCompareImage.d.ts",
       "require": "./dist/ReactCompareImage.umd.js",
-      "import": "./dist/ReactCompareImage.mjs",
-      "types": "./dist/ReactCompareImage.d.ts"
+      "import": "./dist/ReactCompareImage.mjs"
     }
   },
   "scripts": {
