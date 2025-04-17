@@ -1,4 +1,5 @@
 import { calculateContainerHeight } from '@/utils/calculateContainerHeight'
+import { expect, it } from 'vitest'
 
 it('chooses the larger ratio when aspect is "taller"', () => {
   const containerWidth = 200
