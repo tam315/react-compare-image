@@ -2,11 +2,19 @@
   "name": "react-compare-image",
   "version": "3.5.0",
   "description": "React component to compare two images using slider.",
-  "main": "dist/bundle.js",
-  "types": "dist/ReactCompareImage.d.ts",
+  "main": "./dist/ReactCompareImage.umd.js",
+  "module": "./dist/ReactCompareImage.mjs",
+  "types": "./dist/ReactCompareImage.d.ts",
+  "exports": {
+    ".": {
+      "require": "./dist/ReactCompareImage.umd.js",
+      "import": "./dist/ReactCompareImage.mjs",
+      "types": "./dist/ReactCompareImage.d.ts"
+    }
+  },
   "scripts": {
-    "build": "del-cli dist/**/* && webpack --config ./webpack.production.config.js && npx tsc",
-    "prepublishOnly": "pnpm test && pnpm build",
+    "build": "vite build",
+    "prepublishOnly": "npm run build",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
@@ -21,12 +29,6 @@
     "react-dom": "^16.8 || ^17 || ^18 || ^19"
   },
   "devDependencies": {
-    "@babel/core": "^7.20.5",
-    "@babel/plugin-proposal-class-properties": "^7.18.6",
-    "@babel/plugin-proposal-object-rest-spread": "^7.20.2",
-    "@babel/preset-env": "^7.20.2",
-    "@babel/preset-react": "^7.18.6",
-    "@babel/preset-typescript": "^7.18.6",
     "@chromatic-com/storybook": "^3.2.6",
     "@storybook/addon-essentials": "^8.6.12",
     "@storybook/addon-interactions": "^8.6.12",
@@ -36,19 +38,13 @@
     "@storybook/react-vite": "^8.6.12",
     "@storybook/test": "^8.6.12",
     "@types/resize-observer-browser": "^0.1.11",
-    "babel-loader": "^9.1.0",
-    "babel-polyfill": "^6.26.0",
-    "del-cli": "^5.0.0",
-    "file-loader": "^6.0.0",
-    "prettier": "^2.8.0",
+    "@vitejs/plugin-react": "^4.2.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "storybook": "^8.6.12",
-    "style-loader": "^3.3.1",
     "typescript": "^4.9.3",
-    "url-loader": "^4.1.0",
-    "webpack": "^5.75.0",
-    "webpack-cli": "5.0.0"
+    "vite": "^5.1.4",
+    "vite-plugin-dts": "^4.5.3"
   },
   "keywords": [
     "picture comparison",
