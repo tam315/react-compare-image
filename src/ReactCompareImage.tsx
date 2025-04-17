@@ -8,6 +8,8 @@ import {
   useState,
 } from 'react'
 import invariant from 'tiny-invariant'
+import { getImageRatio } from '@/utils/getImageRatio'
+import { calculateContainerHeight } from '@/utils/calculateContainerHeight'
 
 interface ReactCompareImageProps {
   aspectRatio?: 'taller' | 'wider'
@@ -202,19 +204,13 @@ const ReactCompareImage = (props: ReactCompareImageProps) => {
     }
 
     // calc and set the container's size
-    const leftImageWidthHeightRatio =
-      leftImageRef.current.naturalHeight / leftImageRef.current.naturalWidth
-    const rightImageWidthHeightRatio =
-      rightImageRef.current.naturalHeight / rightImageRef.current.naturalWidth
-
-    const idealWidthHeightRatio =
-      aspectRatio === 'taller'
-        ? Math.max(leftImageWidthHeightRatio, rightImageWidthHeightRatio)
-        : Math.min(leftImageWidthHeightRatio, rightImageWidthHeightRatio)
-
-    const idealContainerHeight = containerWidth * idealWidthHeightRatio
-
-    setContainerHeight(idealContainerHeight)
+    const height = calculateContainerHeight(
+      containerWidth,
+      getImageRatio(leftImageRef.current),
+      getImageRatio(rightImageRef.current),
+      aspectRatio,
+    )
+    setContainerHeight(height)
 
     return () => {
       // cleanup all event listeners
