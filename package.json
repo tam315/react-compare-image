@@ -5,7 +5,7 @@
   "main": "dist/bundle.js",
   "types": "dist/ReactCompareImage.d.ts",
   "scripts": {
-    "build": "del-cli dist/**/* && webpack --config ./webpack.production.config.js && pnpm tsc",
+    "build": "del-cli dist/**/* && webpack --config ./webpack.production.config.js && npx tsc",
     "prepublishOnly": "pnpm test && pnpm build",
     "test": "jest",
     "test:watch": "jest --watch",
@@ -85,5 +85,7 @@
     "last 1 ChromeAndroid versions",
     "last 1 iOS versions"
   ],
-  "packageManager": "pnpm@9.14.0+sha512.100738ce99825e11ad8179a169c8e25ca6b8eea4be329c157f47990581ee7411148de541b4052b6cff4ebf0da3b54a039d879898234e0f84416c2dd27be5a378"
+  "volta": {
+    "node": "22.14.0"
+  }
 }
