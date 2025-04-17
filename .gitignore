@@ -7,3 +7,5 @@ firebase-debug.log
 .idea
 
 *storybook.log
+
+.vscode
