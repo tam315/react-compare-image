@@ -5,10 +5,13 @@
     // allow default import
     "allowSyntheticDefaultImports": true,
     "noEmit": true,
-    "jsx": "react",
+    "jsx": "react-jsx",
     "outDir": "dist",
     "lib": ["dom", "es2015"],
-    "skipLibCheck":true
+    "skipLibCheck":true,
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   },
   "include": ["src/**/*.ts", "src/**/*.tsx"]
 }
