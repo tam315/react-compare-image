@@ -211,7 +211,6 @@ const ReactCompareImage = (props: ReactCompareImageProps) => {
       window.removeEventListener('mousemove', handleSliding); // 07
       window.removeEventListener('touchmove', handleSliding); // 08
     };
-    // eslint-disable-next-line
   }, [
     allImagesLoaded,
     aspectRatio,

@@ -7,8 +7,6 @@
   "scripts": {
     "build": "del-cli dist/**/* && webpack --config ./webpack.production.config.js && npx tsc",
     "prepublishOnly": "pnpm test && pnpm build",
-    "test": "jest",
-    "test:watch": "jest --watch",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
@@ -21,9 +19,6 @@
   "peerDependencies": {
     "react": "^16.8 || ^17 || ^18 || ^19",
     "react-dom": "^16.8 || ^17 || ^18 || ^19"
-  },
-  "dependencies": {
-    "jest-environment-jsdom": "^29.3.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.5",
@@ -40,26 +35,11 @@
     "@storybook/react": "^8.4.7",
     "@storybook/react-vite": "^8.4.7",
     "@storybook/test": "^8.4.7",
-    "@testing-library/jest-dom": "^5.16.5",
-    "@testing-library/react": "^13.4.0",
     "@types/resize-observer-browser": "^0.1.7",
-    "babel-eslint": "^10.0.1",
-    "babel-jest": "^29.3.1",
     "babel-loader": "^9.1.0",
     "babel-polyfill": "^6.26.0",
     "del-cli": "^5.0.0",
-    "eslint": "^8.28.0",
-    "eslint-config-airbnb": "^19.0.4",
-    "eslint-config-prettier": "^8.5.0",
-    "eslint-plugin-import": "^2.26.0",
-    "eslint-plugin-jest": "^27.1.6",
-    "eslint-plugin-jsx-a11y": "^6.6.1",
-    "eslint-plugin-prettier": "^4.2.1",
-    "eslint-plugin-react": "^7.31.11",
-    "eslint-plugin-react-hooks": "^4.6.0",
-    "eslint-plugin-storybook": "^0.11.2",
     "file-loader": "^6.0.0",
-    "jest": "^29.3.1",
     "prettier": "^2.8.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
