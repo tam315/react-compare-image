@@ -249,9 +249,9 @@ const ReactCompareImage = (props: ReactCompareImageProps) => {
       overflow: 'hidden',
     },
     rightImage: {
-      clip: horizontal
-        ? `rect(auto, auto, auto, ${containerWidth * sliderPosition}px)`
-        : `rect(${containerHeight * sliderPosition}px, auto, auto, auto)`,
+      clipPath: horizontal
+        ? `inset(0px 0px 0px ${containerWidth * sliderPosition}px)`
+        : `inset(${containerHeight * sliderPosition}px 0px 0px 0px)`,
       display: 'block',
       height: '100%',
       objectFit: 'cover',
@@ -260,9 +260,9 @@ const ReactCompareImage = (props: ReactCompareImageProps) => {
       ...rightImageCss,
     },
     leftImage: {
-      clip: horizontal
-        ? `rect(auto, ${containerWidth * sliderPosition}px, auto, auto)`
-        : `rect(auto, auto, ${containerHeight * sliderPosition}px, auto)`,
+      clipPath: horizontal
+        ? `inset(0px ${containerWidth * (1 - sliderPosition)}px 0px 0px)`
+        : `inset(0px 0px ${containerHeight * (1 - sliderPosition)}px 0px)`,
       display: 'block',
       height: '100%',
       objectFit: 'cover',
@@ -366,17 +366,17 @@ const ReactCompareImage = (props: ReactCompareImageProps) => {
       transition: 'opacity 0.1s ease-out',
     },
     leftLabelContainer: {
-      clip: horizontal
-        ? `rect(auto, ${containerWidth * sliderPosition}px, auto, auto)`
-        : `rect(auto, auto, ${containerHeight * sliderPosition}px, auto)`,
+      clipPath: horizontal
+        ? `inset(0px ${containerWidth * (1 - sliderPosition)}px 0px 0px)`
+        : `inset(0px 0px ${containerHeight * (1 - sliderPosition)}px 0px)`,
       height: '100%',
       position: 'absolute',
       width: '100%',
     },
     rightLabelContainer: {
-      clip: horizontal
-        ? `rect(auto, auto, auto, ${containerWidth * sliderPosition}px)`
-        : `rect(${containerHeight * sliderPosition}px, auto, auto, auto)`,
+      clipPath: horizontal
+        ? `inset(0px 0px 0px ${containerWidth * sliderPosition}px)`
+        : `inset(${containerHeight * sliderPosition}px 0px 0px 0px)`,
       height: '100%',
       position: 'absolute',
       width: '100%',
