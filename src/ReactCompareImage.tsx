@@ -59,11 +59,14 @@ const ReactCompareImage = (props: ReactCompareImageProps) => {
   const [isSliding, setIsSliding] = useState<boolean>(false)
 
   const containerRef = useContainerWidth((width) => setContainerWidth(width))
-  const rightImageRef = useRef(null)
-  const leftImageRef = useRef(null)
+  const rightImageRef = useRef<HTMLImageElement>(null)
+  const leftImageRef = useRef<HTMLImageElement>(null)
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
+    if (!leftImageRef.current) {
+      return
+    }
     // consider the case where loading image is completed immediately
     // due to the cache etc.
     const alreadyDone = leftImageRef.current.complete
@@ -77,6 +80,9 @@ const ReactCompareImage = (props: ReactCompareImageProps) => {
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
+    if (!rightImageRef.current) {
+      return
+    }
     // consider the case where loading image is completed immediately
     // due to the cache etc.
     const alreadyDone = rightImageRef.current.complete
@@ -96,30 +102,43 @@ const ReactCompareImage = (props: ReactCompareImageProps) => {
       return
     }
 
+    if (!(leftImageRef.current && rightImageRef.current)) {
+      return
+    }
+
     // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
-    const handleSliding = (event) => {
-      const e = event || window.event
+    const handleSliding = (e: MouseEvent | TouchEvent) => {
+      if (!rightImageRef.current) {
+        return
+      }
 
       // Calc cursor position from the:
       // - left edge of the viewport (for horizontal)
       // - top edge of the viewport (for vertical)
-      const cursorXfromViewport = e.touches ? e.touches[0].pageX : e.pageX
-      const cursorYfromViewport = e.touches ? e.touches[0].pageY : e.pageY
+      let cursorXFromViewport: number
+      let cursorYFromViewport: number
+      if (e instanceof MouseEvent) {
+        cursorXFromViewport = e.pageX
+        cursorYFromViewport = e.pageY
+      } else {
+        cursorXFromViewport = e.touches[0].pageX
+        cursorYFromViewport = e.touches[0].pageY
+      }
 
       // Calc Cursor Position from the:
       // - left edge of the window (for horizontal)
       // - top edge of the window (for vertical)
       // to consider any page scrolling
-      const cursorXfromWindow = cursorXfromViewport - window.pageXOffset
-      const cursorYfromWindow = cursorYfromViewport - window.pageYOffset
+      const cursorXFromWindow = cursorXFromViewport - window.pageXOffset
+      const cursorYFromWindow = cursorYFromViewport - window.pageYOffset
 
       // Calc Cursor Position from the:
       // - left edge of the image(for horizontal)
       // - top edge of the image(for vertical)
       const imagePosition = rightImageRef.current.getBoundingClientRect()
       let pos = horizontal
-        ? cursorXfromWindow - imagePosition.left
-        : cursorYfromWindow - imagePosition.top
+        ? cursorXFromWindow - imagePosition.left
+        : cursorYFromWindow - imagePosition.top
 
       // Set minimum and maximum values to prevent the slider from overflowing
       const minPos = sliderLineWidth / 2
@@ -146,7 +165,7 @@ const ReactCompareImage = (props: ReactCompareImageProps) => {
       }
     }
 
-    const startSliding = (e) => {
+    const startSliding = (e: MouseEvent | TouchEvent) => {
       setIsSliding(true)
 
       // Prevent default behavior other than mobile scrolling
@@ -255,7 +274,8 @@ const ReactCompareImage = (props: ReactCompareImageProps) => {
       alignItems: 'center',
       cursor:
         (!hover && horizontal && 'ew-resize') ||
-        (!(hover || horizontal) && 'ns-resize'),
+        (!(hover || horizontal) && 'ns-resize') ||
+        undefined,
       display: 'flex',
       flexDirection: horizontal ? 'column' : 'row',
       height: horizontal ? '100%' : `${handleSize}px`,
@@ -332,11 +352,17 @@ const ReactCompareImage = (props: ReactCompareImageProps) => {
       opacity: isSliding ? 0 : 1,
       padding: '10px 20px',
       position: 'absolute',
-      left: horizontal ? null : '50%',
-      right: horizontal ? '5%' : null,
-      top: horizontal ? '50%' : null,
-      bottom: horizontal ? null : '3%',
-      transform: horizontal ? 'translate(0,-50%)' : 'translate(-50%, 0)',
+      ...(horizontal
+        ? {
+            right: '5%',
+            top: '50%',
+            transform: 'translate(0,-50%)',
+          }
+        : {
+            left: '50%',
+            bottom: '3%',
+            transform: 'translate(-50%, 0)',
+          }),
       transition: 'opacity 0.1s ease-out',
     },
     leftLabelContainer: {
