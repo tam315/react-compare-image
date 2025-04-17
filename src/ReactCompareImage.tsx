@@ -1,4 +1,4 @@
-import useContainerWidth from '@/useContainerWidth'
+import useContainerWidth from '@/hooks/useContainerWidth'
 import {
   type CSSProperties,
   type ReactNode,
