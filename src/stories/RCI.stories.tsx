@@ -91,7 +91,7 @@ export const SliderPosition: Story = {
   args: {
     leftImage: img1Src,
     rightImage: img2Src,
-    onSliderPositionChange: (position) => {
+    onSliderPositionChange: (position: number) => {
       // biome-ignore lint/suspicious/noConsole: <explanation>
       // biome-ignore lint/suspicious/noConsoleLog: <explanation>
       console.log('Slider position:', position)
