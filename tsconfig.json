@@ -5,6 +5,7 @@
     // allow default import
     "allowSyntheticDefaultImports": true,
     "noEmit": true,
+    "esModuleInterop": true,
     "jsx": "react-jsx",
     "outDir": "dist",
     "lib": ["dom", "es2015"],
