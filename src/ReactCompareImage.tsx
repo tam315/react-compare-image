@@ -58,17 +58,23 @@ const ReactCompareImage = (props: ReactCompareImageProps) => {
   const [sliderPosition, setSliderPosition] = useState<number>(
     sliderPositionPercentage,
   )
-  const [containerWidth, setContainerWidth] = useState<number>(0)
-  const [containerHeight, setContainerHeight] = useState<number>(0)
-  const [leftImgLoaded, setLeftImgLoaded] = useState<boolean>(false)
-  const [rightImgLoaded, setRightImgLoaded] = useState<boolean>(false)
   const [isSliding, setIsSliding] = useState<boolean>(false)
 
+  // size of the parent container
+  const [containerWidth, setContainerWidth] = useState<number>(0)
+  const [containerHeight, setContainerHeight] = useState<number>(0)
+
+  // refs to HTML elements
   const containerRef = useContainerWidth((width) => setContainerWidth(width))
   const rightImageRef = useRef<HTMLImageElement>(null)
   const leftImageRef = useRef<HTMLImageElement>(null)
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  // image loading flags
+  const [leftImgLoaded, setLeftImgLoaded] = useState<boolean>(false)
+  const [rightImgLoaded, setRightImgLoaded] = useState<boolean>(false)
+  const allImagesLoaded = rightImgLoaded && leftImgLoaded
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: We need calculation when the image is changed
   useEffect(() => {
     if (!leftImageRef.current) {
       return
@@ -84,7 +90,7 @@ const ReactCompareImage = (props: ReactCompareImageProps) => {
     }
   }, [leftImage])
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  // biome-ignore lint/correctness/useExhaustiveDependencies: We need calculation when the image is changed
   useEffect(() => {
     if (!rightImageRef.current) {
       return
@@ -100,15 +106,17 @@ const ReactCompareImage = (props: ReactCompareImageProps) => {
     }
   }, [rightImage])
 
-  const allImagesLoaded = rightImgLoaded && leftImgLoaded
-
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  // biome-ignore lint/correctness/useExhaustiveDependencies: `onSliderPositionChange` is a prop and may cause infinite loop
   useEffect(() => {
-    if (!allImagesLoaded) {
+    // do nothing if refs are not ready for some reason
+    if (
+      !(leftImageRef.current && rightImageRef.current && containerRef.current)
+    ) {
       return
     }
 
-    if (!(leftImageRef.current && rightImageRef.current)) {
+    // wait for image loading
+    if (!allImagesLoaded) {
       return
     }
 
@@ -244,7 +252,7 @@ const ReactCompareImage = (props: ReactCompareImageProps) => {
     horizontal,
     hover,
     sliderLineWidth,
-    vertical,
+    containerRef,
   ])
 
   const styles = {
