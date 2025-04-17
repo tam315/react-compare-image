@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import useContainerWidth from './useContainerWidth';
 
 interface ReactCompareImageProps {
   aspectRatio?: 'taller' | 'wider';
@@ -55,21 +56,9 @@ const ReactCompareImage = (props: ReactCompareImageProps) => {
   const [rightImgLoaded, setRightImgLoaded] = useState<boolean>(false);
   const [isSliding, setIsSliding] = useState<boolean>(false);
 
-  const containerRef = useRef(null);
+  const containerRef = useContainerWidth(width => setContainerWidth(width));
   const rightImageRef = useRef(null);
   const leftImageRef = useRef(null);
-
-  // make the component responsive
-  useEffect(() => {
-    const containerElement = containerRef.current;
-    const resizeObserver = new ResizeObserver(([entry, ..._]) => {
-      const currentContainerWidth = entry.target.getBoundingClientRect().width;
-      setContainerWidth(currentContainerWidth);
-    });
-    resizeObserver.observe(containerElement);
-
-    return () => resizeObserver.disconnect();
-  }, []);
 
   useEffect(() => {
     // consider the case where loading image is completed immediately
