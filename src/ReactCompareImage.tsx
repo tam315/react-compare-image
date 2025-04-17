@@ -219,7 +219,7 @@ const ReactCompareImage = (props: ReactCompareImageProps) => {
     setContainerHeight(idealContainerHeight)
 
     return () => {
-      // cleanup all event resteners
+      // cleanup all event listeners
       containerElement.removeEventListener('touchstart', startSliding) // 01
       window.removeEventListener('touchend', finishSliding) // 02
       containerElement.removeEventListener('mousemove', handleSliding) // 03
