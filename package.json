@@ -40,6 +40,8 @@
     "@storybook/react": "^8.6.12",
     "@storybook/react-vite": "^8.6.12",
     "@storybook/test": "^8.6.12",
+    "@types/react": "^19.1.2",
+    "@types/react-dom": "^19.1.2",
     "@types/resize-observer-browser": "^0.1.11",
     "@vitejs/plugin-react": "^4.2.1",
     "react": "^19.0.0",

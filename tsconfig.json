@@ -6,7 +6,9 @@
     "allowSyntheticDefaultImports": true,
     "noEmit": true,
     "jsx": "react",
-    "outDir": "dist"
+    "outDir": "dist",
+    "lib": ["dom", "es2015"],
+    "skipLibCheck":true
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx"],
+  "include": ["src/**/*.ts", "src/**/*.tsx"]
 }
