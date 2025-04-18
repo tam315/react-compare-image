@@ -1,4 +1,6 @@
 import useContainerWidth from '@/hooks/useContainerWidth'
+import { calculateContainerHeight } from '@/utils/calculateContainerHeight'
+import { getImageRatio } from '@/utils/getImageRatio'
 import {
   type CSSProperties,
   type ReactNode,
@@ -8,8 +10,6 @@ import {
   useState,
 } from 'react'
 import invariant from 'tiny-invariant'
-import { getImageRatio } from '@/utils/getImageRatio'
-import { calculateContainerHeight } from '@/utils/calculateContainerHeight'
 
 interface ReactCompareImageProps {
   aspectRatio?: 'taller' | 'wider'
@@ -105,64 +105,41 @@ const ReactCompareImage = (props: ReactCompareImageProps) => {
       return
     }
 
-    // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
     const handleSliding = (e: MouseEvent | TouchEvent) => {
       if (!rightImageRef.current) {
         return
       }
 
-      // Calc cursor position from the:
-      // - left edge of the viewport (for horizontal)
-      // - top edge of the viewport (for vertical)
-      let cursorXFromViewport: number
-      let cursorYFromViewport: number
-      if (e instanceof MouseEvent) {
-        cursorXFromViewport = e.pageX
-        cursorYFromViewport = e.pageY
+      // Get the cursor position from the edge of the container
+      const rect = rightImageRef.current.getBoundingClientRect()
+      let clientX: number
+      let clientY: number
+      if (e instanceof TouchEvent) {
+        const touch = e.touches[0]
+        invariant(touch)
+        clientX = touch.clientX
+        clientY = touch.clientY
       } else {
-        invariant(e.touches[0], 'at least one touch point is required')
-        cursorXFromViewport = e.touches[0].pageX
-        cursorYFromViewport = e.touches[0].pageY
+        clientX = e.clientX
+        clientY = e.clientY
       }
+      const position = horizontal ? clientX - rect.left : clientY - rect.top
 
-      // Calc Cursor Position from the:
-      // - left edge of the window (for horizontal)
-      // - top edge of the window (for vertical)
-      // to consider any page scrolling
-      const cursorXFromWindow = cursorXFromViewport - window.pageXOffset
-      const cursorYFromWindow = cursorYFromViewport - window.pageYOffset
+      // Prevent slider from overflowing container by clamping its position within bounds
+      const halfLineWidth = sliderLineWidth / 2
+      const maxPosition = horizontal
+        ? containerWidth - halfLineWidth
+        : containerHeight - halfLineWidth
+      const clampedPosition = Math.min(
+        Math.max(position, halfLineWidth),
+        maxPosition,
+      )
 
-      // Calc Cursor Position from the:
-      // - left edge of the image(for horizontal)
-      // - top edge of the image(for vertical)
-      const imagePosition = rightImageRef.current.getBoundingClientRect()
-      let pos = horizontal
-        ? cursorXFromWindow - imagePosition.left
-        : cursorYFromWindow - imagePosition.top
+      const ratio =
+        clampedPosition / (horizontal ? containerWidth : containerHeight)
 
-      // Set minimum and maximum values to prevent the slider from overflowing
-      const minPos = sliderLineWidth / 2
-      const maxPos = horizontal
-        ? containerWidth - sliderLineWidth / 2
-        : containerHeight - sliderLineWidth / 2
-
-      if (pos < minPos) {
-        pos = minPos
-      }
-      if (pos > maxPos) {
-        pos = maxPos
-      }
-
-      horizontal
-        ? setSliderPosition(pos / containerWidth)
-        : setSliderPosition(pos / containerHeight)
-
-      // If there's a callback function, invoke it everytime the slider changes
-      if (onSliderPositionChange) {
-        horizontal
-          ? onSliderPositionChange(pos / containerWidth)
-          : onSliderPositionChange(pos / containerHeight)
-      }
+      setSliderPosition(ratio)
+      onSliderPositionChange?.(ratio)
     }
 
     const startSliding = (e: MouseEvent | TouchEvent) => {
