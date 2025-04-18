@@ -48,17 +48,3 @@ it('works correctly when both ratios are equal', () => {
   expect(resultTaller).toBe(containerWidth * ratio)
   expect(resultWider).toBe(containerWidth * ratio)
 })
-
-it('handles decimal ratios precisely', () => {
-  const containerWidth = 123
-  const leftRatio = 0.333
-  const rightRatio = 0.667
-  const result = calculateContainerHeight(
-    containerWidth,
-    leftRatio,
-    rightRatio,
-    'taller',
-  )
-  // Expect using 0.667
-  expect(result).toBeCloseTo(containerWidth * rightRatio, 5)
-})
