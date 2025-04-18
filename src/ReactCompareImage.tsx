@@ -80,6 +80,7 @@ const ReactCompareImage = (props: ReactCompareImageProps) => {
     }
   }, [])
 
+  // Manage image loading state
   // biome-ignore lint/correctness/useExhaustiveDependencies:
   useEffect(() => {
     // Sometimes onLoad is not called for some reason (maybe due to cache).
@@ -91,12 +92,32 @@ const ReactCompareImage = (props: ReactCompareImageProps) => {
     }
   }, [leftImage, rightImage])
 
+  // Set container height based on the image ratio
+  useEffect(() => {
+    if (
+      !(leftImageRef.current && rightImageRef.current) ||
+      containerWidth === 0 ||
+      !imagesLoaded
+    ) {
+      return
+    }
+    const height = calculateContainerHeight(
+      containerWidth,
+      getImageRatio(leftImageRef.current),
+      getImageRatio(rightImageRef.current),
+      aspectRatio,
+    )
+    setContainerHeight(height)
+  }, [containerWidth, imagesLoaded, aspectRatio])
+
+  // Setup event listeners for mouse/touch events.
+  // We need to reset the event handlers whenever the container’s width or
+  // any other relevant condition changes.
+  //
   // biome-ignore lint/correctness/useExhaustiveDependencies: `onSliderPositionChange` is a prop and may cause infinite loop
   useEffect(() => {
     // do nothing if refs are not ready for some reason
-    if (
-      !(leftImageRef.current && rightImageRef.current && containerRef.current)
-    ) {
+    if (!containerRef.current) {
       return
     }
 
@@ -106,12 +127,12 @@ const ReactCompareImage = (props: ReactCompareImageProps) => {
     }
 
     const handleSliding = (e: MouseEvent | TouchEvent) => {
-      if (!rightImageRef.current) {
+      if (!containerRef.current) {
         return
       }
 
       // Get the cursor position from the edge of the container
-      const rect = rightImageRef.current.getBoundingClientRect()
+      const rect = containerRef.current.getBoundingClientRect()
       let clientX: number
       let clientY: number
       if (e instanceof TouchEvent) {
@@ -165,8 +186,6 @@ const ReactCompareImage = (props: ReactCompareImageProps) => {
 
     const containerElement = containerRef.current
 
-    // it's necessary to reset event handlers each time the canvasWidth changes
-
     // for mobile
     containerElement.addEventListener('touchstart', startSliding) // 01
     window.addEventListener('touchend', finishSliding) // 02
@@ -180,17 +199,8 @@ const ReactCompareImage = (props: ReactCompareImageProps) => {
       window.addEventListener('mouseup', finishSliding) // 06
     }
 
-    // calc and set the container's size
-    const height = calculateContainerHeight(
-      containerWidth,
-      getImageRatio(leftImageRef.current),
-      getImageRatio(rightImageRef.current),
-      aspectRatio,
-    )
-    setContainerHeight(height)
-
     return () => {
-      // cleanup all event listeners
+      // clean up all event listeners
       containerElement.removeEventListener('touchstart', startSliding) // 01
       window.removeEventListener('touchend', finishSliding) // 02
       containerElement.removeEventListener('mousemove', handleSliding) // 03
@@ -209,6 +219,7 @@ const ReactCompareImage = (props: ReactCompareImageProps) => {
     hover,
     sliderLineWidth,
     containerRef,
+    // onSliderPositionChange, // may cause infinite loop
   ])
 
   const styles = {
