@@ -24,3 +24,5 @@ jobs:
       - run: npx tsc
 
       - run: npx biome check
+
+      - run: npx playwright install && npm run test
