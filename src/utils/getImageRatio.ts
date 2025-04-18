@@ -4,5 +4,5 @@
  * @returns The image's width-to-height ratio.
  */
 export function getImageRatio(image: HTMLImageElement): number {
-  return image.naturalHeight / image.naturalWidth;
+  return image.naturalHeight / image.naturalWidth
 }

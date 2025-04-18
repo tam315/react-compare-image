@@ -16,6 +16,6 @@ export function calculateContainerHeight(
   const idealRatio =
     aspect === 'taller'
       ? Math.max(leftRatio, rightRatio)
-      : Math.min(leftRatio, rightRatio);
-  return containerWidth * idealRatio;
+      : Math.min(leftRatio, rightRatio)
+  return containerWidth * idealRatio
 }
