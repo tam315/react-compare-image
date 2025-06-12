@@ -4,7 +4,7 @@ const preview: Preview = {
   parameters: {
     options: {
       storySort: {
-        order: ['ReactCompareImage', ['Basic', 'Advanced']],
+        order: ['ReactCompareImage', ['Basic', 'ForDebugging']],
       },
     },
     controls: {
