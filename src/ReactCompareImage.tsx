@@ -1,6 +1,3 @@
-import useContainerWidth from '@/hooks/useContainerWidth'
-import { calculateContainerHeight } from '@/utils/calculateContainerHeight'
-import { getImageRatio } from '@/utils/getImageRatio'
 import {
   type CSSProperties,
   type ReactNode,
@@ -10,6 +7,9 @@ import {
   useState,
 } from 'react'
 import invariant from 'tiny-invariant'
+import useContainerWidth from '@/hooks/useContainerWidth'
+import { calculateContainerHeight } from '@/utils/calculateContainerHeight'
+import { getImageRatio } from '@/utils/getImageRatio'
 
 interface ReactCompareImageProps {
   aspectRatio?: 'taller' | 'wider'
@@ -32,7 +32,6 @@ interface ReactCompareImageProps {
   vertical?: boolean
 }
 
-// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
 const ReactCompareImage = (props: ReactCompareImageProps) => {
   const {
     aspectRatio = 'taller',
@@ -81,7 +80,7 @@ const ReactCompareImage = (props: ReactCompareImageProps) => {
   }, [])
 
   // Manage image loading state
-  // biome-ignore lint/correctness/useExhaustiveDependencies:
+  // biome-ignore lint/correctness/useExhaustiveDependencies: need to check when an image source changed
   useEffect(() => {
     // Sometimes onLoad is not called for some reason (maybe due to cache).
     // So check explicitly.
@@ -90,7 +89,7 @@ const ReactCompareImage = (props: ReactCompareImageProps) => {
     return () => {
       setImagesLoaded(false)
     }
-  }, [leftImage, rightImage])
+  }, [leftImage, rightImage, checkImagesLoaded])
 
   // Set container height based on the image ratio
   useEffect(() => {

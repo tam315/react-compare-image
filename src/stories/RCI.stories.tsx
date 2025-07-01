@@ -1,10 +1,10 @@
-import ReactCompareImage from '@/ReactCompareImage'
 import type { Meta, StoryObj } from '@storybook/react'
 import { Fragment } from 'react'
-import img1TallerSrc from './assets/image1-taller.png'
+import ReactCompareImage from '@/ReactCompareImage'
 import img1Src from './assets/image1.png'
-import img2WiderSrc from './assets/image2-wider.png'
+import img1TallerSrc from './assets/image1-taller.png'
 import img2Src from './assets/image2.png'
+import img2WiderSrc from './assets/image2-wider.png'
 import ImgTallerSrc from './assets/taller-image.png'
 import ImgWiderSrc from './assets/wider-image.png'
 
@@ -92,8 +92,6 @@ export const SliderPosition: Story = {
     leftImage: img1Src,
     rightImage: img2Src,
     onSliderPositionChange: (position: number) => {
-      // biome-ignore lint/suspicious/noConsole: <explanation>
-      // biome-ignore lint/suspicious/noConsoleLog: <explanation>
       console.log('Slider position:', position)
     },
   },
