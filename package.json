@@ -1,6 +1,6 @@
 {
   "name": "react-compare-image",
-  "version": "3.5.12",
+  "version": "3.5.13",
   "description": "React component to compare two images using slider.",
   "main": "./dist/ReactCompareImage.umd.js",
   "module": "./dist/ReactCompareImage.mjs",
