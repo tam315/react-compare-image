@@ -1,0 +1,15 @@
+{
+  "name": "react-compare-image",
+  "compatibility_date": "2025-12-16",
+  "assets": {
+    "directory": "./dist"
+  },
+  "workers_dev": true,
+  "preview_urls": true,
+  "routes": [
+    {
+      "pattern": "react-compare-image.yuuniworks.com",
+      "custom_domain": true
+    }
+  ]
+}
