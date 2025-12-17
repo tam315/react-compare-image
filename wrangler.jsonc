@@ -2,7 +2,7 @@
   "name": "react-compare-image",
   "compatibility_date": "2025-12-16",
   "assets": {
-    "directory": "./dist"
+    "directory": "./storybook-static"
   },
   "workers_dev": true,
   "preview_urls": true,
