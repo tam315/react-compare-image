@@ -134,7 +134,8 @@ const ReactCompareImage = (props: ReactCompareImageProps) => {
       const rect = containerRef.current.getBoundingClientRect()
       let clientX: number
       let clientY: number
-      if (e instanceof TouchEvent) {
+      if ('touches' in e) {
+        invariant(e instanceof TouchEvent)
         const touch = e.touches[0]
         invariant(touch)
         clientX = touch.clientX
