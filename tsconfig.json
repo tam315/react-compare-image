@@ -1,11 +1,8 @@
 {
   "compilerOptions": {
     "target": "ES2015",
-    "moduleResolution": "node",
-    // allow default import
-    "allowSyntheticDefaultImports": true,
+    "moduleResolution": "bundler",
     "noEmit": true,
-    "esModuleInterop": true,
     "jsx": "react-jsx",
     "outDir": "dist",
     "lib": ["dom", "es2015"],
