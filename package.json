@@ -71,9 +71,6 @@
     "last 1 ChromeAndroid versions",
     "last 1 iOS versions"
   ],
-  "volta": {
-    "node": "24.9.0"
-  },
   "dependencies": {
     "tiny-invariant": "^1.3.3"
   }
