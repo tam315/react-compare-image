@@ -1,0 +1,4 @@
+[tools]
+# sync with cloudflare's node version for storybook.
+# https://developers.cloudflare.com/pages/configuration/build-image/#languages-and-runtime
+node = "22"
