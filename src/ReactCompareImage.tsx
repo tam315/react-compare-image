@@ -6,7 +6,7 @@ import {
   useRef,
   useState,
 } from 'react'
-import invariant from 'tiny-invariant'
+
 import useContainerWidth from '@/hooks/useContainerWidth'
 import { calculateContainerHeight } from '@/utils/calculateContainerHeight'
 import { getImageRatio } from '@/utils/getImageRatio'
@@ -80,7 +80,7 @@ const ReactCompareImage = (props: ReactCompareImageProps) => {
   }, [])
 
   // Manage image loading state
-  // biome-ignore lint/correctness/useExhaustiveDependencies: need to check when an image source changed
+  // biome-ignore lint/correctness/useExhaustiveDependencies: Image should be reloaded when it changes
   useEffect(() => {
     // Sometimes onLoad is not called for some reason (maybe due to cache).
     // So check explicitly.
@@ -109,7 +109,7 @@ const ReactCompareImage = (props: ReactCompareImageProps) => {
     setContainerHeight(height)
   }, [containerWidth, imagesLoaded, aspectRatio])
 
-  // Setup event listeners for mouse/touch events.
+  // Setup event listeners for pointer (e.g. mouse/touch) events.
   // We need to reset the event handlers whenever the container’s width or
   // any other relevant condition changes.
   //
@@ -125,26 +125,14 @@ const ReactCompareImage = (props: ReactCompareImageProps) => {
       return
     }
 
-    const handleSliding = (e: MouseEvent | TouchEvent) => {
+    const stickSliderToPointer = (e: PointerEvent) => {
       if (!containerRef.current) {
         return
       }
 
       // Get the cursor position from the edge of the container
       const rect = containerRef.current.getBoundingClientRect()
-      let clientX: number
-      let clientY: number
-      if ('touches' in e) {
-        invariant(e instanceof TouchEvent)
-        const touch = e.touches[0]
-        invariant(touch)
-        clientX = touch.clientX
-        clientY = touch.clientY
-      } else {
-        clientX = e.clientX
-        clientY = e.clientY
-      }
-      const position = horizontal ? clientX - rect.left : clientY - rect.top
+      const position = horizontal ? e.clientX - rect.left : e.clientY - rect.top
 
       // Prevent slider from overflowing container by clamping its position within bounds
       const halfLineWidth = sliderLineWidth / 2
@@ -163,52 +151,40 @@ const ReactCompareImage = (props: ReactCompareImageProps) => {
       onSliderPositionChange?.(ratio)
     }
 
-    const startSliding = (e: MouseEvent | TouchEvent) => {
+    const onStart = (e: PointerEvent) => {
       setIsSliding(true)
+      e.preventDefault()
 
-      // Prevent default behavior other than mobile scrolling
-      if (!('touches' in e)) {
-        e.preventDefault()
-      }
+      // Use the pointer capture feature to keep track of the container currently being operated on.
+      // Note that the information set by setPointerCapture is automatically cleared
+      // when a `pointerup` or `pointerccancel` event fires.
+      containerElement.setPointerCapture(e.pointerId)
 
-      // Slide the image even if you just click or tap (not drag)
-      handleSliding(e)
-
-      window.addEventListener('mousemove', handleSliding) // 07
-      window.addEventListener('touchmove', handleSliding) // 08
+      // Very first time move should be fired manually.
+      stickSliderToPointer(e)
     }
 
-    const finishSliding = () => {
+    const onMove = (e: PointerEvent) => {
+      const isTargetElement = containerElement.hasPointerCapture(e.pointerId)
+      if (isTargetElement || hover) {
+        stickSliderToPointer(e)
+      }
+    }
+
+    const onFinish = () => {
       setIsSliding(false)
-      window.removeEventListener('mousemove', handleSliding)
-      window.removeEventListener('touchmove', handleSliding)
     }
 
     const containerElement = containerRef.current
 
-    // for mobile
-    containerElement.addEventListener('touchstart', startSliding) // 01
-    window.addEventListener('touchend', finishSliding) // 02
-
-    // for desktop
-    if (hover) {
-      containerElement.addEventListener('mousemove', handleSliding) // 03
-      containerElement.addEventListener('mouseleave', finishSliding) // 04
-    } else {
-      containerElement.addEventListener('mousedown', startSliding) // 05
-      window.addEventListener('mouseup', finishSliding) // 06
-    }
+    containerElement.addEventListener('pointerdown', onStart)
+    containerElement.addEventListener('pointermove', onMove)
+    containerElement.addEventListener('pointerup', onFinish)
 
     return () => {
-      // clean up all event listeners
-      containerElement.removeEventListener('touchstart', startSliding) // 01
-      window.removeEventListener('touchend', finishSliding) // 02
-      containerElement.removeEventListener('mousemove', handleSliding) // 03
-      containerElement.removeEventListener('mouseleave', finishSliding) // 04
-      containerElement.removeEventListener('mousedown', startSliding) // 05
-      window.removeEventListener('mouseup', finishSliding) // 06
-      window.removeEventListener('mousemove', handleSliding) // 07
-      window.removeEventListener('touchmove', handleSliding) // 08
+      containerElement.removeEventListener('pointerdown', onStart)
+      containerElement.removeEventListener('pointermove', onMove)
+      containerElement.removeEventListener('pointerup', onFinish)
     }
   }, [
     imagesLoaded,
@@ -229,6 +205,7 @@ const ReactCompareImage = (props: ReactCompareImageProps) => {
       width: '100%',
       height: `${containerHeight}px`,
       overflow: 'hidden',
+      touchAction: horizontal ? 'pan-y' : 'pan-x',
     },
     rightImage: {
       clipPath: horizontal
