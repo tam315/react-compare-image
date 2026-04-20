@@ -19,7 +19,7 @@ export default defineConfig({
       fileName: 'ReactCompareImage',
     },
     rollupOptions: {
-      external: ['react', 'react-dom'],
+      external: ['react', 'react-dom', 'react/jsx-runtime'],
       output: {
         globals: {
           react: 'React',

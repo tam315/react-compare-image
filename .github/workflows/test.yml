@@ -26,3 +26,5 @@ jobs:
       - run: npx biome check
 
       - run: npx playwright install && npm run test
+
+      - run: npm run build && node scripts/smoke-test-dist.mjs
