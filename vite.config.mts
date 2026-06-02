@@ -1,15 +1,14 @@
 import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
 import dts from 'vite-plugin-dts'
-import tsconfigPaths from 'vite-tsconfig-paths'
 
 export default defineConfig({
   plugins: [
     react(),
-    tsconfigPaths(),
     dts({
+      entryRoot: 'src',
       include: ['src/ReactCompareImage.tsx'],
-      outDir: 'dist',
+      outDirs: 'dist',
     }),
   ],
   build: {

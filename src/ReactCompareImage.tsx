@@ -7,9 +7,9 @@ import {
   useState,
 } from 'react'
 
-import useContainerWidth from '@/hooks/useContainerWidth'
-import { calculateContainerHeight } from '@/utils/calculateContainerHeight'
-import { getImageRatio } from '@/utils/getImageRatio'
+import useContainerWidth from './hooks/useContainerWidth'
+import { calculateContainerHeight } from './utils/calculateContainerHeight'
+import { getImageRatio } from './utils/getImageRatio'
 
 interface ReactCompareImageProps {
   aspectRatio?: 'taller' | 'wider'

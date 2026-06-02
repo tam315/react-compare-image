@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { Fragment } from 'react'
-import ReactCompareImage from '@/ReactCompareImage'
+import ReactCompareImage from '../ReactCompareImage'
 import img1Src from './assets/image1.png'
 import img1TallerSrc from './assets/image1-taller.png'
 import img2Src from './assets/image2.png'

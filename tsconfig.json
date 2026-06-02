@@ -7,9 +7,6 @@
     "outDir": "dist",
     "lib": ["dom", "es2015"],
     "skipLibCheck":true,
-    "paths": {
-      "@/*": ["./src/*"]
-    },
     "strict": true,
     "noUncheckedIndexedAccess": true,
     "noErrorTruncation": false, // エラーを中略しない
@@ -18,6 +15,6 @@
     "noImplicitReturns": true,
     "noPropertyAccessFromIndexSignature": true,
     "noUnusedLocals": true,
-    "noUnusedParameters": true,
+    "noUnusedParameters": true
   }
 }
