@@ -6,6 +6,7 @@ export default defineConfig({
   plugins: [
     react(),
     dts({
+      entryRoot: 'src',
       include: ['src/ReactCompareImage.tsx'],
       outDirs: 'dist',
     }),

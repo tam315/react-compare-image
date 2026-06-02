@@ -1,11 +1,12 @@
 #!/usr/bin/env node
-import { readFileSync } from 'node:fs'
+import { existsSync, readFileSync } from 'node:fs'
 
 // This test ensures no unnecessary dependencies are bundled into the built output
 // like `react/jsx-runtime` or `react/jsx-dev-runtime`.
 // https://github.com/tam315/react-compare-image/issues/153
 
 const DIST_FILE = 'dist/ReactCompareImage.mjs'
+const TYPES_FILE = 'dist/ReactCompareImage.d.ts'
 
 let content
 try {
@@ -24,4 +25,10 @@ for (const symbol of FORBIDDEN) {
   }
 }
 
+if (!existsSync(TYPES_FILE)) {
+  console.error(`FAIL: ${TYPES_FILE} not found`)
+  process.exit(1)
+}
+
 console.log(`PASS: No forbidden React symbol strings found in ${DIST_FILE}`)
+console.log(`PASS: ${TYPES_FILE} found`)
