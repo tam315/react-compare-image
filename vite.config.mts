@@ -27,7 +27,4 @@ export default defineConfig({
     },
     outDir: 'dist',
   },
-  resolve:{
-    tsconfigPaths: true
-  }
 })
