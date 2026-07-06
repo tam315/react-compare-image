@@ -73,8 +73,5 @@
     "last 1 Edge versions",
     "last 1 ChromeAndroid versions",
     "last 1 iOS versions"
-  ],
-  "engines": {
-    "node": "24.18.0"
-  }
+  ]
 }
