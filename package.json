@@ -1,6 +1,6 @@
 {
   "name": "react-compare-image",
-  "version": "3.5.18",
+  "version": "3.5.19",
   "description": "React component to compare two images using slider.",
   "main": "./dist/ReactCompareImage.umd.js",
   "module": "./dist/ReactCompareImage.mjs",
@@ -32,26 +32,32 @@
     "react-dom": "^16.8 || ^17 || ^18 || ^19"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.4.15",
-    "@storybook/react": "^10.4.1",
-    "@storybook/react-vite": "^10.4.1",
-    "@types/node": "^24.12.2",
-    "@types/react": "^19.2.15",
+    "@biomejs/biome": "^2.5.1",
+    "@storybook/react": "^10.4.6",
+    "@storybook/react-vite": "^10.4.6",
+    "@types/node": "^24.13.2",
+    "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
     "@types/resize-observer-browser": "^0.1.11",
-    "@vitejs/plugin-react": "^6.0.2",
-    "@vitest/browser": "^4.1.7",
-    "@vitest/browser-playwright": "^4.1.7",
-    "@vitest/ui": "^4.1.7",
-    "playwright": "^1.60.0",
-    "react": "^19.2.6",
-    "react-dom": "^19.2.6",
-    "storybook": "^10.4.1",
+    "@vitejs/plugin-react": "^6.0.3",
+    "@vitest/browser": "^4.1.9",
+    "@vitest/browser-playwright": "^4.1.9",
+    "@vitest/ui": "^4.1.9",
+    "playwright": "^1.61.1",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "storybook": "^10.4.6",
     "typescript": "^6.0.3",
-    "vite": "^8.0.14",
-    "vite-plugin-dts": "^5.0.1",
-    "vitest": "^4.1.7",
+    "vite": "^8.1.0",
+    "vite-plugin-dts": "^5.0.3",
+    "vitest": "^4.1.9",
     "vitest-browser-react": "^2.2.0"
+  },
+  "overrides": {
+    "@babel/core": "7.29.7",
+    "brace-expansion": "5.0.7",
+    "esbuild": "0.28.1",
+    "ws": "8.21.0"
   },
   "keywords": [
     "picture comparison",
@@ -67,8 +73,5 @@
     "last 1 Edge versions",
     "last 1 ChromeAndroid versions",
     "last 1 iOS versions"
-  ],
-  "engines": {
-    "node": "24.16.0"
-  }
+  ]
 }
