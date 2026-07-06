@@ -1,4 +1,3 @@
 [tools]
-# sync with cloudflare's node version for storybook.
-# https://developers.cloudflare.com/pages/configuration/build-image/#languages-and-runtime
-node = "24.16.0"
+# Node.js LTSの最新に合わせる。Cloudflare Pagesは.node-versionで同じ値を指定する。
+node = "24.18.0"
