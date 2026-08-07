@@ -80,7 +80,6 @@ const ReactCompareImage = (props: ReactCompareImageProps) => {
   }, [])
 
   // Manage image loading state
-  // biome-ignore lint/correctness/useExhaustiveDependencies: Image should be reloaded when it changes
   useEffect(() => {
     // Sometimes onLoad is not called for some reason (maybe due to cache).
     // So check explicitly.
@@ -113,7 +112,6 @@ const ReactCompareImage = (props: ReactCompareImageProps) => {
   // We need to reset the event handlers whenever the container’s width or
   // any other relevant condition changes.
   //
-  // biome-ignore lint/correctness/useExhaustiveDependencies: `onSliderPositionChange` is a prop and may cause infinite loop
   useEffect(() => {
     // do nothing if refs are not ready for some reason
     if (!containerRef.current) {
